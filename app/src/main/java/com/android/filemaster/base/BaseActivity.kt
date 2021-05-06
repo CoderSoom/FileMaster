@@ -3,17 +3,25 @@ package com.android.filemaster.base
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelProviders
 import androidx.viewbinding.ViewBinding
 
 abstract class BaseActivity<VB : ViewDataBinding, VM : BaseViewModel> : AppCompatActivity() {
     protected lateinit var binding: VB
+    protected lateinit var viewModel: VM
     abstract fun getLayoutId(): Int
+    abstract fun getViewModel(): Class<VM>
+    abstract fun setViewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = DataBindingUtil.setContentView(this, getLayoutId())
+        this.binding = DataBindingUtil.setContentView(this, getLayoutId())
+        this.viewModel = ViewModelProvider(this).get(getViewModel())
+        this.setViewModel()
     }
 
     protected fun goToActivity(activity: Class<*>, key: String?, bundle: Bundle?) {

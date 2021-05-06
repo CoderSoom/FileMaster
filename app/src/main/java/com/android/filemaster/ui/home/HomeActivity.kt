@@ -12,4 +12,10 @@ class HomeActivity :BaseActivity<ActivityHomeBinding, HomeViewModel>() {
     }
 
     override fun getLayoutId() = R.layout.activity_home
+
+    override fun getViewModel() = HomeViewModel::class.java
+
+    override fun setViewModel() {
+
+    }
 }
