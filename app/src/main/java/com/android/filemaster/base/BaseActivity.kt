@@ -2,22 +2,25 @@ package com.android.filemaster.base
 
 import android.content.Intent
 import android.os.Bundle
+import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.ViewModelProvider
 
 abstract class BaseActivity<VB : ViewDataBinding, VM : BaseViewModel> : AppCompatActivity() {
-    protected lateinit var binding: VB
-    protected lateinit var viewModel: VM
+    protected lateinit var mBinding: VB
+    protected lateinit var mViewModel: VM
+
+    @LayoutRes
     abstract fun getLayoutId(): Int
     abstract fun getViewModel(): Class<VM>
     abstract fun setViewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        this.binding = DataBindingUtil.setContentView(this, getLayoutId())
-        this.viewModel = ViewModelProvider(this).get(getViewModel())
+        this.mBinding = DataBindingUtil.setContentView(this, getLayoutId())
+        this.mViewModel = ViewModelProvider(this).get(getViewModel())
         this.setViewModel()
     }
 

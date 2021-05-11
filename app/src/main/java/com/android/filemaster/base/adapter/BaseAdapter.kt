@@ -12,6 +12,24 @@ abstract class BaseAdapter<T, VB : ViewDataBinding> : RecyclerView.Adapter<BaseA
     private var dataList: MutableList<T> = arrayListOf()
     protected lateinit var binding: VB
 
+    fun setDataList(list: MutableList<T>) {
+        this.dataList = list
+        this.notifyDataSetChanged()
+    }
+
+    fun addElement(t: T) {
+        this.dataList.add(t)
+        this.notifyDataSetChanged()
+    }
+
+    fun addElement(t: T, position: Int) {
+        this.dataList.add(position, t)
+    }
+
+    fun getElement(position: Int): T{
+        return this.dataList[position]
+    }
+
     abstract fun getLayoutId(): Int
     abstract fun getIdVariable(): Int
     abstract fun getIdVariableOnClicked(): Int?
