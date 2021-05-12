@@ -15,13 +15,13 @@ abstract class BaseActivity<VB : ViewDataBinding, VM : BaseViewModel> : AppCompa
     @LayoutRes
     abstract fun getLayoutId(): Int
     abstract fun getViewModel(): Class<VM>
-    abstract fun setViewModel()
+    abstract fun init()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         this.mBinding = DataBindingUtil.setContentView(this, getLayoutId())
         this.mViewModel = ViewModelProvider(this).get(getViewModel())
-        this.setViewModel()
+        this.init()
     }
 
     protected fun goToActivity(activity: Class<*>, key: String?, bundle: Bundle?) {

@@ -15,6 +15,6 @@ class SplashActivity : BaseActivity<ActivitySplashBinding, SplashViewModel>() {
     override fun getLayoutId() = R.layout.activity_splash
 
     override fun getViewModel() = SplashViewModel::class.java
-    override fun setViewModel() {
+    override fun init() {
     }
 }
