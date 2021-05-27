@@ -14,9 +14,13 @@ import android.text.TextUtils
 import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.documentfile.provider.DocumentFile
+import com.android.filemaster.FileDefault
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.io.File
+import java.text.DateFormat
+import java.text.DecimalFormat
+import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -26,318 +30,128 @@ object FileManager {
 
     @SuppressLint("Recycle")
     @RequiresApi(Build.VERSION_CODES.Q)
-    suspend fun getListImage(context: Context): ArrayList<String> =
-        withContext(Dispatchers.Default) {
-            val images: ArrayList<String> = ArrayList<String>()
-            val uri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI
+    fun getListDocument(context: Context): MutableList<FileDefault> {
 
-            val projection = arrayOf(
-                MediaStore.Images.Media.DATA,
-                MediaStore.Images.Media.BUCKET_DISPLAY_NAME
+        val documents = mutableListOf<FileDefault>()
+
+        val args =
+            arrayOf(
+                "%.pdf",
+                "%.doc",
+                "%.docx",
+                "%.xls",
+                "%.xlsx",
+                "%.ppt",
+                "%.pptx",
+                "%.txt",
+                "%.rtx",
+                "%.rtf",
+                "%.html"
             )
-            val orderBy = MediaStore.Images.Media.DATE_TAKEN
-            val cursor = context.contentResolver
-                .query(uri, projection, null, null, "$orderBy DESC")
-            try {
-                cursor?.let {
-                    var hasRow = it.moveToFirst()
-                    while (hasRow) {
-                        val absolutePathOfImage =
-                            cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.MediaColumns.DATA))
-                        images.add(absolutePathOfImage)
-                        hasRow = it.moveToNext()
-                    }
-                }
-            } finally {
-                cursor?.close()
-            }
-            images
-        }
 
-    suspend fun getListAudio(context: Context): ArrayList<String> =
-        withContext(Dispatchers.Default) {
-            val audios: ArrayList<String> = ArrayList<String>()
+        val uri = MediaStore.Files.getContentUri("external")
+        val projection = arrayOf(
+            MediaStore.Files.FileColumns.DATA,
 
-            val uri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI
-            val projection = arrayOf(
-                MediaStore.Audio.Media.DATA,
-                MediaStore.Audio.Media.DATE_ADDED,
-                MediaStore.Audio.Media._ID
             )
-            val cursor = context.contentResolver.query(uri, projection, null, null, null)
-            try {
-                cursor?.let {
-                    val clData = it.getColumnIndex(MediaStore.Audio.Media.DATA)
-                    val clDateAdded = it.getColumnIndex(MediaStore.Audio.Media.DATE_ADDED)
-                    val clID = it.getColumnIndex(MediaStore.Audio.Media._ID)
-                    var hasRow = it.moveToFirst()
-
-                    while (hasRow) {
-                        val filePath = it.getString(clData)
-                        audios.add(filePath)
-                        val id = it.getString(clID)
-
-                        hasRow = it.moveToNext()
-                    }
-                }
-            } finally {
-                cursor?.close()
-            }
-            audios
-        }
-
-    suspend fun getListVideo(context: Context): ArrayList<String> =
-        withContext(Dispatchers.Default) {
-            val videos: ArrayList<String> = ArrayList<String>()
-
-            val uri = MediaStore.Video.Media.EXTERNAL_CONTENT_URI
-            val projection = arrayOf(
-                MediaStore.Video.Media.DATA,
-                MediaStore.Video.Media.DATE_ADDED,
-                MediaStore.Video.Media._ID
-            )
-            val cursor = context.contentResolver.query(uri, projection, null, null, null)
-            try {
-                cursor?.let {
-                    val clData = it.getColumnIndex(MediaStore.Video.Media.DATA)
-                    val clDateAdded = it.getColumnIndex(MediaStore.Video.Media.DATE_ADDED)
-                    val clID = it.getColumnIndex(MediaStore.Video.Media._ID)
-                    var hasRow = it.moveToFirst()
-
-                    while (hasRow) {
-                        val filePath = it.getString(clData)
-                        videos.add(filePath)
-                        val id = it.getString(clID)
-                        hasRow = it.moveToNext()
-                    }
-                }
-            } finally {
-                cursor?.close()
-            }
-            videos
-        }
-
-    suspend fun getListDocument(context: Context): ArrayList<String> =
-        withContext(Dispatchers.Default) {
-            val documents = ArrayList<String>()
-
-            val args =
-                arrayOf(
-                    "%.pdf",
-                    "%.doc",
-                    "%.docx",
-                    "%.xls",
-                    "%.xlsx",
-                    "%.ppt",
-                    "%.pptx",
-                    "%.txt",
-                    "%.rtx",
-                    "%.rtf",
-                    "%.html"
-                )
-
-            val uri = MediaStore.Files.getContentUri("external")
-
-            val projection = arrayOf(MediaStore.Files.FileColumns.DATA)
-
-            val selection = StringBuilder()
-
-            args.forEachIndexed { index, elemment ->
-                if (index == 0) {
-                    selection.append(MediaStore.Files.FileColumns.DATA + " like ?")
-                } else {
-                    selection.append(" OR " + MediaStore.Files.FileColumns.DATA + " like ?")
-                }
-            }
-
-            val cursor: Cursor? =
-                context.contentResolver.query(uri, projection, selection.toString(), args, null)
-
-            try {
-                cursor?.let {
-                    val clData = it.getColumnIndex(MediaStore.Files.FileColumns.DATA)
-                    val clDateAdded = it.getColumnIndex(MediaStore.Files.FileColumns.DATE_ADDED)
-                    val clID = it.getColumnIndex(MediaStore.Files.FileColumns._ID)
-                    var hasRow = it.moveToFirst()
-
-                    while (hasRow) {
-                        val filePath = it.getString(clData)
-                        filePath.endsWith(".txt")  // lấy loại file
-                        documents.add(filePath)
-                        hasRow = it.moveToNext()
-                    }
-                }
-            } finally {
-                cursor?.close()
-            }
-            documents
-        }
-
-    suspend fun getListApk(context: Context): ArrayList<String> = withContext(Dispatchers.Default) {
-        val selectionArgs = arrayOf("%.apk")
-        val selection = MediaStore.Files.FileColumns.DATA + " like ?"
-        val projection = arrayOf(MediaStore.Files.FileColumns.DATA)
-        val files = getExternalFile(context, selection, selectionArgs, projection)
-
-        files
-    }
-
-    suspend fun getListDownload(): ArrayList<File> = withContext(Dispatchers.Default) {
-        val downloads = ArrayList<File>()
-        val file =
-            Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
-        val arrFile = file.listFiles().toCollection(ArrayList())
-        for (i in arrFile.toList()) {
-            if (!i.isDirectory) {
-                downloads.add(i)
-            }
-        }
-        downloads
-    }
-
-    suspend fun getListZip(context: Context): ArrayList<String> = withContext(Dispatchers.Default) {
-        val selectionArgs = arrayOf(
-            "%.r__",
-            "%.a__",
-            "%.z__",
-            "%.zipx",
-            "%.jar",
-            "%.7z",
-            "%.gz",
-            "%.tgz",
-            "%.bz2",
-            "%.bz",
-            "%.tbz",
-            "%.tbz2",
-            "%.xz",
-            "%.txz",
-            "%.lz",
-            "%.tlz",
-            "%.tar",
-            "%.iso",
-            "%.lzh",
-            "%.lha",
-            "%.z",
-            "%.taz",
-            "%.001"
-        )
-        val projection = arrayOf(MediaStore.Files.FileColumns.DATA)
         val selection = StringBuilder()
-        selectionArgs.forEachIndexed { index, elemment ->
+
+        args.forEachIndexed { index, elemment ->
             if (index == 0) {
                 selection.append(MediaStore.Files.FileColumns.DATA + " like ?")
             } else {
                 selection.append(" OR " + MediaStore.Files.FileColumns.DATA + " like ?")
             }
         }
-        val files = getExternalFile(context, selection.toString(), selectionArgs, projection)
+        val cursor: Cursor? =
+            context.contentResolver.query(uri, projection, selection.toString(), args, null)
 
-        files
-    }
+        try {
+            cursor?.let {
+                val clData = it.getColumnIndex(MediaStore.Files.FileColumns.DATA)
 
-    @SuppressLint("QueryPermissionsNeeded")
-    suspend fun getListApp(context: Context): ArrayList<String> = withContext(Dispatchers.Default) {
-        val listApp = ArrayList<String>()
-        val apps = context.packageManager.getInstalledApplications(0)
-        for (app in apps) {
-            listApp.add(app.processName)
-
-            if (app.flags and (ApplicationInfo.FLAG_UPDATED_SYSTEM_APP or ApplicationInfo.FLAG_SYSTEM) > 0) {
-                // It is a system app
-            } else {
-                // It is installed by the user
-            }
-        }
-        listApp
-    }
-
-    suspend fun getListRecent(context: Context, number: Int): ArrayList<String> =
-        withContext(Dispatchers.Default) {
-            var index = 0
-            val apks = ArrayList<String>()
-            val sort = MediaStore.MediaColumns.DATE_ADDED + " DESC"
-            val uri = MediaStore.Files.getContentUri("external")
-            val projection =
-                arrayOf(
-                    MediaStore.Files.FileColumns.DATA,
-                    MediaStore.Files.FileColumns.DATE_MODIFIED
-                )
-
-            val calendar = Calendar.getInstance()
-            calendar.add(Calendar.DATE, -7)
-            val timeInMillis = calendar.timeInMillis / 1000
-
-            val cursor: Cursor? = context.getContentResolver().query(
-                uri,
-                projection,
-                "date_modified" + ">?",
-                arrayOf("" + timeInMillis),
-                sort
-            )
-
-            try {
-                cursor?.let {
-                    val clData = it.getColumnIndex(MediaStore.Files.FileColumns.DATA)
-                    var hasRow = it.moveToFirst()
-
-                    while (hasRow && index <= number) {
-                        index++
-                        val filePath = it.getString(clData)
-//                    filePath.endsWith(".txt")  // lấy loại file
-                        apks.add(filePath)
-                        hasRow = it.moveToNext()
-                    }
+                var hasRow = it.moveToFirst()
+                while (hasRow) {
+                    val filePath = it.getString(clData)
+                    val file = File(filePath)
+                    val fileName = file.name
+                    val size = convertBytes(file.length())
+                    val date = formatDate(file.lastModified())
+                    Log.d("xx", file.length().toString())
+                    documents.add(FileDefault(fileName, date, size, filePath))
+                    hasRow = it.moveToNext()
                 }
-            } finally {
-                cursor?.close()
             }
-            apks
+        } catch (e: Exception) {
+            e.printStackTrace()
+        } finally {
+            cursor?.close()
         }
-
-    suspend fun getListScreenShots(): ArrayList<String> = withContext(Dispatchers.Default) {
-        val screenShots = ArrayList<String>()
-        var arrFilePic = ArrayList<File>()
-        var arrFileDCMI = ArrayList<File>()
-
-        val filePic = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)
-        val fileDCMI = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM)
-
-        val screenshotsPic = File(filePic, "Screenshots")
-        val screenshotsDCMI = File(fileDCMI, "Screenshots")
-
-        Log.d(TAG, "getScreenShots: url: " + filePic.absolutePath)
-        Log.d(TAG, "getScreenShots: url: " + fileDCMI?.absolutePath)
-        Log.d(TAG, "getScreenShots: " + screenshotsPic.exists())
-        if (screenshotsPic.exists()) {
-            screenshotsPic.listFiles()?.let {
-                arrFilePic = it.toCollection(ArrayList())
-            }
-        }
-        if (screenshotsDCMI.exists()) {
-            screenshotsDCMI.listFiles()?.let {
-                arrFileDCMI = it.toCollection(ArrayList())
-            }
-        }
-
-        for (i in arrFilePic) {
-            if (!i.isDirectory) {
-                screenShots.add(i.absolutePath)
-            }
-        }
-        for (item in arrFileDCMI) {
-            if (!item.isDirectory) {
-                screenShots.add(item.absolutePath)
-            }
-        }
-        screenShots
+        return documents
     }
 
-    /*fun deleteFile(context: Context, url: String, uri: Uri?): Boolean {
+    fun formatDate(millis: Long): String {
+        @SuppressLint("SimpleDateFormat") val formater: DateFormat =
+            SimpleDateFormat("dd/MMM/yyyy - HH:mm")
+        return formater.format(Date(millis))
+    }
+
+    fun convertBytes(size: Long): String {
+        if (size <= 0) {
+            return "0"
+        }
+        val units = arrayOf("B", "KB", "MB", "GB", "TB")
+        val digitGroups = (Math.log10(size.toDouble()) / Math.log10(1024.0)).toInt()
+        return DecimalFormat("#,##0.#").format(
+            size / Math.pow(
+                1024.0,
+                digitGroups.toDouble()
+            )
+        ) + " " + units[digitGroups]
+    }
+
+
+    fun getListVideo(context: Context): MutableList<FileDefault> {
+        val videos = mutableListOf<FileDefault>()
+
+        val uri = MediaStore.Video.Media.EXTERNAL_CONTENT_URI
+        val projection = arrayOf(
+            MediaStore.Video.Media.DATA
+        )
+        val cursor = context.contentResolver.query(uri, projection, null, null, null)
+        try {
+            cursor?.let {
+                val clData = it.getColumnIndex(MediaStore.Video.Media.DATA)
+
+                var hasRow = it.moveToFirst()
+
+                while (hasRow) {
+                    val filePath = it.getString(clData)
+                    val file = File(filePath)
+                    val fileName = file.name
+
+                    val size = convertBytes(file.length())
+                    val date = formatDate(file.lastModified())
+
+                    videos.add(FileDefault(fileName, date, size, filePath))
+                    hasRow = it.moveToNext()
+                }
+            }
+        } finally {
+            cursor?.close()
+        }
+        return videos
+    }
+
+    fun deleteFile(context: Context, url: String): Boolean {
         if (checkPathIsSDCard(url)) {
-            val documentFile: DocumentFile? = getDocumentSDCardFile(context, uri, url)
-            return if (documentFile != null && documentFile.exists()) {
-                documentFile.delete()
-            } else false
+            val uri = getAvailabeAccessDirectoryUri(context, url)
+            if (uri != null) {
+                return findDocumentFile(context, uri, url)!!.delete()
+            } else {
+                return false
+            }
+
         } else {
             val fdelete = File(url)
             Log.d(TAG, "deleteImage: file delete: " + fdelete.absolutePath)
@@ -350,11 +164,14 @@ object FileManager {
                     false
                 }
             } else {
-                Log.d(TAG, "deleteImage: not esxits")
                 false
             }
         }
-    }*/
+    }
+
+    private  fun checkPathIsSDCard(path: String): Boolean {
+        return !path.contains("/storage/emulated/0/")
+    }
 
     private fun galleryAddPic(context: Context, filePath: String) {
         val file = File(filePath)
@@ -364,75 +181,29 @@ object FileManager {
         )
     }
 
-    fun renameFileSDCard(context: Context, url: String, newName: String) {
-        val uri = getAvailabeAccessDirectoryUri(context, url)
-        if (uri != null) {
-            val documentFile: DocumentFile? = getDocumentSDCardFile(context, uri, url)
-            if (documentFile != null && documentFile.exists()) {
-                documentFile.renameTo(newName)
+
+    private fun getAvailabeAccessDirectoryUri(context: Context, path: String?): Uri? {
+        val uriPermissions = context.applicationContext.contentResolver.persistedUriPermissions
+        if (uriPermissions.isEmpty()) {
+            Log.i(TAG, "getAvailabeAccessDirectoryUri: ")
+            return null
+        }
+        for (uriPermission in uriPermissions) {
+            val treeUri: DocumentFile? = getAccessDocumentFile(context, uriPermission.uri, path)
+            if (treeUri != null && treeUri.exists()) {
+                return uriPermission.uri
             }
         }
+        return null
     }
 
-    /*fun renameFile(context: Context, url: String, newName: String, uri: Uri): Boolean {
-        if (checkPathIsSDCard(url)) {
-            val documentFile: DocumentFile? = getDocumentSDCardFile(context, uri, url)
-            if (documentFile != null && documentFile.exists()) {
-                documentFile.renameTo(newName)
-                return true
-            } else false
-        } else {
-            val oldFile = File(url)
-            Log.d(TAG, "renameFile: old url: " + url)
-            val newPath = url.substring(0, url.lastIndexOf("/")) + "/" + newName
-
-            Log.d(TAG, "renameFile: new url: " + newPath)
-            val newFile = File(newPath)
-            if (oldFile.renameTo(newFile)) {
-                galleryAddPic(context, newPath)
-                return true
-            }
-            return false
-        }
-    }*/
-
-    private fun getExternalFile(
-        context: Context,
-        selection: String,
-        selectionArgs: Array<String>,
-        projection: Array<String>
-    ): ArrayList<String> {
-        val files = ArrayList<String>()
-        val uri = MediaStore.Files.getContentUri("external")
-
-        val cursor: Cursor? = context.getContentResolver()
-            .query(uri, projection, selection.toString(), selectionArgs, null)
-        try {
-            cursor?.let {
-                val clData = it.getColumnIndex(MediaStore.Files.FileColumns.DATA)
-                var hasRow = it.moveToFirst()
-
-                while (hasRow) {
-                    val filePath = it.getString(clData)
-                    files.add(filePath)
-                    hasRow = it.moveToNext()
-                }
-            }
-        } finally {
-            cursor?.close()
-        }
-        return files
-    }
-
-    private fun getAccessDocumentFile(
-        context: Context,
-        rootDir: Uri?,
-        path: String?
-    ): DocumentFile? {
+    private fun getAccessDocumentFile(context: Context, rootDir: Uri?, path: String?): DocumentFile? {
         val file = File(path)
         if (file.exists()) {
+            Log.i(TAG, "getAccessDocumentFile: ")
             val diretory = DocumentFile.fromTreeUri(context, rootDir!!)
             if (diretory == null || TextUtils.isEmpty(diretory.name)) {
+                Log.i(TAG, "getAccessDocumentFile: NULL")
                 return null
             }
             try {
@@ -445,40 +216,26 @@ object FileManager {
         return null
     }
 
-    fun getAvailabeAccessDirectoryUri(context: Context, path: String?): Uri? {
-        val uriPermissions = context.applicationContext.contentResolver.persistedUriPermissions
-        if (uriPermissions.isEmpty()) {
-            return null
-        }
-        for (uriPermission in uriPermissions) {
-            val treeUri: DocumentFile? = getAccessDocumentFile(context, uriPermission.uri, path)
-            if (treeUri != null && treeUri.exists()) {
-                return uriPermission.uri
-            }
-        }
-        return null
-    }
-
-    private fun getDocumentSDCardFile(
-        context: Context,
-        rootDir: Uri?,
-        path: String?
-    ): DocumentFile? {
+    private fun findDocumentFile(context: Context, rootDir: Uri?, path: String?): DocumentFile? {
         val file = File(path)
         if (file.exists()) {
             var pickedDir = DocumentFile.fromTreeUri(context, rootDir!!)
+
             try {
                 takeUriPermssion(context, rootDir)
             } catch (e: SecurityException) {
                 e.printStackTrace()
                 return null
             }
+
             val parts = file.path.split("/").toTypedArray()
+
             if (parts.size == 3) {
                 if (pickedDir != null) {
                     return pickedDir.findFile(file.name)
                 }
             }
+
             var filename: String? = ""
             for (i in 3 until parts.size) {
                 val part = parts[i]
@@ -498,10 +255,46 @@ object FileManager {
         return null
     }
 
-    fun takeUriPermssion(context: Context, rootDir: Uri?) {
+    private fun takeUriPermssion(context: Context, rootDir: Uri?) {
         val modeFlags =
             Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION
         context.contentResolver.takePersistableUriPermission(rootDir!!, modeFlags)
     }
+    fun getListScreenShots(): java.util.ArrayList<String> {
+        val screenShots = java.util.ArrayList<String>()
+        var arrFilePic = java.util.ArrayList<File>()
+        var arrFileDCMI = java.util.ArrayList<File>()
 
+        val filePic = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)
+        val fileDCMI = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM)
+
+        val screenshotsPic = File(filePic, "Screenshots")
+        val screenshotsDCMI = File(fileDCMI, "Screenshots")
+
+        Log.d(TAG, "getScreenShots: url: " + filePic.absolutePath)
+        Log.d(TAG, "getScreenShots: url: " + fileDCMI?.absolutePath)
+        Log.d(TAG, "getScreenShots: " + screenshotsPic.exists())
+        if (screenshotsPic.exists()) {
+            screenshotsPic.listFiles()?.let {
+                arrFilePic = it.toCollection(java.util.ArrayList())
+            }
+        }
+        if (screenshotsDCMI.exists()) {
+            screenshotsDCMI.listFiles()?.let {
+                arrFileDCMI = it.toCollection(java.util.ArrayList())
+            }
+        }
+
+        for (i in arrFilePic) {
+            if (!i.isDirectory) {
+                screenShots.add(i.absolutePath)
+            }
+        }
+        for (item in arrFileDCMI) {
+            if (!item.isDirectory) {
+                screenShots.add(item.absolutePath)
+            }
+        }
+        return screenShots
+    }
 }
