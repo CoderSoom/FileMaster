@@ -12,13 +12,11 @@ import android.os.Environment
 import android.provider.MediaStore
 import android.text.TextUtils
 import android.util.Log
-import android.webkit.MimeTypeMap
 import androidx.annotation.RequiresApi
 import androidx.documentfile.provider.DocumentFile
-
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import java.io.*
+import java.io.File
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -166,7 +164,6 @@ object FileManager {
                         val filePath = it.getString(clData)
                         filePath.endsWith(".txt")  // lấy loại file
                         documents.add(filePath)
-//                    val id = it.getString(clID)
                         hasRow = it.moveToNext()
                     }
                 }
@@ -177,42 +174,19 @@ object FileManager {
         }
 
     suspend fun getListApk(context: Context): ArrayList<String> = withContext(Dispatchers.Default) {
-        val apks = ArrayList<String>()
-
         val selectionArgs = arrayOf("%.apk")
         val selection = MediaStore.Files.FileColumns.DATA + " like ?"
-        val uri = MediaStore.Files.getContentUri("external")
         val projection = arrayOf(MediaStore.Files.FileColumns.DATA)
+        val files = getExternalFile(context, selection, selectionArgs, projection)
 
-        val cursor: Cursor? =
-            context.getContentResolver().query(uri, projection, selection, selectionArgs, null)
-
-        try {
-            cursor?.let {
-                val clData = it.getColumnIndex(MediaStore.Files.FileColumns.DATA)
-                var hasRow = it.moveToFirst()
-
-                while (hasRow) {
-                    val filePath = it.getString(clData)
-                    filePath.endsWith(".txt")  // lấy loại file
-
-                    apks.add(filePath)
-                    hasRow = it.moveToNext()
-                }
-            }
-        } finally {
-            cursor?.close()
-        }
-        apks
+        files
     }
 
     suspend fun getListDownload(): ArrayList<File> = withContext(Dispatchers.Default) {
         val downloads = ArrayList<File>()
-
         val file =
             Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
         val arrFile = file.listFiles().toCollection(ArrayList())
-
         for (i in arrFile.toList()) {
             if (!i.isDirectory) {
                 downloads.add(i)
@@ -222,7 +196,6 @@ object FileManager {
     }
 
     suspend fun getListZip(context: Context): ArrayList<String> = withContext(Dispatchers.Default) {
-        val archives = ArrayList<String>()
         val selectionArgs = arrayOf(
             "%.r__",
             "%.a__",
@@ -248,11 +221,8 @@ object FileManager {
             "%.taz",
             "%.001"
         )
-
-        val uri = MediaStore.Files.getContentUri("external")
         val projection = arrayOf(MediaStore.Files.FileColumns.DATA)
         val selection = StringBuilder()
-
         selectionArgs.forEachIndexed { index, elemment ->
             if (index == 0) {
                 selection.append(MediaStore.Files.FileColumns.DATA + " like ?")
@@ -260,25 +230,9 @@ object FileManager {
                 selection.append(" OR " + MediaStore.Files.FileColumns.DATA + " like ?")
             }
         }
+        val files = getExternalFile(context, selection.toString(), selectionArgs, projection)
 
-        val cursor: Cursor? =
-            context.getContentResolver()
-                .query(uri, projection, selection.toString(), selectionArgs, null)
-        try {
-            cursor?.let {
-                val clData = it.getColumnIndex(MediaStore.Files.FileColumns.DATA)
-                var hasRow = it.moveToFirst()
-
-                while (hasRow) {
-                    val filePath = it.getString(clData)
-                    archives.add(filePath)
-                    hasRow = it.moveToNext()
-                }
-            }
-        } finally {
-            cursor?.close()
-        }
-        archives
+        files
     }
 
     @SuppressLint("QueryPermissionsNeeded")
@@ -378,11 +332,7 @@ object FileManager {
         screenShots
     }
 
-    fun checkPathIsSDCard(path: String): Boolean {
-        return !path.contains("/storage/emulated/0/")
-    }
-
-    fun deleteFile(context: Context, url: String, uri: Uri?): Boolean {
+    /*fun deleteFile(context: Context, url: String, uri: Uri?): Boolean {
         if (checkPathIsSDCard(url)) {
             val documentFile: DocumentFile? = getDocumentSDCardFile(context, uri, url)
             return if (documentFile != null && documentFile.exists()) {
@@ -404,7 +354,7 @@ object FileManager {
                 false
             }
         }
-    }
+    }*/
 
     private fun galleryAddPic(context: Context, filePath: String) {
         val file = File(filePath)
@@ -414,14 +364,111 @@ object FileManager {
         )
     }
 
-    fun getDocumentSDCardFile(context: Context, rootDir: Uri?, path: String?): DocumentFile? {
+    fun renameFileSDCard(context: Context, url: String, newName: String) {
+        val uri = getAvailabeAccessDirectoryUri(context, url)
+        if (uri != null) {
+            val documentFile: DocumentFile? = getDocumentSDCardFile(context, uri, url)
+            if (documentFile != null && documentFile.exists()) {
+                documentFile.renameTo(newName)
+            }
+        }
+    }
+
+    /*fun renameFile(context: Context, url: String, newName: String, uri: Uri): Boolean {
+        if (checkPathIsSDCard(url)) {
+            val documentFile: DocumentFile? = getDocumentSDCardFile(context, uri, url)
+            if (documentFile != null && documentFile.exists()) {
+                documentFile.renameTo(newName)
+                return true
+            } else false
+        } else {
+            val oldFile = File(url)
+            Log.d(TAG, "renameFile: old url: " + url)
+            val newPath = url.substring(0, url.lastIndexOf("/")) + "/" + newName
+
+            Log.d(TAG, "renameFile: new url: " + newPath)
+            val newFile = File(newPath)
+            if (oldFile.renameTo(newFile)) {
+                galleryAddPic(context, newPath)
+                return true
+            }
+            return false
+        }
+    }*/
+
+    private fun getExternalFile(
+        context: Context,
+        selection: String,
+        selectionArgs: Array<String>,
+        projection: Array<String>
+    ): ArrayList<String> {
+        val files = ArrayList<String>()
+        val uri = MediaStore.Files.getContentUri("external")
+
+        val cursor: Cursor? = context.getContentResolver()
+            .query(uri, projection, selection.toString(), selectionArgs, null)
+        try {
+            cursor?.let {
+                val clData = it.getColumnIndex(MediaStore.Files.FileColumns.DATA)
+                var hasRow = it.moveToFirst()
+
+                while (hasRow) {
+                    val filePath = it.getString(clData)
+                    files.add(filePath)
+                    hasRow = it.moveToNext()
+                }
+            }
+        } finally {
+            cursor?.close()
+        }
+        return files
+    }
+
+    private fun getAccessDocumentFile(
+        context: Context,
+        rootDir: Uri?,
+        path: String?
+    ): DocumentFile? {
+        val file = File(path)
+        if (file.exists()) {
+            val diretory = DocumentFile.fromTreeUri(context, rootDir!!)
+            if (diretory == null || TextUtils.isEmpty(diretory.name)) {
+                return null
+            }
+            try {
+                takeUriPermssion(context, rootDir)
+                return diretory
+            } catch (e: SecurityException) {
+                e.printStackTrace()
+            }
+        }
+        return null
+    }
+
+    fun getAvailabeAccessDirectoryUri(context: Context, path: String?): Uri? {
+        val uriPermissions = context.applicationContext.contentResolver.persistedUriPermissions
+        if (uriPermissions.isEmpty()) {
+            return null
+        }
+        for (uriPermission in uriPermissions) {
+            val treeUri: DocumentFile? = getAccessDocumentFile(context, uriPermission.uri, path)
+            if (treeUri != null && treeUri.exists()) {
+                return uriPermission.uri
+            }
+        }
+        return null
+    }
+
+    private fun getDocumentSDCardFile(
+        context: Context,
+        rootDir: Uri?,
+        path: String?
+    ): DocumentFile? {
         val file = File(path)
         if (file.exists()) {
             var pickedDir = DocumentFile.fromTreeUri(context, rootDir!!)
             try {
-                val modeFlags =
-                    Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION
-                context.contentResolver.takePersistableUriPermission(rootDir, modeFlags)
+                takeUriPermssion(context, rootDir)
             } catch (e: SecurityException) {
                 e.printStackTrace()
                 return null
@@ -443,35 +490,18 @@ object FileManager {
                     filename = part
                 }
             }
-            return if (TextUtils.equals(file.name, filename)) {
-                pickedDir
-            } else {
-                null
+
+            if (TextUtils.equals(file.name, filename)) {
+                return pickedDir
             }
         }
         return null
     }
 
-    fun renameFile(context: Context, url: String, newName: String, uri: Uri): Boolean {
-        if (checkPathIsSDCard(url)) {
-            val documentFile: DocumentFile? = getDocumentSDCardFile(context, uri, url)
-            return if (documentFile != null && documentFile.exists()) {
-                documentFile.renameTo(newName)
-
-            } else false
-        } else {
-            val oldFile = File(url)
-            Log.d(TAG, "renameFile: old url: " + url)
-            val newPath = url.substring(0, url.lastIndexOf("/")) + "/" + newName
-
-            Log.d(TAG, "renameFile: new url: " + newPath)
-            val newFile = File(newPath)
-            if (oldFile.renameTo(newFile)) {
-                galleryAddPic(context, newPath)
-                return true
-            }
-            return false
-        }
+    fun takeUriPermssion(context: Context, rootDir: Uri?) {
+        val modeFlags =
+            Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION
+        context.contentResolver.takePersistableUriPermission(rootDir!!, modeFlags)
     }
 
 }
