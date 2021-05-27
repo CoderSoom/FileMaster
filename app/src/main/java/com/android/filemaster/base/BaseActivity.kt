@@ -9,7 +9,7 @@ import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.ViewModelProvider
 
 abstract class BaseActivity<VB : ViewDataBinding, VM : BaseViewModel> : AppCompatActivity() {
-    protected lateinit var mBinding: VB
+    protected lateinit var mBinding:VB
     protected lateinit var mViewModel: VM
 
     @LayoutRes

@@ -20,6 +20,7 @@ abstract class BaseFragment<VB : ViewDataBinding, VM : BaseViewModel> : Fragment
 
     @LayoutRes
     abstract fun getLayoutId(): Int
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         this.mBinding = DataBindingUtil.inflate(inflater, getLayoutId(), container, false)
         this.setBindingViewModel()
