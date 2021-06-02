@@ -12,7 +12,9 @@ import android.provider.MediaStore
 import android.text.TextUtils
 import android.util.Log
 import androidx.documentfile.provider.DocumentFile
+import com.android.filemaster.R
 import com.android.filemaster.base.listdata.ItemData
+import com.android.filemaster.model.FileDefault
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.io.File
@@ -68,7 +70,24 @@ object FileManager {
             outputChannel?.close()
         }
     }
-
+    fun setImageFile(path :String):Int{
+        val parts = path.split(".").toTypedArray()
+        Log.d(TAG, "setImageFile: "+ parts.get(parts.size-1))
+        val tail = parts.get(parts.size-1)
+        when(tail){
+            Constant.TF_MP3 ->{ return R.drawable.ic_audio}
+            Constant.TF_DOC,Constant.TF_DOCX,Constant.TF_RTF,Constant.TF_RTX ->{return  R.drawable.ic_doc}
+            Constant.TF_MOV,Constant.TF_MP4,Constant.TF_MPEG4 ->{return  R.drawable.ic_video}
+            Constant.TF_HTML ->{return  R.drawable.ic_html}
+            Constant.TF_PDF ->{return  R.drawable.ic_file_pdf}
+            Constant.TF_ZIP ->{return  R.drawable.ic_file_zip}
+            Constant.TF_APK ->{return  R.drawable.ic_file_apk}
+            Constant.TF_PPT,Constant.TF_PPTX ->{return  R.drawable.ic_file_ppt}
+            Constant.TF_XLS,Constant.TF_XLSX ->{return  R.drawable.ic_file_xlsx}
+            Constant.TF_RAR ->{return  R.drawable.ic_file_rar}
+        }
+        return R.drawable.ic_file_none
+    }
     fun getListImage(context: Context): ArrayList<ItemData> {
 
         val images: ArrayList<ItemData> = ArrayList()
@@ -401,11 +420,11 @@ object FileManager {
                 listApp
             }
 
-    fun getListRecent(context: Context, number: Int): ArrayList<ItemData> {
+    fun getListRecent(context: Context, number: Int): MutableList<FileDefault> {
 
         var index = 0
         val indexID = MediaStore.Audio.Media.ALBUM_ID
-        val apks = ArrayList<ItemData>()
+        val apks = mutableListOf<FileDefault>()
         val sort = MediaStore.MediaColumns.DATE_ADDED + " DESC"
         val uri = MediaStore.Files.getContentUri("external")
         val projection =
@@ -447,7 +466,7 @@ object FileManager {
 
 
 
-                    apks.add(ItemData(filePath, "null", fileSize, fileDate, fileName))
+                    apks.add(FileDefault(fileName,  fileSize, fileDate, filePath))
                     Log.d(TAG, "Data  : $filePath")
                     Log.d(TAG, "Name : $fileName")
                     Log.d(TAG, "Size : $fileSize")

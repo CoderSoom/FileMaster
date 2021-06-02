@@ -2,62 +2,61 @@ package com.android.filemaster.base.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.annotation.Nullable
+import androidx.annotation.LayoutRes
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
+import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.RecyclerView
-import com.android.filemaster.base.adapter.callback.CallbackAdapter
+import com.android.filemaster.BR
 
-abstract class BaseAdapter<T, VB : ViewDataBinding> : RecyclerView.Adapter<BaseAdapter.BaseViewHolder<T, VB>>() {
-    private var dataList: MutableList<T> = arrayListOf()
-    protected lateinit var binding: VB
+abstract class BaseAdapter<T : Any>(
+    @LayoutRes private val resLayout: Int
+) : RecyclerView.Adapter<BaseAdapter.BaseViewHolder>() {
 
-    fun setDataList(list: MutableList<T>) {
-        this.dataList = list
-        this.notifyDataSetChanged()
-    }
-
-    fun addElement(t: T) {
-        this.dataList.add(t)
-        this.notifyDataSetChanged()
-    }
-
-    fun addElement(t: T, position: Int) {
-        this.dataList.add(position, t)
-    }
-
-    fun getElement(position: Int): T{
-        return this.dataList[position]
-    }
-
-    abstract fun getLayoutId(): Int
-    abstract fun getIdVariable(): Int
-    abstract fun getIdVariableOnClicked(): Int?
-
-    @Nullable
-    abstract fun getOnClicked(): CallbackAdapter?
-
-    class BaseViewHolder<T, VB : ViewDataBinding>(var binding: VB) : RecyclerView.ViewHolder(binding.root) {
-        fun setVariable(id: Int, t: T) {
-            this.binding.setVariable(id, t)
+    var listener: ListItemListener? = null
+    var list: MutableList<T>? = null
+        set(value) {
+            field = value
+            notifyDataSetChanged()
         }
 
-        fun setClickItemAdapter(id: Int, callback: CallbackAdapter) {
-            this.binding.setVariable(id, callback)
-        }
-    }
-
-    override fun getItemCount() = this.dataList.size
-
-    override fun onBindViewHolder(holder: BaseViewHolder<T, VB>, position: Int) {
-        holder.setVariable(getIdVariable(), this.dataList[position])
-        if (getOnClicked() != null) {
-            holder.setClickItemAdapter(this.getIdVariableOnClicked()!!, getOnClicked()!!)
-        }
-    }
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder<T, VB> {
-        this.binding = DataBindingUtil.inflate(LayoutInflater.from(parent.context), getLayoutId(), parent, false)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
+        val inflater = LayoutInflater.from(parent.context)
+        val binding = DataBindingUtil.inflate<ViewDataBinding>(inflater, resLayout, parent, false)
         return BaseViewHolder(binding)
     }
+
+    override fun getItemCount() = list?.size ?: 0
+
+    override fun onBindViewHolder(holder: BaseViewHolder, position: Int) {
+        holder.binding.apply {
+            setVariable(BR.item, list?.get(position))
+            setVariable(BR.itemPosition, position)
+            setVariable(BR.itemListener, listener)
+            val context = root.context as LifecycleOwner
+            lifecycleOwner = context
+            executePendingBindings()
+        }
+    }
+
+    override fun onViewDetachedFromWindow(holder: BaseViewHolder) {
+        super.onViewDetachedFromWindow(holder)
+        holder.clearAnimation()
+    }
+
+    class BaseViewHolder(val binding: ViewDataBinding) : RecyclerView.ViewHolder(binding.root) {
+        fun clearAnimation() {
+            binding.root.clearAnimation()
+        }
+    }
+
+    override fun onViewAttachedToWindow(holder: BaseViewHolder) {
+        super.onViewAttachedToWindow(holder)
+        holder.clearAnimation()
+    }
+
+    /**
+     * All listener of adapter must implement this interface
+     */
+    interface ListItemListener
 }

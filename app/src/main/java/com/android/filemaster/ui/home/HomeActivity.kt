@@ -56,7 +56,7 @@ class HomeActivity : BaseActivity<ActivityHomeBinding, HomeViewModel>() {
         Log.d(TAG, "moveFileSDCard: "+a.toString())
         var file = File("/storage/emulated/0/Music/Anh Thơ - Đừng Ví Em Là Biển.mp3")
         var fileMove = File("/storage/emulated/0/Download/")
-        FileManager.moveFileSDCard(this, file, fileMove )
+        FileManager.moveFileSDCard(this, file, fileMove.toString())
     }
 
     private fun moveFile() {
