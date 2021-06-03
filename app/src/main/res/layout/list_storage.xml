@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<HorizontalScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/transparent"
+    android:orientation="horizontal"
+    android:scrollbars="none">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/transparent"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/card_storage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/px16"
+            android:src="@drawable/ic_storage_card"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.android.filemaster.ui.customview.CircularProgressBar
+            android:id="@+id/progress_storage"
+            android:layout_width="@dimen/px48"
+            android:layout_height="@dimen/px48"
+            android:layout_marginStart="@dimen/px12"
+            android:layout_marginTop="@dimen/px12"
+            app:layout_constraintStart_toStartOf="@+id/card_storage"
+            app:layout_constraintTop_toTopOf="@+id/card_storage"
+            app:strokeWidth="@dimen/px2" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_folder"
+            app:layout_constraintBottom_toBottomOf="@+id/progress_storage"
+            app:layout_constraintEnd_toEndOf="@+id/progress_storage"
+            app:layout_constraintStart_toStartOf="@+id/progress_storage"
+            app:layout_constraintTop_toTopOf="@+id/progress_storage" />
+
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/px12"
+            android:layout_marginBottom="@dimen/px14"
+            android:src="@drawable/ic_cleaner"
+            app:layout_constraintBottom_toBottomOf="@+id/card_storage"
+            app:layout_constraintEnd_toEndOf="@+id/card_storage" />
+
+        <TextView
+            android:id="@+id/tv_storage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/px68"
+            android:layout_marginTop="@dimen/px18"
+            android:text="@string/storage"
+            android:textColor="@color/fixed_black"
+            android:textSize="@dimen/px16"
+            app:layout_constraintStart_toStartOf="@+id/card_storage"
+            app:layout_constraintTop_toTopOf="@+id/card_storage" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/capacity_storage"
+            app:layout_constraintStart_toStartOf="@+id/tv_storage"
+            app:layout_constraintTop_toBottomOf="@+id/tv_storage" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/px68"
+            android:layout_marginBottom="@dimen/px16"
+            android:text="@string/percent"
+            android:textColor="@color/fixed_black"
+            android:textSize="@dimen/px10"
+            app:layout_constraintBottom_toBottomOf="@+id/card_storage"
+            app:layout_constraintStart_toStartOf="@+id/card_storage" />
+
+
+        <ImageView
+            android:id="@+id/card_drive"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/px12"
+            android:layout_marginEnd="@dimen/px16"
+            android:src="@drawable/ic_drive_card"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/card_storage"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/bg_drive"
+            android:layout_width="@dimen/px48"
+            android:layout_height="@dimen/px48"
+            android:layout_marginStart="@dimen/px12"
+            android:layout_marginTop="@dimen/px12"
+            android:src="@drawable/ic_bg_drive"
+            app:layout_constraintStart_toStartOf="@+id/card_drive"
+            app:layout_constraintTop_toTopOf="@+id/card_drive" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_drive"
+            app:layout_constraintBottom_toBottomOf="@+id/bg_drive"
+            app:layout_constraintEnd_toEndOf="@+id/bg_drive"
+            app:layout_constraintStart_toStartOf="@+id/bg_drive"
+            app:layout_constraintTop_toTopOf="@+id/bg_drive" />
+
+        <TextView
+            android:id="@+id/tv_drive"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/px68"
+            android:layout_marginTop="@dimen/px18"
+            android:text="@string/drive"
+            android:textColor="@color/fixed_black"
+            android:textSize="@dimen/px16"
+            app:layout_constraintStart_toStartOf="@+id/card_drive"
+            app:layout_constraintTop_toTopOf="@+id/card_drive" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/px68"
+            android:layout_marginBottom="@dimen/px16"
+            android:text="@string/percent"
+            android:textColor="@color/fixed_black"
+            android:textSize="@dimen/px10"
+            app:layout_constraintBottom_toBottomOf="@+id/card_drive"
+            app:layout_constraintStart_toStartOf="@+id/card_drive" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/capacity_storage"
+            app:layout_constraintStart_toStartOf="@+id/tv_drive"
+            app:layout_constraintTop_toBottomOf="@+id/tv_drive" />
+
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/px12"
+            android:layout_marginBottom="@dimen/px14"
+            android:src="@drawable/ic_subtract"
+            app:layout_constraintBottom_toBottomOf="@+id/card_drive"
+            app:layout_constraintEnd_toEndOf="@+id/card_drive" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</HorizontalScrollView>
+
+

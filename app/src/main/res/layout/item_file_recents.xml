@@ -6,20 +6,21 @@
 
         <variable
             name="item"
-            type="com.android.filemaster.model.FileDefault" />
+            type="com.android.filemaster.data.model.FileCustom" />
+
         <variable
             name="itemPosition"
             type="Integer" />
 
         <variable
             name="itemListener"
-            type="com.android.filemaster.base.adapter.RecentsAdaper.IRecents" />
+            type="com.android.filemaster.data.adapter.RecentAdapter.RecentListener" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:onClick="@{()->itemListener.onClickItem(itemPosition)}"
         android:layout_width="@dimen/px84"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:onClick="@{()->itemListener.onClickItem(itemPosition)}">
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/imgIcon"
@@ -33,12 +34,12 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.appcompat.widget.AppCompatTextView
-            android:singleLine="true"
-            android:textAlignment="center"
             android:id="@+id/tvFileName"
             android:layout_width="@dimen/px66"
             android:layout_height="@dimen/px20"
+            android:singleLine="true"
             android:text="@{item.name}"
+            android:textAlignment="center"
             android:textColor="@color/label_prim"
             android:textSize="@dimen/sp14"
             app:layout_constraintBottom_toBottomOf="parent"

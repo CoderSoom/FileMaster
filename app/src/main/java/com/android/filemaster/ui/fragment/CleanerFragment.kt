@@ -12,17 +12,7 @@ import com.android.filemaster.viewmodel.BrowserViewModel
 import com.android.filemaster.viewmodel.CleanerViewModel
 
 
-class CleanerFragment : BaseFragment<FragmentCleanerBinding, CleanerViewModel>() {
-    override fun getClassViewModel(): Class<CleanerViewModel> {
-      return CleanerViewModel::class.java
-    }
-
-    override fun setBindingViewModel() {
-    }
-
-    override fun viewCreated() {
-    }
-
+class CleanerFragment : BaseFragment<FragmentCleanerBinding>() {
     override fun getLayoutId(): Int {
         return R.layout.fragment_cleaner
     }

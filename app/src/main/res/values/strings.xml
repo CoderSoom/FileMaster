@@ -1,5 +1,8 @@
 <resources>
     <string name="app_name">File Master</string>
+    <string name="quick_access">Quick Access</string>
+    <string name="expand">Expand</string>
+    <string name="narrow">Narrow</string>
     <string name="recents">Recents</string>
     <string name="browser">Browser</string>
     <string name="cleaner">Cleaner</string>
@@ -7,4 +10,10 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="more">More</string>
     <string name="search">Search</string>
+    <string name="discover_premium">Discover Premium</string>
+    <string name="storage">Storage</string>
+    <string name="capacity_storage">30GB / 128GB</string>
+    <string name="drive">Google Storage</string>
+    <string name="percent">65% USED</string>
+    <string name="afile_master">AFile Master</string>
 </resources>

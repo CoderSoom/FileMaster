@@ -13,14 +13,14 @@
 
         <variable
             name="itemListener"
-            type="com.android.filemaster.base.adapter.BaseAdapter.ListItemListener" />
+            type="com.android.filemaster.base.BaseListener" />
     </data>
 
     <LinearLayout
+        android:id="@+id/item"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:id="@+id/item">
+        android:orientation="vertical">
 
     </LinearLayout>
 </layout>

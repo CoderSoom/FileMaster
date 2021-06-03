@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+
+    <data>
+
+        <variable
+            name="item"
+            type="com.android.filemaster.data.model.FileCustom" />
+
+        <variable
+            name="itemPosition"
+            type="Integer" />
+
+        <variable
+            name="itemListener"
+            type="com.android.filemaster.data.adapter.FileAdapter" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/itemFile"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/px60"
+        android:background="@color/fixed_white"
+        android:paddingTop="@dimen/px8"
+        android:paddingBottom="@dimen/px8">
+
+        <!--        setImage="@{item.path}"-->
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/imgIcon"
+            android:layout_width="@dimen/px34"
+            android:layout_height="@dimen/px34"
+            android:layout_marginStart="@dimen/px18"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvFileName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/px12"
+            android:text="@{item.name}"
+            android:textColor="@color/label_prim"
+            android:textSize="@dimen/sp16"
+            app:layout_constraintBottom_toTopOf="@id/detail"
+            app:layout_constraintLeft_toRightOf="@id/imgIcon"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="@tools:sample/cities" />
+
+
+        <!--        tv_get_detail="@{item}"-->
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/detail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/px12"
+            android:textColor="@color/label_sec"
+            android:textSize="@dimen/sp14"
+            app:layout_constraintLeft_toRightOf="@id/imgIcon"
+            app:layout_constraintTop_toBottomOf="@id/tvFileName"
+            tools:text="@tools:sample/full_names" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/imgMoreOption"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_more_options"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/imgFavorite"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_favorite"
+            app:layout_constraintBottom_toBottomOf="parent      "
+            app:layout_constraintRight_toLeftOf="@id/imgMoreOption"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

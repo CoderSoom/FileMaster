@@ -1,0 +1,429 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <import type="com.android.filemaster.data.viewmodel.FileViewModel" />
+
+        <variable
+            name="viewModel"
+            type="FileViewModel" />
+
+        <variable
+            name="fileAdapter"
+            type="androidx.recyclerview.widget.RecyclerView.Adapter" />
+
+        <variable
+            name="recentAdapter"
+            type="androidx.recyclerview.widget.RecyclerView.Adapter" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/sys_gray_6"
+        tools:context=".ui.home.HomeFragment">
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/headerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/px226"
+                    android:background="@color/sys_gray_6"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:fitsSystemWindows="true"
+                        tools:context=".ui.home.HomeActivity">
+
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:id="@+id/imageView"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:scaleType="fitXY"
+                            android:src="@drawable/ic_rectangle_293"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintHorizontal_bias="0.0"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:id="@+id/imgSearch"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/px16"
+                            android:layout_marginRight="@dimen/px58"
+                            android:src="@drawable/ic_search"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/px16"
+                            android:layout_marginEnd="@dimen/px18"
+                            android:src="@drawable/ic_light_bulb"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:id="@+id/imgNoti"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/px16"
+                            android:layout_marginEnd="@dimen/px18"
+                            android:src="@drawable/ic_light_bulb_no"
+                            android:visibility="invisible"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/name_app"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/px16"
+                            android:layout_marginTop="@dimen/px16"
+                            android:text="@string/afile_master"
+                            android:textColor="@color/fixed_white"
+                            android:textSize="@dimen/px16"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:id="@+id/premium"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/px16"
+                            android:src="@drawable/bg_premium"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/name_app" />
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/px12"
+                            android:background="@color/transparent"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintRight_toRightOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/premium">
+
+                            <HorizontalScrollView
+                                android:id="@+id/headerScroll"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:background="@color/transparent"
+                                android:orientation="horizontal"
+                                android:scrollbars="none">
+
+                                <androidx.constraintlayout.widget.ConstraintLayout
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:background="@color/transparent"
+                                    android:orientation="horizontal">
+
+                                    <androidx.appcompat.widget.AppCompatImageView
+                                        android:id="@+id/card_storage"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginStart="@dimen/px16"
+                                        android:src="@drawable/ic_storage_card"
+                                        app:layout_constraintStart_toStartOf="parent"
+                                        app:layout_constraintTop_toTopOf="parent" />
+
+                                    <com.android.filemaster.ui.customview.CircularProgressBar
+                                        android:id="@+id/progress_storage"
+                                        android:layout_width="@dimen/px48"
+                                        android:layout_height="@dimen/px48"
+                                        android:layout_marginStart="@dimen/px12"
+                                        android:layout_marginTop="@dimen/px12"
+                                        app:layout_constraintStart_toStartOf="@+id/card_storage"
+                                        app:layout_constraintTop_toTopOf="@+id/card_storage"
+                                        app:strokeWidth="@dimen/px2" />
+
+                                    <androidx.appcompat.widget.AppCompatImageView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:src="@drawable/ic_folder"
+                                        app:layout_constraintBottom_toBottomOf="@+id/progress_storage"
+                                        app:layout_constraintEnd_toEndOf="@+id/progress_storage"
+                                        app:layout_constraintStart_toStartOf="@+id/progress_storage"
+                                        app:layout_constraintTop_toTopOf="@+id/progress_storage" />
+
+
+                                    <androidx.appcompat.widget.AppCompatImageView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginEnd="@dimen/px12"
+                                        android:layout_marginBottom="@dimen/px14"
+                                        android:src="@drawable/ic_cleaner"
+                                        app:layout_constraintBottom_toBottomOf="@+id/card_storage"
+                                        app:layout_constraintEnd_toEndOf="@+id/card_storage" />
+
+                                    <androidx.appcompat.widget.AppCompatTextView
+                                        android:id="@+id/tv_storage"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginStart="@dimen/px68"
+                                        android:layout_marginTop="@dimen/px18"
+                                        android:text="@string/storage"
+                                        android:textColor="@color/fixed_black"
+                                        android:textSize="@dimen/px16"
+                                        app:layout_constraintStart_toStartOf="@+id/card_storage"
+                                        app:layout_constraintTop_toTopOf="@+id/card_storage" />
+
+                                    <androidx.appcompat.widget.AppCompatTextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="@string/capacity_storage"
+                                        app:layout_constraintStart_toStartOf="@+id/tv_storage"
+                                        app:layout_constraintTop_toBottomOf="@+id/tv_storage" />
+
+                                    <androidx.appcompat.widget.AppCompatTextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginStart="@dimen/px68"
+                                        android:layout_marginBottom="@dimen/px16"
+                                        android:text="@string/percent"
+                                        android:textColor="@color/fixed_black"
+                                        android:textSize="@dimen/px10"
+                                        app:layout_constraintBottom_toBottomOf="@+id/card_storage"
+                                        app:layout_constraintStart_toStartOf="@+id/card_storage" />
+
+                                    <androidx.appcompat.widget.AppCompatImageView
+                                        android:id="@+id/card_drive"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginStart="@dimen/px12"
+                                        android:layout_marginEnd="@dimen/px16"
+                                        android:src="@drawable/ic_drive_card"
+                                        app:layout_constraintEnd_toEndOf="parent"
+                                        app:layout_constraintStart_toEndOf="@+id/card_storage"
+                                        app:layout_constraintTop_toTopOf="parent" />
+
+                                    <androidx.appcompat.widget.AppCompatImageView
+                                        android:id="@+id/bg_drive"
+                                        android:layout_width="@dimen/px48"
+                                        android:layout_height="@dimen/px48"
+                                        android:layout_marginStart="@dimen/px12"
+                                        android:layout_marginTop="@dimen/px12"
+                                        android:src="@drawable/ic_bg_drive"
+                                        app:layout_constraintStart_toStartOf="@+id/card_drive"
+                                        app:layout_constraintTop_toTopOf="@+id/card_drive" />
+
+                                    <androidx.appcompat.widget.AppCompatImageView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:src="@drawable/ic_drive"
+                                        app:layout_constraintBottom_toBottomOf="@+id/bg_drive"
+                                        app:layout_constraintEnd_toEndOf="@+id/bg_drive"
+                                        app:layout_constraintStart_toStartOf="@+id/bg_drive"
+                                        app:layout_constraintTop_toTopOf="@+id/bg_drive" />
+
+                                    <androidx.appcompat.widget.AppCompatTextView
+                                        android:id="@+id/tv_drive"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginStart="@dimen/px68"
+                                        android:layout_marginTop="@dimen/px18"
+                                        android:text="@string/drive"
+                                        android:textColor="@color/fixed_black"
+                                        android:textSize="@dimen/px16"
+                                        app:layout_constraintStart_toStartOf="@+id/card_drive"
+                                        app:layout_constraintTop_toTopOf="@+id/card_drive" />
+
+                                    <androidx.appcompat.widget.AppCompatTextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginStart="@dimen/px68"
+                                        android:layout_marginBottom="@dimen/px16"
+                                        android:text="@string/percent"
+                                        android:textColor="@color/fixed_black"
+                                        android:textSize="@dimen/px10"
+                                        app:layout_constraintBottom_toBottomOf="@+id/card_drive"
+                                        app:layout_constraintStart_toStartOf="@+id/card_drive" />
+
+                                    <androidx.appcompat.widget.AppCompatTextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="@string/capacity_storage"
+                                        app:layout_constraintStart_toStartOf="@+id/tv_drive"
+                                        app:layout_constraintTop_toBottomOf="@+id/tv_drive" />
+
+
+                                    <androidx.appcompat.widget.AppCompatImageView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginEnd="@dimen/px12"
+                                        android:layout_marginBottom="@dimen/px14"
+                                        android:src="@drawable/ic_subtract"
+                                        app:layout_constraintBottom_toBottomOf="@+id/card_drive"
+                                        app:layout_constraintEnd_toEndOf="@+id/card_drive" />
+
+                                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                            </HorizontalScrollView>
+
+                        </RelativeLayout>
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                </androidx.cardview.widget.CardView>
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvRecent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/px20"
+                    android:layout_marginTop="@dimen/px16"
+                    android:text="@string/recents"
+                    android:textAllCaps="true"
+                    android:textSize="@dimen/sp10"
+                    app:layout_constraintStart_toStartOf="@id/headerView"
+                    app:layout_constraintTop_toBottomOf="@id/headerView" />
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/recentView"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/px96"
+                    android:layout_below="@id/headerView"
+                    android:layout_marginStart="@dimen/px12"
+                    android:layout_marginTop="@dimen/px12"
+                    android:layout_marginEnd="@dimen/px12"
+                    app:cardBackgroundColor="@color/fixed_white"
+                    app:cardCornerRadius="@dimen/px12"
+                    app:cardElevation="@dimen/px8"
+                    app:layout_constraintTop_toBottomOf="@id/tvRecent">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/rv_list_recents"
+                            rv_set_adapter="@{recentAdapter}"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:padding="@dimen/px8"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toStartOf="@id/gl"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <androidx.constraintlayout.widget.Guideline
+                            android:id="@+id/gl"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            app:layout_constraintGuide_percent="0.75" />
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/more_recent"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:visibility="invisible"
+                            app:layout_constraintLeft_toRightOf="@id/gl"
+                            app:layout_constraintTop_toTopOf="parent">
+
+                            <androidx.appcompat.widget.AppCompatImageView
+                                android:id="@+id/imgIcon"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:src="@drawable/ic_more"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintLeft_toLeftOf="parent"
+                                app:layout_constraintRight_toRightOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:id="@+id/tvFileName"
+                                android:layout_width="@dimen/px66"
+                                android:layout_height="@dimen/px20"
+                                android:singleLine="true"
+                                android:text="@string/more"
+                                android:textAlignment="center"
+                                android:textColor="@color/label_prim"
+                                android:textSize="@dimen/sp14"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintLeft_toLeftOf="parent"
+                                app:layout_constraintRight_toRightOf="parent"
+                                app:layout_constraintTop_toBottomOf="@id/imgIcon" />
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                </androidx.cardview.widget.CardView>
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvAccess"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/px20"
+                    android:layout_marginTop="@dimen/px16"
+                    android:text="@string/quick_access"
+                    android:textAllCaps="true"
+                    android:textSize="@dimen/sp10"
+                    app:layout_constraintStart_toStartOf="@id/headerView"
+                    app:layout_constraintTop_toBottomOf="@id/recentView" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/tvExpand"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/px16"
+                    android:layout_marginEnd="@dimen/px20"
+                    android:src="@{viewModel.isExpanded == false ? @drawable/ic_expand : @drawable/ic_narrow}"
+                    android:textAllCaps="true"
+                    android:textColor="@color/brand"
+                    android:textSize="@dimen/sp10"
+                    android:visibility="@{viewModel.liveCurrentFile.size() >= 5 ? View.VISIBLE : View.GONE}"
+                    app:layout_constraintEnd_toEndOf="@id/headerView"
+                    app:layout_constraintLeft_toRightOf="@id/tvAccess"
+                    app:layout_constraintTop_toBottomOf="@id/recentView"
+                    tools:text="@string/expand" />
+
+                <!--                android:visibility="@{viewModel.listFileAccess.size() >= 5 ? View.VISIBLE : View.GONE}"-->
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/recentView"
+                    android:layout_marginStart="@dimen/px12"
+                    android:layout_marginTop="@dimen/px12"
+                    android:layout_marginEnd="@dimen/px12"
+                    android:elevation="@dimen/px10"
+                    app:cardCornerRadius="@dimen/px12"
+                    app:layout_constraintTop_toBottomOf="@id/tvAccess">
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rvQuickAccess"
+                        rv_set_adapter="@{fileAdapter}"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:listitem="@layout/item_file" />
+
+                </androidx.cardview.widget.CardView>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.core.widget.NestedScrollView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

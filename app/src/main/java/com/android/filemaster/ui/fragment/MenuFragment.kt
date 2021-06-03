@@ -13,17 +13,7 @@ import com.android.filemaster.viewmodel.BrowserViewModel
 import com.android.filemaster.viewmodel.MenuViewModel
 
 
-class MenuFragment : BaseFragment<FragmentMenuBinding, MenuViewModel>() {
-    override fun getClassViewModel(): Class<MenuViewModel> {
-      return MenuViewModel::class.java
-    }
-
-    override fun setBindingViewModel() {
-    }
-
-    override fun viewCreated() {
-    }
-
+class MenuFragment : BaseFragment<FragmentMenuBinding>() {
     override fun getLayoutId(): Int {
         return R.layout.fragment_menu
     }

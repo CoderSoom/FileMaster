@@ -6,39 +6,37 @@ import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
 import android.os.Environment
-import android.util.Log
 import android.view.MenuItem
-import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.Observer
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.lifecycle.LiveData
+import androidx.navigation.NavController
+import androidx.navigation.Navigation
+import androidx.navigation.findNavController
+import androidx.navigation.ui.setupWithNavController
 import com.android.filemaster.R
-import com.android.filemaster.base.adapter.RecentsAdaper
-import com.android.filemaster.databinding.ActivityHomeBinding
+import com.android.filemaster.databinding.ActivityMainBinding
 import com.android.filemaster.ui.fragment.BrowserFragment
 import com.android.filemaster.ui.fragment.CleanerFragment
 import com.android.filemaster.ui.fragment.MenuFragment
-import com.android.filemaster.ui.fragment.RecentsFragment
 import com.android.filemaster.utils.CheckingPermission
-import com.android.filemaster.utils.FileManager
-import com.android.filemaster.viewmodel.RecentsViewModel
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemSelectedListener {
-    private lateinit var binding: ActivityHomeBinding
-    private lateinit var model: RecentsViewModel
-    private val TAG = "h.MainActivity"
-    var adaper = RecentsAdaper()
+
+    private var currentNavController: LiveData<NavController>? = null
+    private lateinit var binding: ActivityMainBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_home)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
+
+//        if (savedInstanceState == null) {
+//            setupBottomNavigationBar()
+//        }
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R && !Environment.isExternalStorageManager()) {
             CheckingPermission.reqStoreMananger(this)
-            Log.i(TAG, "onCreate: vao day")
-
             return
 
         }
@@ -60,44 +58,25 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
         initData()
         initView()
 
-
     }
 
-    private fun initData() {
-        model = RecentsViewModel()
-        model.getData(this)
-        binding.navigation.setOnNavigationItemSelectedListener(this)
-        binding.includeRecents.rcListRecents.adapter = adaper
-        binding.includeRecents.rcListRecents.layoutManager =
-            LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
-        binding.includeRecents.rcListRecents.setNestedScrollingEnabled(true)
-        binding.navigation.itemIconTintList = null
+//    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+//        super.onRestoreInstanceState(savedInstanceState)
+//        setupBottomNavigationBar()
+//    }
+//
+//    private fun setupBottomNavigationBar() {
+//        val controller = binding.navigationBottom.setupWithNavController()
+//    }
 
+    private fun initData() {
+        binding.navigationBottom.setOnNavigationItemSelectedListener(this)
+        binding.navigationBottom.itemIconTintList = null
     }
 
     private fun initView() {
-        Log.i(
-            TAG,
-            "initView: " + FileManager.setImageFile("/storage/B8B0-9BB9/Android/media/com.mp3")
-        )
-        model.data.observe(this, Observer {
-            if (it.size <= 4) {
-                adaper.list = it
-                binding.includeRecents.clMore.visibility = View.INVISIBLE
-            } else {
-                adaper.list = it.subList(0, 3)
-                binding.includeRecents.clMore.visibility = View.VISIBLE
-                binding.includeRecents.clMore.setOnClickListener {
-                    val tran = supportFragmentManager.beginTransaction()
-                    tran.replace(R.id.fl, RecentsFragment())
-                    tran.commit()
-                }
-            }
-            for (i in 0..it.size - 1) {
-                Log.d(TAG, "initView: " + it[i].path)
-            }
-        })
     }
+
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, resultData: Intent?) {
         super.onActivityResult(requestCode, resultCode, resultData)
@@ -129,38 +108,32 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
                 }
             }
         }
-
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
-
         when (item.itemId) {
             R.id.navigation_recents -> {
-                val tran = supportFragmentManager.beginTransaction()
-                tran.replace(R.id.fl, RecentsFragment())
-                tran.commit()
+                Navigation.findNavController(this, R.id.nav_host_fragment)
+                    .navigate(R.id.homeFragment)
                 return true
 
             }
             R.id.navigation_browser -> {
 
-                val tran = supportFragmentManager.beginTransaction()
-                tran.replace(R.id.fl, BrowserFragment())
-                tran.commit()
+                Navigation.findNavController(this, R.id.nav_host_fragment)
+                    .navigate(R.id.browserFragment)
                 return true
 
             }
             R.id.navigation_cleaner -> {
-                val tran = supportFragmentManager.beginTransaction()
-                tran.replace(R.id.fl, CleanerFragment())
-                tran.commit()
+                Navigation.findNavController(this, R.id.nav_host_fragment)
+                    .navigate(R.id.cleanerFragment)
                 return true
 
             }
             R.id.navigation_menu -> {
-                val tran = supportFragmentManager.beginTransaction()
-                tran.replace(R.id.fl, MenuFragment())
-                tran.commit()
+                Navigation.findNavController(this, R.id.nav_host_fragment)
+                    .navigate(R.id.menuFragment)
                 return true
 
             }
@@ -168,3 +141,4 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
         return false
     }
 }
+

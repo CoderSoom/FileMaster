@@ -1,40 +1,67 @@
 package com.android.filemaster.base
 
+import android.graphics.Color
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.annotation.LayoutRes
+import android.view.WindowManager
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
 
-abstract class BaseFragment<VB : ViewDataBinding, VM : BaseViewModel> : Fragment() {
-    protected lateinit var mBinding: VB
-    protected lateinit var mViewModel: VM
+abstract class BaseFragment<VB : ViewDataBinding> : Fragment() {
+    protected lateinit var binding: VB
 
-    abstract fun getClassViewModel(): Class<VM>
-    abstract fun setBindingViewModel()
-    abstract fun viewCreated()
+    private lateinit var myInflater: LayoutInflater
 
-    @LayoutRes
-    abstract fun getLayoutId(): Int
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        this.mBinding = DataBindingUtil.inflate(inflater, getLayoutId(), container, false)
-        this.setBindingViewModel()
-        return this.mBinding.root
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+        if (!::myInflater.isInitialized) {
+            myInflater = LayoutInflater.from(requireActivity())
+        }
+        binding = DataBindingUtil.inflate(myInflater, getLayoutId(), container, false)
+        binding.lifecycleOwner = viewLifecycleOwner
+        initBinding()
+        return binding.root
+
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        viewCreated()
+        if (getStatusBarColor() != null && isDarkText() != null) {
+            setStatusColor(getStatusBarColor()!!, isDarkText()!!)
+        }
         super.onViewCreated(view, savedInstanceState)
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        this.mViewModel = activity?.run { ViewModelProvider(this).get(getClassViewModel()) }
-                ?: throw Exception("Invalid Activity")
+    abstract fun getLayoutId(): Int
+
+    open fun initBinding() {}
+
+    private fun setStatusColor(color: Int = Color.BLACK, state: Boolean = true) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            val window = activity?.window
+            window?.let { w ->
+                w.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
+                w.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
+                var newUiVisibility = w.decorView.systemUiVisibility
+                newUiVisibility = if (state) {
+                    newUiVisibility or View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+                } else {
+                    newUiVisibility and (View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR).inv()
+                }
+                w.decorView.systemUiVisibility = newUiVisibility
+                w.statusBarColor = color
+            }
+        }
+    }
+
+    open fun getStatusBarColor(): Int? {
+        return null
+    }
+
+    open fun isDarkText(): Boolean? {
+        return null
     }
 }
