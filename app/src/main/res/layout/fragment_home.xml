@@ -42,7 +42,6 @@
                     android:id="@+id/headerView"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/px226"
-                    android:background="@color/sys_gray_6"
                     app:layout_constraintTop_toTopOf="parent">
 
                     <androidx.constraintlayout.widget.ConstraintLayout
@@ -118,7 +117,6 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/px12"
-                            android:background="@color/transparent"
                             app:layout_constraintLeft_toLeftOf="parent"
                             app:layout_constraintRight_toRightOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/premium">
@@ -127,7 +125,6 @@
                                 android:id="@+id/headerScroll"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:background="@color/transparent"
                                 android:orientation="horizontal"
                                 android:scrollbars="none">
 
@@ -336,7 +333,7 @@
                             android:id="@+id/more_recent"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
-                            android:visibility="invisible"
+                            android:visibility="@{viewModel.listFileRecent.size() >= 3 ? View.VISIBLE : View.GONE}"
                             app:layout_constraintLeft_toRightOf="@id/gl"
                             app:layout_constraintTop_toTopOf="parent">
 

@@ -2,6 +2,7 @@ package com.android.filemaster.ui.home
 
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.view.Window
 import android.view.WindowManager
@@ -20,7 +21,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     private val viewModel by viewModels<FileViewModel>()
     private val fileAdapter = FileAdapter()
     private val recentAdapter = RecentAdapter()
-
+    private val TAG = "HomeFragment"
     override fun getLayoutId(): Int {
         return R.layout.fragment_home
     }
@@ -71,6 +72,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         }
 
         viewModel.listFileRecent.observe(viewLifecycleOwner) {
+            Log.d(TAG, "observeViewModel: $it")
             if (it.size <= 4) {
                 recentAdapter.list = it
                 binding.moreRecent.visibility = View.INVISIBLE
