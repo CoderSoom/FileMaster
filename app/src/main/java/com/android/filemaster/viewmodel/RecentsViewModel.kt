@@ -8,13 +8,13 @@ import com.android.filemaster.model.FileDefault
 import com.android.filemaster.utils.FileManager
 
 class RecentsViewModel : BaseViewModel {
-    lateinit var data: MutableLiveData<MutableList<FileCustom>>
+     var data: MutableLiveData<MutableList<FileCustom>>
 
     constructor() {
         data = MutableLiveData()
     }
 
     fun getData(context: Context) {
-        data.postValue(FileManager.getListRecent(context, 10))
+        data.postValue(FileManager.getListRecent(context))
     }
 }

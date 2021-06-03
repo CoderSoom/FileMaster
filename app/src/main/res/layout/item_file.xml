@@ -3,20 +3,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-
     <data>
 
         <variable
             name="item"
             type="com.android.filemaster.data.model.FileCustom" />
-
-        <variable
-            name="itemPosition"
-            type="Integer" />
-
-        <variable
-            name="itemListener"
-            type="com.android.filemaster.data.adapter.FileAdapter" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -27,8 +18,10 @@
         android:paddingTop="@dimen/px8"
         android:paddingBottom="@dimen/px8">
 
-        <!--        setImage="@{item.path}"-->
         <androidx.appcompat.widget.AppCompatImageView
+            setImage="@{item.path}"
+            android:src="@drawable/ic_doc"
+            android:scaleType="centerCrop"
             android:id="@+id/imgIcon"
             android:layout_width="@dimen/px34"
             android:layout_height="@dimen/px34"
@@ -39,7 +32,8 @@
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tvFileName"
-            android:layout_width="wrap_content"
+            android:layout_width="@dimen/px228"
+            android:singleLine="true"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/px12"
             android:text="@{item.name}"
@@ -51,7 +45,6 @@
             tools:text="@tools:sample/cities" />
 
 
-        <!--        tv_get_detail="@{item}"-->
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/detail"
             android:layout_width="wrap_content"

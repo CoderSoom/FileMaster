@@ -1,6 +1,8 @@
 package com.android.filemaster.utils
 
 object Constant {
+    val TF_JPG ="jpg"
+    val TF_PNG ="png"
     val TF_MP3 = "mp3"
     val TF_MP4 = "mp4"
     val TF_HTML = "html"

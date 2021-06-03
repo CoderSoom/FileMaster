@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.ApplicationInfo
 import android.database.Cursor
+import android.graphics.BitmapFactory
 import android.media.MediaScannerConnection
 import android.net.Uri
 import android.os.Environment
@@ -14,6 +15,7 @@ import android.util.Log
 import androidx.documentfile.provider.DocumentFile
 import com.android.filemaster.R
 import com.android.filemaster.data.model.FileCustom
+import com.android.filemaster.model.FileDefault
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.io.File
@@ -105,6 +107,9 @@ object FileManager {
             }
             Constant.TF_RAR -> {
                 return R.drawable.ic_file_rar
+            }
+            Constant.TF_JPG, Constant.TF_PNG ->{
+              return 1
             }
         }
         return R.drawable.ic_file_none
@@ -444,11 +449,8 @@ object FileManager {
     }
 
     fun getListRecent(
-        context: Context,
-        number: Int
+        context: Context
     ): ArrayList<FileCustom> {
-        var index = 0
-        val indexID = MediaStore.Audio.Media.ALBUM_ID
         val apks = ArrayList<FileCustom>()
         val sort = MediaStore.MediaColumns.DATE_ADDED + " DESC"
         val uri = MediaStore.Files.getContentUri("external")
@@ -480,8 +482,7 @@ object FileManager {
                 val clDate = it.getColumnIndex(MediaStore.Files.FileColumns.DATE_MODIFIED)
                 var hasRow = it.moveToFirst()
 
-                while (hasRow && index <= number - 1) {
-                    index++
+                while (hasRow) {
                     val filePath = it.getString(clData)
                     val fileName = it.getString(clName)
                     val fileSize = it.getString(clSize)
@@ -490,11 +491,13 @@ object FileManager {
 
 
 
-                    apks.add(FileCustom(fileName, fileSize, fileDate, filePath))
-                    Log.d(TAG, "Data  : $filePath")
-                    Log.d(TAG, "Name : $fileName")
-                    Log.d(TAG, "Size : $fileSize")
-                    Log.d(TAG, "Date: $fileDate")
+                    if (fileName!=null){
+                        apks.add(FileCustom(fileName,fileDate, fileSize,filePath))
+                        Log.d(TAG, "Data  : $filePath")
+                        Log.d(TAG, "Name : $fileName")
+                        Log.d(TAG, "Size : $fileSize")
+                        Log.d(TAG, "Date: $fileDate")
+                    }
 
 
                     hasRow = it.moveToNext()

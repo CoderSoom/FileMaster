@@ -28,9 +28,9 @@ class FileViewModel() : ViewModel() {
     }
 
 
-    fun getListRecent(ctx: Context, number: Int) {
+    fun getListRecent(ctx: Context) {
         viewModelScope.launch {
-            val result = fileRepository.getListFileRecent(ctx, number)
+            val result = fileRepository.getListFileRecent(ctx)
             _listFileRecent.postValue(result)
         }
     }

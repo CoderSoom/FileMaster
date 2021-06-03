@@ -2,7 +2,9 @@ package com.android.filemaster.module
 
 import android.app.Application
 import android.content.Context
+import android.graphics.BitmapFactory
 import android.graphics.Color
+import android.net.Uri
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.ColorRes
@@ -13,6 +15,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.RecyclerView
 import com.android.filemaster.data.model.FileCustom
 import com.android.filemaster.utils.FileManager
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
+import java.io.File
 
 private var appInstance: Application? = null
 
@@ -38,7 +43,14 @@ fun <T> MutableLiveData<T>.asLiveData() = this as LiveData<T>
 
 @BindingAdapter("setImage")
 fun setImage(img: ImageView, path: String) {
-    img.setImageResource(FileManager.setImageFile(path))
+    if (FileManager.setImageFile(path) == 1) {
+        Glide.with(img)
+            .load(Uri.fromFile(File(path)))
+            .apply( RequestOptions().override(100, 100))
+            .into(img)
+    } else {
+        img.setImageResource(FileManager.setImageFile(path))
+    }
 }
 
 fun getAppColor(@ColorRes colorRes: Int, context: Context? = appInstance) =

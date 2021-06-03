@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.android.filemaster.R
 import com.android.filemaster.base.BaseFragment
 import com.android.filemaster.data.adapter.FileAdapter
-import com.android.filemaster.data.adapter.RecentAdapter
+import com.android.filemaster.data.adapter.RecentHomeAdapter
 import com.android.filemaster.data.viewmodel.FileViewModel
 import com.android.filemaster.databinding.FragmentHomeBinding
 import com.android.filemaster.module.getAppColor
@@ -20,7 +20,7 @@ import com.android.filemaster.module.getAppColor
 class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     private val viewModel by viewModels<FileViewModel>()
     private val fileAdapter = FileAdapter()
-    private val recentAdapter = RecentAdapter()
+    private val recentAdapter = RecentHomeAdapter()
     private val TAG = "HomeFragment"
     override fun getLayoutId(): Int {
         return R.layout.fragment_home
@@ -30,7 +30,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         super.onCreate(savedInstanceState)
         viewModel.getList()
 //        viewModel.getListAccess(requireActivity())
-        viewModel.getListRecent(requireActivity(), 10)
+        viewModel.getListRecent(requireActivity())
     }
 
 
@@ -79,9 +79,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
             } else {
                 recentAdapter.list = it.subList(0, 3)
                 binding.moreRecent.visibility = View.VISIBLE
-                binding.moreRecent.setOnClickListener {
-
-                }
             }
         }
 
