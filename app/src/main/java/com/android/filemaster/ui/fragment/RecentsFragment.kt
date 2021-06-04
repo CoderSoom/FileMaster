@@ -2,22 +2,18 @@ package com.android.filemaster.ui.fragment
 
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.android.filemaster.R
 import com.android.filemaster.base.BaseFragment
 import com.android.filemaster.data.adapter.RecentApdapter
 import com.android.filemaster.data.model.FileCustom
-import com.android.filemaster.data.viewmodel.FileViewModel
+import com.android.filemaster.data.viewmodel.MainViewModel
 import com.android.filemaster.databinding.FragmentRecentsBinding
-import com.android.filemaster.model.FileDefault
 import com.android.filemaster.model.ItemFileRecent
-import com.android.filemaster.module.getApplication
-import com.android.filemaster.ui.main.MainActivity
 import com.android.filemaster.viewmodel.RecentsViewModel
 import java.util.*
 
@@ -25,6 +21,7 @@ class RecentsFragment : BaseFragment<FragmentRecentsBinding>() {
     val TAG = "xx"
 
     private val viewModel by viewModels<RecentsViewModel>()
+    private val mainViewModel by activityViewModels<MainViewModel>()
     private val recentAdapter = RecentApdapter()
 
     override fun getLayoutId(): Int {
@@ -45,9 +42,10 @@ class RecentsFragment : BaseFragment<FragmentRecentsBinding>() {
         )
         (activity as AppCompatActivity).setSupportActionBar(binding.toolbar)
         (activity as AppCompatActivity).supportActionBar!!.setDisplayShowHomeEnabled(true)
-        binding.toolbar.setNavigationOnClickListener{
+        binding.toolbar.setNavigationOnClickListener {
             Log.i(TAG, "onViewCreated: ")
-                requireActivity().onBackPressed()
+            mainViewModel.showMenu()
+            requireActivity().onBackPressed()
         }
         viewModel.data.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
             val cal = Calendar.getInstance()

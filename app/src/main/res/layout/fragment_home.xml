@@ -31,11 +31,12 @@
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginBottom="@dimen/px12"
             app:layout_constraintTop_toTopOf="parent">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:orientation="vertical">
 
                 <androidx.cardview.widget.CardView
@@ -308,12 +309,12 @@
                     app:layout_constraintTop_toBottomOf="@id/tvRecent">
 
                     <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintRight_toRightOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent">
+                        app:layout_constraintTop_toTopOf="parent">
 
                         <androidx.recyclerview.widget.RecyclerView
                             android:id="@+id/rv_list_recents"
@@ -401,11 +402,12 @@
 
                 <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="0dp"
                     android:layout_below="@id/recentView"
                     android:layout_marginStart="@dimen/px12"
                     android:layout_marginTop="@dimen/px12"
                     android:layout_marginEnd="@dimen/px12"
+                    android:layout_marginBottom="@dimen/px12"
                     android:elevation="@dimen/px10"
                     app:cardCornerRadius="@dimen/px12"
                     app:layout_constraintTop_toBottomOf="@id/tvAccess">

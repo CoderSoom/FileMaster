@@ -8,38 +8,29 @@ import android.os.Bundle
 import android.os.Environment
 import android.util.Log
 import android.view.MenuItem
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.LiveData
-import androidx.navigation.NavController
 import androidx.navigation.Navigation
-import androidx.navigation.findNavController
-import androidx.navigation.ui.setupWithNavController
 import com.android.filemaster.R
+import com.android.filemaster.data.viewmodel.MainViewModel
 import com.android.filemaster.databinding.ActivityMainBinding
-import com.android.filemaster.ui.fragment.BrowserFragment
-import com.android.filemaster.ui.fragment.CleanerFragment
-import com.android.filemaster.ui.fragment.MenuFragment
 import com.android.filemaster.utils.CheckingPermission
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemSelectedListener {
-    private val TAG = "xx"
-    private var currentNavController: LiveData<NavController>? = null
+    private val TAG = "MainActivity"
     private lateinit var binding: ActivityMainBinding
+    private val mainViewModel by viewModels<MainViewModel>()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R && !Environment.isExternalStorageManager()) {
-            CheckingPermission.reqStoreMananger(this)
-            return
-
-        }
-
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            if (!Environment.isExternalStorageManager()) {
+                CheckingPermission.reqStoreMananger(this)
+                return
+            }
+        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (CheckingPermission.isNotStoragePmsGranted(this)) {
                 ActivityCompat.requestPermissions(
                     this,
@@ -53,24 +44,20 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
             }
         }
         initData()
+        initView()
 
     }
 
-//    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
-//        super.onRestoreInstanceState(savedInstanceState)
-//        setupBottomNavigationBar()
-//    }
-//
-//    private fun setupBottomNavigationBar() {
-//        val controller = binding.navigationBottom.setupWithNavController()
-//    }
-
     private fun initData() {
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
+        binding.lifecycleOwner = this
         binding.navigationBottom.setOnNavigationItemSelectedListener(this)
         binding.navigationBottom.itemIconTintList = null
+        binding.mainViewModel = mainViewModel
     }
 
     private fun initView() {
+
     }
 
 
@@ -78,6 +65,7 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
         super.onActivityResult(requestCode, resultCode, resultData)
         if (requestCode == CheckingPermission.REQ_FILE_MANAGER_ACCESS_CODE) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R && Environment.isExternalStorageManager()) {
+                initData()
                 initView()
             }
         }
@@ -99,7 +87,6 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
                 ) {
                     if (permission.equals(android.Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
                         Log.d(TAG, "onRequestPermissionsResult: vao day")
-
                         initData()
 //            initView()
                     }
@@ -115,29 +102,26 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
                 Navigation.findNavController(this, R.id.nav_host_fragment)
                     .navigate(R.id.homeFragment)
                 return true
-
             }
             R.id.navigation_browser -> {
 
                 Navigation.findNavController(this, R.id.nav_host_fragment)
                     .navigate(R.id.browserFragment)
                 return true
-
             }
             R.id.navigation_cleaner -> {
                 Navigation.findNavController(this, R.id.nav_host_fragment)
                     .navigate(R.id.cleanerFragment)
                 return true
-
             }
             R.id.navigation_menu -> {
                 Navigation.findNavController(this, R.id.nav_host_fragment)
                     .navigate(R.id.menuFragment)
                 return true
-
             }
         }
         return false
     }
 }
+
 

@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.View
 import android.view.Window
 import android.view.WindowManager
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -13,6 +14,7 @@ import com.android.filemaster.R
 import com.android.filemaster.base.BaseFragment
 import com.android.filemaster.data.adapter.FileAdapter
 import com.android.filemaster.data.adapter.RecentHomeAdapter
+import com.android.filemaster.data.viewmodel.MainViewModel
 import com.android.filemaster.data.viewmodel.FileViewModel
 import com.android.filemaster.databinding.FragmentHomeBinding
 import com.android.filemaster.module.getAppColor
@@ -21,6 +23,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     private val viewModel by viewModels<FileViewModel>()
     private val fileAdapter = FileAdapter()
     private val recentAdapter = RecentHomeAdapter()
+    private val mainViewModel by activityViewModels<MainViewModel>()
     private val TAG = "HomeFragment"
     override fun getLayoutId(): Int {
         return R.layout.fragment_home
@@ -48,9 +51,11 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         binding.progressStorage.setProcessBig(100)
 
         binding.moreRecent.setOnClickListener {
+            mainViewModel.hideMenu()
             findNavController().navigate(R.id.action_homeFragment_to_recentsFragment)
         }
         binding.imgSearch.setOnClickListener {
+            mainViewModel.hideMenu()
             findNavController().navigate(R.id.action_homeFragment_to_searchFragment)
         }
 
