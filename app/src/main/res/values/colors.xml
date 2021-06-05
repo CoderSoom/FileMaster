@@ -4,4 +4,6 @@
     <color name="colorPrimaryDark">#3700B3</color>
     <color name="colorAccent">#03DAC5</color>
     <color name="toolbar">#2F7FEB</color>
+    <color name="cta_premium_color_prim">#F0CA41</color>
+    <color name="cta_premium_color_prim_press">#E5B300</color>
 </resources>

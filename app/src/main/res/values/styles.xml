@@ -15,4 +15,15 @@
         <item name="cornerSize">@dimen/px12</item>
     </style>
 
+    <style name="Small.Button.Yellow" parent="Primary.Small.Button.Blue">
+        <item name="android:background">@drawable/bg_primary_button_yellow</item>
+    </style>
+
+    <style name="Home.Label.Category" parent="Overline">
+        <item name="android:textAllCaps">true</item>
+        <item name="android:layout_marginStart">@dimen/px28</item>
+        <item name="android:layout_marginTop">@dimen/px14</item>
+        <item name="android:textColor">@color/label_sec</item>
+    </style>
+
 </resources>

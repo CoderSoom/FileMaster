@@ -3,6 +3,8 @@ package com.android.filemaster.ui.home
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -12,12 +14,13 @@ import com.android.filemaster.base.BaseFragment
 import com.android.filemaster.data.adapter.FileAdapter
 import com.android.filemaster.data.adapter.RecentHomeAdapter
 import com.android.filemaster.data.adapter.StorageAdapter
-import com.android.filemaster.data.viewmodel.MainViewModel
 import com.android.filemaster.data.viewmodel.FileViewModel
+import com.android.filemaster.data.viewmodel.MainViewModel
 import com.android.filemaster.databinding.FragmentHomeBinding
 import com.android.filemaster.module.getAppColor
+import com.tapon.ds.view.toolbar.Toolbar
 
-class HomeFragment : BaseFragment<FragmentHomeBinding>() {
+class HomeFragment : BaseFragment<FragmentHomeBinding>(), ToolbarActionListener {
     private val viewModel by viewModels<FileViewModel>()
     private val fileAdapter = FileAdapter()
     private val storageAdapter = StorageAdapter()
@@ -26,6 +29,10 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     private val TAG = "HomeFragment"
     override fun getLayoutId(): Int {
         return R.layout.fragment_home
+    }
+
+    override fun getToolbar(): Toolbar {
+        return binding.toolbarHome
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -46,6 +53,14 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     }
 
     private fun initData() {
+        binding.toolbarHome.setBackgroundColor(
+            ContextCompat.getColor(
+                this.requireContext(),
+                R.color.transparent
+            )
+        )
+        binding.toolbarHome.setOnToolbarActionListener(this)
+
         binding.viewModel = viewModel
         binding.fileAdapter = fileAdapter
 
@@ -65,10 +80,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         binding.moreRecent.setOnClickListener {
             mainViewModel.hideMenu()
             findNavController().navigate(R.id.action_homeFragment_to_recentsFragment)
-        }
-        binding.imgSearch.setOnClickListener {
-            mainViewModel.hideMenu()
-            findNavController().navigate(R.id.action_homeFragment_to_searchFragment)
         }
     }
 
@@ -91,7 +102,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
             viewModel.expanded(!viewModel.isExpanded.value!!)
         }
 
-        viewModel.listStorge.observe(viewLifecycleOwner){
+        viewModel.listStorge.observe(viewLifecycleOwner) {
 //             if (it){
 //
 //             }
@@ -107,5 +118,12 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         return getAppColor(R.color.toolbar)
     }
 
+    override fun onAction1Click() {
+        mainViewModel.hideMenu()
+        findNavController().navigate(R.id.action_homeFragment_to_searchFragment)
+    }
 
+    override fun onAction2Click() {
+        TODO("Not yet implemented")
+    }
 }
