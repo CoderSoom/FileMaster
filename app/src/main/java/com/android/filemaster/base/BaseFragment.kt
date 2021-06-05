@@ -3,13 +3,12 @@ package com.android.filemaster.base
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.view.WindowManager
+import android.view.*
+import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
+import com.tapon.ds.view.toolbar.Toolbar
 
 abstract class BaseFragment<VB : ViewDataBinding> : Fragment() {
     protected lateinit var binding: VB
@@ -17,12 +16,17 @@ abstract class BaseFragment<VB : ViewDataBinding> : Fragment() {
     private lateinit var myInflater: LayoutInflater
 
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
         if (!::myInflater.isInitialized) {
             myInflater = LayoutInflater.from(requireActivity())
         }
         binding = DataBindingUtil.inflate(myInflater, getLayoutId(), container, false)
         binding.lifecycleOwner = viewLifecycleOwner
+        initToolbar()
         initBinding()
         return binding.root
 
@@ -37,7 +41,34 @@ abstract class BaseFragment<VB : ViewDataBinding> : Fragment() {
 
     abstract fun getLayoutId(): Int
 
+    private fun initToolbar() {
+        val toolbar = this.getToolbar() ?: return
+        val parentActivity = activity as AppCompatActivity
+        setHasOptionsMenu(true)
+        parentActivity.setSupportActionBar(toolbar.toolbar())
+    }
+
+    open fun getToolbar(): Toolbar? {
+        return null
+    }
+
     open fun initBinding() {}
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        val toolbar = getToolbar()
+        if (toolbar != null && activity != null) {
+            toolbar.onCreateOptionsMenu(activity as AppCompatActivity, menu)
+        }
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        val toolbar = getToolbar()
+        if (toolbar != null) {
+            return toolbar.onOptionsItemSelected(item)
+        }
+        return super.onOptionsItemSelected(item)
+    }
 
     private fun setStatusColor(color: Int = Color.BLACK, state: Boolean = true) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
