@@ -14,17 +14,22 @@ import androidx.core.app.ActivityCompat
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.Navigation
 import com.android.filemaster.R
+import com.android.filemaster.base.BaseActivity
 import com.android.filemaster.data.viewmodel.MainViewModel
 import com.android.filemaster.databinding.ActivityMainBinding
 import com.android.filemaster.utils.CheckingPermission
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
-class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemSelectedListener {
+class MainActivity : BaseActivity<ActivityMainBinding>(),
+    BottomNavigationView.OnNavigationItemSelectedListener {
     private val TAG = "MainActivity"
-    private lateinit var binding: ActivityMainBinding
     private val mainViewModel by viewModels<MainViewModel>()
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+
+    override fun getLayoutId(): Int {
+        return R.layout.activity_main
+    }
+
+    override fun init() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             if (!Environment.isExternalStorageManager()) {
                 CheckingPermission.reqStoreMananger(this)
@@ -45,15 +50,13 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
         }
         initData()
         initView()
-
     }
 
     private fun initData() {
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
-        binding.lifecycleOwner = this
-        binding.navigationBottom.setOnNavigationItemSelectedListener(this)
-        binding.navigationBottom.itemIconTintList = null
-        binding.mainViewModel = mainViewModel
+        mBinding.lifecycleOwner = this
+        mBinding.navigationBottom.setOnNavigationItemSelectedListener(this)
+        mBinding.navigationBottom.itemIconTintList = null
+        mBinding.mainViewModel = mainViewModel
     }
 
     private fun initView() {

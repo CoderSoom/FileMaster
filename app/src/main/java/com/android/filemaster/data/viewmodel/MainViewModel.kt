@@ -3,9 +3,10 @@ package com.android.filemaster.data.viewmodel
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.android.filemaster.base.BaseViewModel
 import com.android.filemaster.module.asLiveData
 
-class MainViewModel : ViewModel() {
+class MainViewModel : BaseViewModel() {
 
     companion object {
         private const val TAG = "MainViewModel"
