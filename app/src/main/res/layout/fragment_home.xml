@@ -27,246 +27,336 @@
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/root"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/sys_sec"
+        android:background="@color/sys_gray_6"
         tools:context=".ui.home.HomeFragment">
 
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/imageView"
+        <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:scaleType="fitXY"
-            android:src="@drawable/ic_rectangle_293"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <com.tapon.ds.view.toolbar.Toolbar
-            android:id="@+id/toolbar_home"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            app:layout_constraintTop_toTopOf="parent"
-            app:toolbarAction1="@drawable/ic_search_home"
-            app:toolbarAction2="@drawable/ic_light_bulb_no"
-            app:toolbarHideDivider="true"
-            app:toolbarLogo="@drawable/ic_logo"
-            app:toolbarViewStyle="logo" />
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/container_premium"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/px16"
-            android:layout_marginEnd="@dimen/px16"
-            android:background="@drawable/bg_home_premium"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/toolbar_home"
-            app:layout_goneMarginTop="?android:actionBarSize">
-
-            <TextView
-                android:id="@+id/label_title_premium"
-                style="@style/Subheading2"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/px16"
-                android:layout_marginTop="@dimen/px8"
-                android:layout_marginEnd="@dimen/px4"
-                android:drawableEnd="@drawable/ic_home_premium_crown"
-                android:drawablePadding="@dimen/px4"
-                android:maxLines="1"
-                android:text="@string/discover_premium"
-                android:textColor="@color/fixed_white"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                style="@style/Caption"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/px16"
-                android:layout_marginEnd="@dimen/px4"
-                android:layout_marginBottom="@dimen/px8"
-                android:maxLines="1"
-                android:text="@string/home_container_premium_subtitle"
-                android:textColor="@color/fixed_grey"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/btn_premium"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/label_title_premium" />
-
-            <TextView
-                android:id="@+id/btn_premium"
-                style="@style/Small.Button.Yellow"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/px12"
-                android:text="@string/home_premium_text_btn"
-                android:textColor="@color/fixed_black"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <RelativeLayout
-            android:id="@+id/storage_premium"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/px12"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/container_premium">
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rv_list_storage"
-                rv_set_adapter="@{storageAdapter}"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/px16"
-                android:layout_marginEnd="@dimen/px16"
-                android:orientation="horizontal"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:listitem="@layout/item_strorage" />
-
-        </RelativeLayout>
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/tvRecent"
-            style="@style/Home.Label.Category"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/recents"
-            app:layout_constraintStart_toStartOf="@id/storage_premium"
-            app:layout_constraintTop_toBottomOf="@id/storage_premium" />
-
-        <androidx.cardview.widget.CardView
-            android:id="@+id/recentView"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/px96"
-            android:layout_below="@id/storage_premium"
-            android:layout_marginStart="@dimen/px12"
-            android:layout_marginTop="@dimen/px12"
-            android:layout_marginEnd="@dimen/px12"
-            app:cardBackgroundColor="@color/fixed_white"
-            app:cardCornerRadius="@dimen/px12"
-            app:cardElevation="@dimen/px8"
-            app:layout_constraintTop_toBottomOf="@id/tvRecent">
+            android:layout_height="match_parent"
+            android:layout_marginBottom="@dimen/px12"
+            app:layout_constraintTop_toTopOf="parent">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+                android:orientation="vertical">
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rv_list_recents"
-                    rv_set_adapter="@{recentAdapter}"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@id/gl"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <androidx.constraintlayout.widget.Guideline
-                    android:id="@+id/gl"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    app:layout_constraintGuide_percent="0.75" />
 
                 <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/more_recent"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:visibility="@{viewModel.listFileRecent.size() >= 3 ? View.VISIBLE : View.GONE}"
-                    app:layout_constraintLeft_toRightOf="@id/gl"
-                    app:layout_constraintTop_toTopOf="parent">
+                    android:id="@+id/headerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/transparent"
+                    android:fitsSystemWindows="true"
+                    tools:context=".ui.home.HomeActivity">
 
                     <androidx.appcompat.widget.AppCompatImageView
-                        android:id="@+id/imgIcon"
-                        android:layout_width="wrap_content"
+                        android:id="@+id/imageView"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/ic_more"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintRight_toRightOf="parent"
+                        android:scaleType="fitXY"
+                        android:src="@drawable/ic_rectangle_293"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.0"
+                        app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/imgSearch"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/px16"
+                        android:layout_marginRight="@dimen/px58"
+                   android:src="@drawable/ic_search_home"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/px16"
+                        android:layout_marginEnd="@dimen/px18"
+                        android:src="@drawable/ic_light_bulb"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/ic_tips"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/px16"
+                        android:layout_marginEnd="@dimen/px18"
+                        android:src="@drawable/ic_light_bulb_no"
+                        android:visibility="invisible"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <ImageView
+                        android:id="@+id/logo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/px16"
+                        android:layout_marginTop="@dimen/px20"
+                        android:src="@drawable/ic_logo"
+                        android:textColor="@color/fixed_white"
+                        android:textSize="@dimen/px16"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/px16"
+                        android:layout_marginEnd="@dimen/px18"
+                        android:src="@drawable/ic_light_bulb"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/imgNoti"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/px16"
+                        android:layout_marginEnd="@dimen/px18"
+                        android:src="@drawable/ic_light_bulb_no"
+                        android:visibility="invisible"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <ImageView
+                        android:id="@+id/name_app"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/px16"
+                        android:layout_marginTop="@dimen/px20"
+                        android:src="@drawable/ic_logo"
+                        android:textColor="@color/fixed_white"
+                        android:textSize="@dimen/px16"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/premium"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/px16"
+                        android:src="@drawable/ic_bg_premium"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/name_app" />
+
+                    <TextView
+                        android:id="@+id/discover"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/px16"
+                        android:layout_marginTop="@dimen/px8"
+                        android:text="@string/discover_premium"
+                        android:textColor="@color/fixed_white"
+                        android:textSize="@dimen/px16"
+                        app:layout_constraintStart_toStartOf="@+id/premium"
+                        app:layout_constraintTop_toTopOf="@+id/premium" />
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/px4"
+                        android:layout_marginTop="@dimen/px12"
+                        android:src="@drawable/ic_crown"
+                        app:layout_constraintStart_toEndOf="@+id/discover"
+                        app:layout_constraintTop_toTopOf="@+id/premium" />
+
                     <androidx.appcompat.widget.AppCompatTextView
-                        android:id="@+id/tvFileName"
-                        android:layout_width="@dimen/px66"
-                        android:layout_height="@dimen/px20"
-                        android:singleLine="true"
-                        android:text="@string/more"
-                        android:textAlignment="center"
-                        android:textColor="@color/label_prim"
-                        android:textSize="@dimen/sp14"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/px16"
+                        android:text="@string/sub"
+                        android:textColor="@color/fixed_grey"
+                        android:textSize="@dimen/px12"
+                        app:layout_constraintStart_toStartOf="@+id/premium"
+                        app:layout_constraintTop_toBottomOf="@+id/discover" />
+
+                    <Button
+                        android:id="@+id/btn_per"
+                        android:layout_width="@dimen/px74"
+                        android:layout_height="@dimen/px32"
+                        android:layout_marginRight="@dimen/px12"
+                        android:background="@drawable/bg_btn"
+                        android:text="@string/premium"
+                        app:layout_constraintBottom_toBottomOf="@id/premium"
+                        app:layout_constraintEnd_toEndOf="@+id/premium"
+                        app:layout_constraintTop_toTopOf="@id/premium" />
+
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/px12"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/premium">
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/rv_list_storage"
+                            rv_set_adapter="@{storageAdapter}"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                            android:orientation="horizontal"
+                            app:layout_constraintTop_toTopOf="parent"
+                            tools:listitem="@layout/item_strorage" />
+
+                    </RelativeLayout>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvRecent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/px20"
+                    android:layout_marginTop="@dimen/px16"
+                    android:text="@string/recents"
+                    android:textAllCaps="true"
+                    android:textSize="@dimen/sp10"
+                    app:layout_constraintStart_toStartOf="@id/headerView"
+                    app:layout_constraintTop_toBottomOf="@id/headerView" />
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/recentView"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/px96"
+                    android:layout_below="@id/headerView"
+                    android:layout_marginStart="@dimen/px12"
+                    android:layout_marginTop="@dimen/px12"
+                    android:layout_marginEnd="@dimen/px12"
+                    app:cardBackgroundColor="@color/fixed_white"
+                    app:cardCornerRadius="@dimen/px12"
+                    app:cardElevation="@dimen/px8"
+                    app:layout_constraintTop_toBottomOf="@id/tvRecent">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintRight_toRightOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/imgIcon" />
-                </androidx.constraintlayout.widget.ConstraintLayout>
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/rv_list_recents"
+                            rv_set_adapter="@{recentAdapter}"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toStartOf="@id/gl"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <androidx.constraintlayout.widget.Guideline
+                            android:id="@+id/gl"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            app:layout_constraintGuide_percent="0.75" />
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/more_recent"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:visibility="@{viewModel.listFileRecent.size() >= 3 ? View.VISIBLE : View.GONE}"
+                            app:layout_constraintLeft_toRightOf="@id/gl"
+                            app:layout_constraintTop_toTopOf="parent">
+
+                            <androidx.appcompat.widget.AppCompatImageView
+                                android:id="@+id/imgIcon"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:src="@drawable/ic_more"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintLeft_toLeftOf="parent"
+                                app:layout_constraintRight_toRightOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:id="@+id/tvFileName"
+                                android:layout_width="@dimen/px66"
+                                android:layout_height="@dimen/px20"
+                                android:singleLine="true"
+                                android:text="@string/more"
+                                android:textAlignment="center"
+                                android:textColor="@color/label_prim"
+                                android:textSize="@dimen/sp14"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintLeft_toLeftOf="parent"
+                                app:layout_constraintRight_toRightOf="parent"
+                                app:layout_constraintTop_toBottomOf="@id/imgIcon" />
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                </androidx.cardview.widget.CardView>
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvAccess"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/px20"
+                    android:layout_marginTop="@dimen/px16"
+                    android:text="@string/quick_access"
+                    android:textAllCaps="true"
+                    android:textSize="@dimen/sp10"
+                    app:layout_constraintStart_toStartOf="@id/headerView"
+                    app:layout_constraintTop_toBottomOf="@id/recentView" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/tvExpand"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/px16"
+                    android:layout_marginEnd="@dimen/px20"
+                    android:src="@{viewModel.isExpanded == false ? @drawable/ic_expand : @drawable/ic_narrow}"
+                    android:textAllCaps="true"
+                    android:textColor="@color/brand"
+                    android:textSize="@dimen/sp10"
+                    android:visibility="@{viewModel.liveCurrentFile.size() >= 5 ? View.VISIBLE : View.GONE}"
+                    app:layout_constraintEnd_toEndOf="@id/headerView"
+                    app:layout_constraintLeft_toRightOf="@id/tvAccess"
+                    app:layout_constraintTop_toBottomOf="@id/recentView"
+                    tools:text="@string/expand" />
+
+                <!--                android:visibility="@{viewModel.listFileAccess.size() >= 5 ? View.VISIBLE : View.GONE}"-->
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_below="@id/recentView"
+                    android:layout_marginStart="@dimen/px12"
+                    android:layout_marginTop="@dimen/px12"
+                    android:layout_marginEnd="@dimen/px12"
+                    android:layout_marginBottom="@dimen/px12"
+                    android:elevation="@dimen/px10"
+                    app:cardCornerRadius="@dimen/px12"
+                    app:layout_constraintTop_toBottomOf="@id/tvAccess">
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rvQuickAccess"
+                        rv_set_adapter="@{fileAdapter}"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:listitem="@layout/item_file" />
+
+                </androidx.cardview.widget.CardView>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-        </androidx.cardview.widget.CardView>
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/tvAccess"
-            style="@style/Home.Label.Category"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/quick_access"
-            app:layout_constraintStart_toStartOf="@id/storage_premium"
-            app:layout_constraintTop_toBottomOf="@id/recentView" />
-
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/tvExpand"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/px16"
-            android:layout_marginEnd="@dimen/px20"
-            android:src="@{viewModel.isExpanded == false ? @drawable/ic_expand : @drawable/ic_narrow}"
-            android:textAllCaps="true"
-            android:textColor="@color/brand"
-            android:textSize="@dimen/sp10"
-            android:visibility="@{viewModel.liveCurrentFile.size() >= 5 ? View.VISIBLE : View.GONE}"
-            app:layout_constraintEnd_toEndOf="@id/storage_premium"
-            app:layout_constraintLeft_toRightOf="@id/tvAccess"
-            app:layout_constraintTop_toBottomOf="@id/recentView"
-            tools:text="@string/expand" />
-
-        <!--                android:visibility="@{viewModel.listFileAccess.size() >= 5 ? View.VISIBLE : View.GONE}"-->
-
-        <androidx.cardview.widget.CardView
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_below="@id/recentView"
-            android:layout_marginStart="@dimen/px12"
-            android:layout_marginTop="@dimen/px12"
-            android:layout_marginEnd="@dimen/px12"
-            android:layout_marginBottom="@dimen/px12"
-            android:elevation="@dimen/px10"
-            app:cardCornerRadius="@dimen/px12"
-            app:layout_constraintTop_toBottomOf="@id/tvAccess">
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rvQuickAccess"
-                rv_set_adapter="@{fileAdapter}"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:listitem="@layout/item_file" />
-
-        </androidx.cardview.widget.CardView>
+        </androidx.core.widget.NestedScrollView>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

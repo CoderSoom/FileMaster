@@ -5,9 +5,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.android.filemaster.data.model.FileCustom
+import com.android.filemaster.data.model.ItemDate
 import com.android.filemaster.data.model.ListStorage
 import com.android.filemaster.data.repository.FileRepository
-import com.android.filemaster.model.ItemFileRecent
 import com.android.filemaster.module.asLiveData
 import com.android.filemaster.utils.DataFake
 import kotlinx.coroutines.launch
@@ -26,15 +26,19 @@ class FileViewModel() : ViewModel() {
     val liveAllFile = MutableLiveData<List<FileCustom>>()
     val liveCurrentFile = MutableLiveData<List<FileCustom>>()
 
-    private val _listFileRecentForDay = MutableLiveData<MutableList<ItemFileRecent>>()
+    private val _listFileRecentForDay = MutableLiveData<MutableList<FileCustom>>()
     val listFileRecentForDay = _listFileRecentForDay.asLiveData()
 
 
     val listStorge = MutableLiveData<List<ListStorage>>()
 
+
+    private val _listFileRecentForWeek = MutableLiveData<MutableList<FileCustom>>()
+    val listFileRecentForWeek = _listFileRecentForWeek.asLiveData()
+
     private val todayFileDefault = mutableListOf<FileCustom>()
+
     private val weekFileDefault = mutableListOf<FileCustom>()
-    private val today = mutableListOf<ItemFileRecent>()
 
     val isExpanded by lazy {
         MutableLiveData(false)
@@ -56,11 +60,11 @@ class FileViewModel() : ViewModel() {
     }
 
     fun getListFake() {
-        val result = DataFake.list
-        liveAllFile.value = result
-        if (isExpanded.value == false) {
-            liveCurrentFile.value = result.subList(0, 5)
-        }
+//        val result = DataFake.list
+//        liveAllFile.value = result
+//        if (isExpanded.value == false) {
+//            liveCurrentFile.value = result.subList(0, 5)
+//        }
     }
 
     fun expanded(enable: Boolean) {
@@ -84,25 +88,26 @@ class FileViewModel() : ViewModel() {
         for (recent in fileRepository.getListFileRecent(ctx)) {
             if (recent.date!!.toLong() > cal.timeInMillis / 1000) {
                 todayFileDefault.add(recent)
-            } else {
+            }
+            ItemDate("Today",todayFileDefault.size.toString())
+            _listFileRecentForDay.postValue(todayFileDefault)
+        }
+    }
+    fun getListRecentForWeek(ctx: Context) {
+        val cal = Calendar.getInstance()
+        cal.set(Calendar.HOUR_OF_DAY, 0)
+        cal.set(Calendar.MINUTE, 0)
+        cal.set(Calendar.SECOND, 0)
+        cal.set(Calendar.MILLISECOND, 0)
+
+        for (recent in fileRepository.getListFileRecent(ctx)) {
+            if (recent.date!!.toLong() < cal.timeInMillis / 1000) {
                 weekFileDefault.add(recent)
             }
+            ItemDate("Today",weekFileDefault.size.toString())
+
+            _listFileRecentForWeek.postValue(weekFileDefault)
         }
-        today.add(
-            ItemFileRecent(
-                "Today",
-                "(" + todayFileDefault.size.toString() + " File)",
-                todayFileDefault
-            )
-        )
-        today.add(
-            ItemFileRecent(
-                "The Week",
-                "(" + weekFileDefault.size.toString() + " File)",
-                weekFileDefault
-            )
-        )
-        _listFileRecentForDay.postValue(today)
     }
 
     fun getListStorage() {

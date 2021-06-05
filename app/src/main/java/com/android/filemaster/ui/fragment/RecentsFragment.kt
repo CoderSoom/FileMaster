@@ -12,10 +12,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.android.filemaster.R
 import com.android.filemaster.base.BaseFragment
 import com.android.filemaster.data.adapter.RecentApdapter
+import com.android.filemaster.data.model.ItemDate
 import com.android.filemaster.data.viewmodel.FileViewModel
 import com.android.filemaster.data.viewmodel.MainViewModel
 import com.android.filemaster.databinding.FragmentRecentsBinding
-import com.android.filemaster.model.ItemFileRecent
 
 class RecentsFragment : BaseFragment<FragmentRecentsBinding>() {
     private val TAG = "RecentsFragment"
@@ -30,7 +30,7 @@ class RecentsFragment : BaseFragment<FragmentRecentsBinding>() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel.getListRecentForDay(requireActivity())
+
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -45,6 +45,7 @@ class RecentsFragment : BaseFragment<FragmentRecentsBinding>() {
             this.context,
             LinearLayoutManager.VERTICAL, false
         )
+
 
         binding.btnBack.setOnClickListener {
             mainViewModel.showMenu()
@@ -78,9 +79,19 @@ class RecentsFragment : BaseFragment<FragmentRecentsBinding>() {
     }
 
     private fun observeViewModel() {
-        viewModel.listFileRecentForDay.observe(viewLifecycleOwner) {
+        val itemDate = mutableListOf<ItemDate>()
+
+        viewModel.getListRecentForDay(requireActivity())
+        viewModel.getListRecentForWeek(requireActivity())
+        viewModel.listFileRecentForWeek.observe(viewLifecycleOwner){
             recentAdapter.list = it
         }
+        itemDate.add(  ItemDate("Today","123"))
+        recentAdapter.list = itemDate
+//        viewModel.listFileRecentForDay.observe(viewLifecycleOwner) {
+//
+//        }
+
     }
 
     private fun filter(str: String) {

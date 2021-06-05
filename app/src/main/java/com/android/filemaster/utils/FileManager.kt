@@ -15,7 +15,6 @@ import android.util.Log
 import androidx.documentfile.provider.DocumentFile
 import com.android.filemaster.R
 import com.android.filemaster.data.model.FileCustom
-import com.android.filemaster.model.FileDefault
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.io.File
@@ -509,17 +508,20 @@ object FileManager {
         return apks
     }
 
-    fun formatDate(millis: String?): String {
-        @SuppressLint("SimpleDateFormat")
-        val formater: DateFormat = SimpleDateFormat("dd.MMM.yyyy")
-        return formater.format(Date(millis))
+    fun formatDate(millis: Long): String {
+        if (millis!= null){
+            val formater: DateFormat = SimpleDateFormat("dd.MMM.yyyy",Locale.US)
+            return formater.format(Date(millis *1000))
+        }
+        return ""
+
     }
 
     fun convertBytes(size: Long): String {
         if (size <= 0) {
             return "0"
         }
-        val units = arrayOf("B", "KB", "MB", "GB", "TB")
+        val units = arrayOf("B", "Kb", "Mb", "Gb", "Tb")
         val digitGroups = (Math.log10(size.toDouble()) / Math.log10(1024.0)).toInt()
         return DecimalFormat("#,##0.#").format(
             size / Math.pow(

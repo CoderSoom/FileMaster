@@ -2,18 +2,20 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
+<data>
+    <import type="com.android.filemaster.base.BaseMultiViewHolderAdapter.BaseModelType"/>
+    <variable
+        name="item"
+        type="BaseModelType" />
 
-    <data>
-        <variable
-            name="item"
-            type="com.android.filemaster.model.ItemFileRecent" />
-        <variable
-            name="position"
-            type="Integer" />
-        <variable
-            name="listener"
-            type="com.android.filemaster.data.adapter.RecentApdapter.IExpandableRecent" />
-    </data>
+    <variable
+        name="position"
+        type="Integer" />
+    <variable
+        name="listener"
+        type="com.android.filemaster.data.adapter.RecentApdapter.Irecent" />
+</data>
+
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -39,7 +41,7 @@
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tv_time"
                 android:layout_marginStart="@dimen/px8"
-                android:text="@{item.time}"
+                tv_set_text_by_multi_holder="@{item}"
                 android:textAllCaps="true"
                 android:textSize="@dimen/sp10"
                 android:textColor="@color/label_sec"
@@ -53,7 +55,6 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 android:layout_marginEnd="@dimen/px8"
-                android:text="@{item.size}"
                 android:textSize="@dimen/px12"
                 android:textColor="@color/label_sec"
                 android:layout_width="wrap_content"
@@ -70,16 +71,7 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rc_data"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/constraint_top" />
+
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
