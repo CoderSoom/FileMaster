@@ -1,11 +1,8 @@
 package com.android.filemaster.ui.home
 
-import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.view.Window
-import android.view.WindowManager
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -31,7 +28,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel.getList()
+        viewModel.getListFake()
 //        viewModel.getListAccess(requireActivity())
         viewModel.getListRecent(requireActivity())
     }
@@ -39,6 +36,13 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        initData()
+
+        observeViewModel()
+
+    }
+
+    private fun initData() {
         binding.viewModel = viewModel
         binding.fileAdapter = fileAdapter
 
@@ -58,17 +62,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
             mainViewModel.hideMenu()
             findNavController().navigate(R.id.action_homeFragment_to_searchFragment)
         }
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            val w: Window = requireActivity().window
-            w.setFlags(
-                WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
-                WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
-            )
-        }
-
-        observeViewModel()
-
     }
 
     private fun observeViewModel() {
@@ -86,7 +79,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
                 binding.moreRecent.visibility = View.VISIBLE
             }
         }
-
         binding.tvExpand.setOnClickListener {
             viewModel.expanded(!viewModel.isExpanded.value!!)
         }

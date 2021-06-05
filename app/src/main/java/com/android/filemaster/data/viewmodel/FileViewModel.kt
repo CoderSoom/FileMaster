@@ -6,9 +6,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.android.filemaster.data.model.FileCustom
 import com.android.filemaster.data.repository.FileRepository
+import com.android.filemaster.model.ItemFileRecent
 import com.android.filemaster.module.asLiveData
 import com.android.filemaster.utils.DataFake
 import kotlinx.coroutines.launch
+import java.util.*
 
 class FileViewModel() : ViewModel() {
 
@@ -22,6 +24,13 @@ class FileViewModel() : ViewModel() {
 
     val liveAllFile = MutableLiveData<List<FileCustom>>()
     val liveCurrentFile = MutableLiveData<List<FileCustom>>()
+
+    private val _listFileRecentForDay = MutableLiveData<MutableList<ItemFileRecent>>()
+    val listFileRecentForDay = _listFileRecentForDay.asLiveData()
+
+    private val todayFileDefault = mutableListOf<FileCustom>()
+    private val weekFileDefault = mutableListOf<FileCustom>()
+    private val today = mutableListOf<ItemFileRecent>()
 
     val isExpanded by lazy {
         MutableLiveData(false)
@@ -42,7 +51,7 @@ class FileViewModel() : ViewModel() {
         }
     }
 
-    fun getList() {
+    fun getListFake() {
         val result = DataFake.list
         liveAllFile.value = result
         if (isExpanded.value == false) {
@@ -61,5 +70,35 @@ class FileViewModel() : ViewModel() {
         }
     }
 
+    fun getListRecentForDay(ctx: Context) {
+        val cal = Calendar.getInstance()
+        cal.set(Calendar.HOUR_OF_DAY, 0)
+        cal.set(Calendar.MINUTE, 0)
+        cal.set(Calendar.SECOND, 0)
+        cal.set(Calendar.MILLISECOND, 0)
+
+        for (recent in fileRepository.getListFileRecent(ctx)) {
+            if (recent.date!!.toLong() > cal.timeInMillis / 1000) {
+                todayFileDefault.add(recent)
+            } else {
+                weekFileDefault.add(recent)
+            }
+        }
+        today.add(
+            ItemFileRecent(
+                "Today",
+                "(" + todayFileDefault.size.toString() + " File)",
+                todayFileDefault
+            )
+        )
+        today.add(
+            ItemFileRecent(
+                "The Week",
+                "(" + weekFileDefault.size.toString() + " File)",
+                weekFileDefault
+            )
+        )
+        _listFileRecentForDay.postValue(today)
+    }
 
 }

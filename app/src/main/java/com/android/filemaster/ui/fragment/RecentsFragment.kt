@@ -1,26 +1,26 @@
 package com.android.filemaster.ui.fragment
 
+import android.content.Context
 import android.os.Bundle
-import android.util.Log
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.View
-import androidx.appcompat.app.AppCompatActivity
+import android.view.inputmethod.InputMethodManager
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.android.filemaster.R
 import com.android.filemaster.base.BaseFragment
 import com.android.filemaster.data.adapter.RecentApdapter
-import com.android.filemaster.data.model.FileCustom
+import com.android.filemaster.data.viewmodel.FileViewModel
 import com.android.filemaster.data.viewmodel.MainViewModel
 import com.android.filemaster.databinding.FragmentRecentsBinding
 import com.android.filemaster.model.ItemFileRecent
-import com.android.filemaster.viewmodel.RecentsViewModel
-import java.util.*
 
 class RecentsFragment : BaseFragment<FragmentRecentsBinding>() {
-    val TAG = "xx"
+    private val TAG = "RecentsFragment"
 
-    private val viewModel by viewModels<RecentsViewModel>()
+    private val viewModel by viewModels<FileViewModel>()
     private val mainViewModel by activityViewModels<MainViewModel>()
     private val recentAdapter = RecentApdapter()
 
@@ -30,69 +30,65 @@ class RecentsFragment : BaseFragment<FragmentRecentsBinding>() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel.getData(requireActivity())
+        viewModel.getListRecentForDay(requireActivity())
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.rcListRecents.adapter = recentAdapter
+        initData()
+        observeViewModel()
+    }
+
+    private fun initData() {
+        binding.adapter = recentAdapter
         binding.rcListRecents.layoutManager = LinearLayoutManager(
             this.context,
             LinearLayoutManager.VERTICAL, false
         )
-        (activity as AppCompatActivity).setSupportActionBar(binding.toolbar)
-        (activity as AppCompatActivity).supportActionBar!!.setDisplayShowHomeEnabled(true)
-        binding.toolbar.setNavigationOnClickListener {
-            Log.i(TAG, "onViewCreated: ")
+
+        binding.btnBack.setOnClickListener {
             mainViewModel.showMenu()
             requireActivity().onBackPressed()
         }
-        viewModel.data.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
-            val cal = Calendar.getInstance()
-            cal.set(Calendar.HOUR_OF_DAY, 0)
-            cal.set(Calendar.MINUTE, 0)
-            cal.set(Calendar.SECOND, 0)
-            cal.set(Calendar.MILLISECOND, 0)
-            val todayFileDefault = mutableListOf<FileCustom>()
-            val weekFileDefault = mutableListOf<FileCustom>()
 
-            val today = mutableListOf<ItemFileRecent>()
-            Log.d(TAG, "setBindingViewModel: " + cal.timeInMillis / 1000)
+        binding.btnSearch.setOnClickListener {
+            binding.searchLayout.visibility = View.VISIBLE
+            binding.recents.visibility = View.GONE
+            binding.edtSearch.requestFocus()
+        }
 
-            for (recent in it) {
-                if (recent.date!!.toLong() > cal.timeInMillis / 1000) {
-                    todayFileDefault.add(recent)
-                } else {
-                    weekFileDefault.add(recent)
+        binding.btnSearchClose.setOnClickListener {
+            binding.searchLayout.visibility = View.GONE
+            binding.recents.visibility = View.VISIBLE
+            hideSoftKeyboard(it)
+        }
 
-                }
+        binding.edtSearch.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
             }
-            today.add(
-                ItemFileRecent(
-                    "Today",
-                    "(" + todayFileDefault.size.toString() + " File)",
-                    todayFileDefault
-                )
-            )
-            today.add(
-                ItemFileRecent(
-                    "The Week",
-                    "(" + weekFileDefault.size.toString() + " File)",
-                    weekFileDefault
-                )
-            )
 
-            recentAdapter.list = today
-            recentAdapter.notifyDataSetChanged()
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+                filter(s.toString())
+            }
+
         })
     }
 
-//    override fun onClick(v: View?) {
-//        when(v!!.id){
-//            R.id.toolbar ->{
-//                print("sdaffdsafdasfdasf")
-//
-//                (activity as MainActivity).onBackPressed()}
-//        }
-//    }
+    private fun observeViewModel() {
+        viewModel.listFileRecentForDay.observe(viewLifecycleOwner) {
+            recentAdapter.list = it
+        }
+    }
+
+    private fun filter(str: String) {
+    }
+
+    private fun hideSoftKeyboard(view: View) {
+        val imm =
+            requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(view.windowToken, 0)
+    }
 }
