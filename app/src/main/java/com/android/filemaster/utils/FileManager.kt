@@ -1,6 +1,7 @@
 package com.android.filemaster.utils
 
 import android.annotation.SuppressLint
+import android.app.usage.StorageStatsManager
 import android.content.Context
 import android.content.Intent
 import android.content.pm.ApplicationInfo
@@ -8,13 +9,19 @@ import android.database.Cursor
 import android.graphics.BitmapFactory
 import android.media.MediaScannerConnection
 import android.net.Uri
+import android.os.Build
 import android.os.Environment
+import android.os.StatFs
+import android.os.storage.StorageManager
 import android.provider.MediaStore
 import android.text.TextUtils
 import android.util.Log
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.documentfile.provider.DocumentFile
 import com.android.filemaster.R
 import com.android.filemaster.data.model.FileCustom
+import com.android.filemaster.data.model.ListStorageMin
 import com.android.filemaster.model.FileDefault
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -34,7 +41,68 @@ import kotlin.math.pow
 
 object FileManager {
     var listImg = arrayListOf<FileCustom>()
+//    var listStorage = ListStorageMin(availableMemorySize, totalMemorySize, amountOfMemoryUsed)
     val TAG = "giangtd"
+    private var availableMemorySize: Long = 0L
+    private var amountOfMemoryUsed: Long = 0L
+    private var totalMemorySize: Long = 0L
+    var used: Double = 0.0
+
+
+
+    fun getListStorage(context: Context){
+
+    }
+
+    private fun getStorageUsed(context: Context) {
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            try {
+                val storageManager =
+                    context.getSystemService(AppCompatActivity.STORAGE_SERVICE) as StorageManager
+                val storageVolume =
+                    Objects.requireNonNull(storageManager).primaryStorageVolume
+                val storageStatsManager =
+                    context.getSystemService(Context.STORAGE_STATS_SERVICE) as StorageStatsManager
+                val uuId = storageVolume.uuid
+                val uuid: UUID =
+                    if (uuId == null) StorageManager.UUID_DEFAULT else UUID.fromString(uuId)
+                availableMemorySize = storageStatsManager.getFreeBytes(uuid)
+                totalMemorySize = storageStatsManager.getTotalBytes(uuid)
+                amountOfMemoryUsed = totalMemorySize - availableMemorySize
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        } else {
+
+            availableMemorySize = getAvailableInternalMemorySize()
+            totalMemorySize = getTotalInternalMemorySize()
+            amountOfMemoryUsed = totalMemorySize - availableMemorySize
+
+        }
+
+    }
+
+    fun getFileSize(size: Long): String? {
+        if (size <= 0) return "0"
+        val units = arrayOf("B", "KB", "MB", "GB", "TB")
+        val digitGroups = (Math.log10(size.toDouble()) / Math.log10(1024.0)).toInt()
+        return DecimalFormat("#,##0").format(size / Math.pow(1024.0, digitGroups.toDouble()))
+            .toString() + " " + units[digitGroups]
+    }
+
+    fun getUsedStorage(): Double {
+        used = (((amountOfMemoryUsed / totalMemorySize) * 100).toDouble())
+        return used
+    }
+
+    fun getAvailableInternalMemorySize(): Long {
+        return StatFs(Environment.getDataDirectory().path).freeBytes
+    }
+
+    fun getTotalInternalMemorySize(): Long {
+        return StatFs(Environment.getDataDirectory().path).totalBytes
+    }
 
     @Throws(IOException::class)
     fun copy(src: File?, dst: File?) {
@@ -108,8 +176,8 @@ object FileManager {
             Constant.TF_RAR -> {
                 return R.drawable.ic_file_rar
             }
-            Constant.TF_JPG, Constant.TF_PNG ->{
-              return 1
+            Constant.TF_JPG, Constant.TF_PNG -> {
+                return 1
             }
         }
         return R.drawable.ic_file_none
@@ -221,13 +289,7 @@ object FileManager {
         return formatter.format(calendar.time)
     }
 
-    fun getFileSize(size: Long): String? {
-        if (size <= 0) return "0"
-        val units = arrayOf("B", "KB", "MB", "GB", "TB")
-        val digitGroups = (log10(size.toDouble()) / log10(1024.0)).toInt()
-        return DecimalFormat("#,##0.#").format(size / 1024.0.pow(digitGroups.toDouble()))
-            .toString() + " " + units[digitGroups]
-    }
+
 
     suspend fun getListVideo(context: Context): ArrayList<String> =
         withContext(Dispatchers.Default) {
@@ -491,8 +553,8 @@ object FileManager {
 
 
 
-                    if (fileName!=null){
-                        apks.add(FileCustom(fileName,fileDate, fileSize,filePath))
+                    if (fileName != null) {
+                        apks.add(FileCustom(fileName, fileDate, fileSize, filePath))
                         Log.d(TAG, "Data  : $filePath")
                         Log.d(TAG, "Name : $fileName")
                         Log.d(TAG, "Size : $fileSize")

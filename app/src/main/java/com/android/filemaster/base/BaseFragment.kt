@@ -19,7 +19,7 @@ abstract class BaseFragment<VB : ViewDataBinding> : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         if (!::myInflater.isInitialized) {
-            myInflater = LayoutInflater.from(requireActivity())
+            myInflater = LayoutInflater.from(context)
         }
         binding = DataBindingUtil.inflate(myInflater, getLayoutId(), container, false)
         binding.lifecycleOwner = viewLifecycleOwner

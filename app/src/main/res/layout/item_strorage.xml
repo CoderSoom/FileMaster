@@ -3,6 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <data>
+
+        <variable
+            name="item"
+            type="com.android.filemaster.data.model.ListStorage" />
+    </data>
+
     <androidx.cardview.widget.CardView
         android:id="@+id/card_storage"
         android:layout_width="wrap_content"
@@ -46,6 +53,7 @@
 
                     <com.android.filemaster.ui.customview.CircularProgressBar
                         android:id="@+id/progress_storage"
+                        setProgressBar="@{item.progress}"
                         android:layout_width="@dimen/px42"
                         android:layout_height="@dimen/px42"
                         app:layout_constraintBottom_toBottomOf="parent"
@@ -55,10 +63,10 @@
                         app:strokeWidth="@dimen/px2" />
 
                     <androidx.appcompat.widget.AppCompatImageView
+                        setImgResource="@{item.imgStorage}"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerInParent="true"
-                        android:src="@drawable/ic_folder"
                         app:layout_constraintBottom_toBottomOf="@+id/constan_progress"
                         app:layout_constraintEnd_toEndOf="@+id/constan_progress"
                         app:layout_constraintStart_toStartOf="@+id/constan_progress"
@@ -109,7 +117,6 @@
                 android:layout_height="wrap_content"
                 app:layout_constraintBottom_toBottomOf="@id/constan_parent"
                 app:layout_constraintEnd_toEndOf="@+id/constan_parent">
-
 
 
                 <androidx.appcompat.widget.AppCompatImageView

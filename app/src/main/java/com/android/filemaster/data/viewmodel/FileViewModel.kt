@@ -106,7 +106,7 @@ class FileViewModel() : ViewModel() {
     }
 
     fun getListStorage() {
-        listStorge.value = DataFake.listStorage
+//        listStorge.value = DataFake.listStorage
     }
 
 }
