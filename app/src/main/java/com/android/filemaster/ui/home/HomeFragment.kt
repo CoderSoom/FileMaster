@@ -11,6 +11,7 @@ import com.android.filemaster.R
 import com.android.filemaster.base.BaseFragment
 import com.android.filemaster.data.adapter.FileAdapter
 import com.android.filemaster.data.adapter.RecentHomeAdapter
+import com.android.filemaster.data.adapter.StorageAdapter
 import com.android.filemaster.data.viewmodel.MainViewModel
 import com.android.filemaster.data.viewmodel.FileViewModel
 import com.android.filemaster.databinding.FragmentHomeBinding
@@ -19,6 +20,7 @@ import com.android.filemaster.module.getAppColor
 class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     private val viewModel by viewModels<FileViewModel>()
     private val fileAdapter = FileAdapter()
+    private val storageAdapter = StorageAdapter()
     private val recentAdapter = RecentHomeAdapter()
     private val mainViewModel by activityViewModels<MainViewModel>()
     private val TAG = "HomeFragment"
@@ -29,6 +31,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel.getListFake()
+        viewModel.getListStorage()
 //        viewModel.getListAccess(requireActivity())
         viewModel.getListRecent(requireActivity())
     }
@@ -46,13 +49,18 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         binding.viewModel = viewModel
         binding.fileAdapter = fileAdapter
 
+        binding.storageAdapter = storageAdapter
+
         binding.recentAdapter = recentAdapter
         binding.rvListRecents.layoutManager =
             LinearLayoutManager(requireActivity(), LinearLayoutManager.HORIZONTAL, false)
         binding.rvListRecents.isNestedScrollingEnabled = true
 
-        binding.progressStorage.setProgress(75)
-        binding.progressStorage.setProcessBig(100)
+        //        binding.progressStorage.setProgress(totalMemorySize, amountOfMemoryUsed)
+//        binding.tvUsedStorage.text= getFileSize(amountOfMemoryUsed) +" / " +getFileSize(totalMemorySize)
+//        binding.tvUsed.text = (getUsedStorage()+" USED")
+
+//        Toast.makeText(requireActivity(), getUsedStorage()l, Toast.LENGTH_SHORT).show()
 
         binding.moreRecent.setOnClickListener {
             mainViewModel.hideMenu()
@@ -81,6 +89,13 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         }
         binding.tvExpand.setOnClickListener {
             viewModel.expanded(!viewModel.isExpanded.value!!)
+        }
+
+        viewModel.listStorge.observe(viewLifecycleOwner){
+//             if (it){
+//
+//             }
+//             storageAdapter.list = it
         }
     }
 

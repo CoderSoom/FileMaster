@@ -16,4 +16,6 @@
     <string name="drive">Google Storage</string>
     <string name="percent">65% USED</string>
     <string name="afile_master">AFile Master</string>
+    <string name="sub">Subscribe to unlock premium features</string>
+    <string name="premium">premuim</string>
 </resources>

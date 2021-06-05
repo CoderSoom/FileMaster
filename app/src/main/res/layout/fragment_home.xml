@@ -20,6 +20,10 @@
         <variable
             name="recentAdapter"
             type="androidx.recyclerview.widget.RecyclerView.Adapter" />
+
+        <variable
+            name="storageAdapter"
+            type="androidx.recyclerview.widget.RecyclerView.Adapter" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -39,249 +43,176 @@
                 android:layout_height="match_parent"
                 android:orientation="vertical">
 
-                <androidx.cardview.widget.CardView
+
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/headerView"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/px226"
-                    app:layout_constraintTop_toTopOf="parent">
+                    android:layout_height="match_parent"
+                    android:background="@color/transparent"
+                    android:fitsSystemWindows="true"
+                    tools:context=".ui.home.HomeActivity">
 
-                    <androidx.constraintlayout.widget.ConstraintLayout
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/imageView"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:fitsSystemWindows="true"
-                        tools:context=".ui.home.HomeActivity">
+                        android:layout_height="wrap_content"
+                        android:scaleType="fitXY"
+                        android:src="@drawable/ic_rectangle_293"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.0"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
 
-                        <androidx.appcompat.widget.AppCompatImageView
-                            android:id="@+id/imageView"
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/imgSearch"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/px16"
+                        android:layout_marginRight="@dimen/px58"
+                   android:src="@drawable/ic_search_home"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/px16"
+                        android:layout_marginEnd="@dimen/px18"
+                        android:src="@drawable/ic_light_bulb"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/ic_tips"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/px16"
+                        android:layout_marginEnd="@dimen/px18"
+                        android:src="@drawable/ic_light_bulb_no"
+                        android:visibility="invisible"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <ImageView
+                        android:id="@+id/logo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/px16"
+                        android:layout_marginTop="@dimen/px20"
+                        android:src="@drawable/ic_logo"
+                        android:textColor="@color/fixed_white"
+                        android:textSize="@dimen/px16"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/px16"
+                        android:layout_marginEnd="@dimen/px18"
+                        android:src="@drawable/ic_light_bulb"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/imgNoti"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/px16"
+                        android:layout_marginEnd="@dimen/px18"
+                        android:src="@drawable/ic_light_bulb_no"
+                        android:visibility="invisible"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <ImageView
+                        android:id="@+id/name_app"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/px16"
+                        android:layout_marginTop="@dimen/px20"
+                        android:src="@drawable/ic_logo"
+                        android:textColor="@color/fixed_white"
+                        android:textSize="@dimen/px16"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/premium"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/px16"
+                        android:src="@drawable/ic_bg_premium"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/name_app" />
+
+                    <TextView
+                        android:id="@+id/discover"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/px16"
+                        android:layout_marginTop="@dimen/px8"
+                        android:text="@string/discover_premium"
+                        android:textColor="@color/fixed_white"
+                        android:textSize="@dimen/px16"
+                        app:layout_constraintStart_toStartOf="@+id/premium"
+                        app:layout_constraintTop_toTopOf="@+id/premium" />
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/px4"
+                        android:layout_marginTop="@dimen/px12"
+                        android:src="@drawable/ic_crown"
+                        app:layout_constraintStart_toEndOf="@+id/discover"
+                        app:layout_constraintTop_toTopOf="@+id/premium" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/px16"
+                        android:text="@string/sub"
+                        android:textColor="@color/fixed_grey"
+                        android:textSize="@dimen/px12"
+                        app:layout_constraintStart_toStartOf="@+id/premium"
+                        app:layout_constraintTop_toBottomOf="@+id/discover" />
+
+                    <Button
+                        android:id="@+id/btn_per"
+                        android:layout_width="@dimen/px74"
+                        android:layout_height="@dimen/px32"
+                        android:layout_marginRight="@dimen/px12"
+                        android:background="@drawable/bg_btn"
+                        android:text="@string/premium"
+                        app:layout_constraintBottom_toBottomOf="@id/premium"
+                        app:layout_constraintEnd_toEndOf="@+id/premium"
+                        app:layout_constraintTop_toTopOf="@id/premium" />
+
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/px12"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/premium">
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/rv_list_storage"
+                            rv_set_adapter="@{storageAdapter}"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:scaleType="fitXY"
-                            android:src="@drawable/ic_rectangle_293"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintHorizontal_bias="0.0"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
+                            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                            android:orientation="horizontal"
+                            app:layout_constraintTop_toTopOf="parent"
+                            tools:listitem="@layout/item_strorage" />
 
-                        <androidx.appcompat.widget.AppCompatImageView
-                            android:id="@+id/imgSearch"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/px16"
-                            android:layout_marginRight="@dimen/px58"
-                            android:src="@drawable/ic_search"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
+                    </RelativeLayout>
 
-                        <androidx.appcompat.widget.AppCompatImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/px16"
-                            android:layout_marginEnd="@dimen/px18"
-                            android:src="@drawable/ic_light_bulb"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
-                        <androidx.appcompat.widget.AppCompatImageView
-                            android:id="@+id/imgNoti"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/px16"
-                            android:layout_marginEnd="@dimen/px18"
-                            android:src="@drawable/ic_light_bulb_no"
-                            android:visibility="invisible"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-
-                        <androidx.appcompat.widget.AppCompatTextView
-                            android:id="@+id/name_app"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="@dimen/px16"
-                            android:layout_marginTop="@dimen/px16"
-                            android:text="@string/afile_master"
-                            android:textColor="@color/fixed_white"
-                            android:textSize="@dimen/px16"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-
-                        <androidx.appcompat.widget.AppCompatImageView
-                            android:id="@+id/premium"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/px16"
-                            android:src="@drawable/bg_premium"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/name_app" />
-
-                        <RelativeLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/px12"
-                            app:layout_constraintLeft_toLeftOf="parent"
-                            app:layout_constraintRight_toRightOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/premium">
-
-                            <HorizontalScrollView
-                                android:id="@+id/headerScroll"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:orientation="horizontal"
-                                android:scrollbars="none">
-
-                                <androidx.constraintlayout.widget.ConstraintLayout
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:background="@color/transparent"
-                                    android:orientation="horizontal">
-
-                                    <androidx.appcompat.widget.AppCompatImageView
-                                        android:id="@+id/card_storage"
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:layout_marginStart="@dimen/px16"
-                                        android:src="@drawable/ic_storage_card"
-                                        app:layout_constraintStart_toStartOf="parent"
-                                        app:layout_constraintTop_toTopOf="parent" />
-
-                                    <com.android.filemaster.ui.customview.CircularProgressBar
-                                        android:id="@+id/progress_storage"
-                                        android:layout_width="@dimen/px48"
-                                        android:layout_height="@dimen/px48"
-                                        android:layout_marginStart="@dimen/px12"
-                                        android:layout_marginTop="@dimen/px12"
-                                        app:layout_constraintStart_toStartOf="@+id/card_storage"
-                                        app:layout_constraintTop_toTopOf="@+id/card_storage"
-                                        app:strokeWidth="@dimen/px2" />
-
-                                    <androidx.appcompat.widget.AppCompatImageView
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:src="@drawable/ic_folder"
-                                        app:layout_constraintBottom_toBottomOf="@+id/progress_storage"
-                                        app:layout_constraintEnd_toEndOf="@+id/progress_storage"
-                                        app:layout_constraintStart_toStartOf="@+id/progress_storage"
-                                        app:layout_constraintTop_toTopOf="@+id/progress_storage" />
-
-
-                                    <androidx.appcompat.widget.AppCompatImageView
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:layout_marginEnd="@dimen/px12"
-                                        android:layout_marginBottom="@dimen/px14"
-                                        android:src="@drawable/ic_cleaner"
-                                        app:layout_constraintBottom_toBottomOf="@+id/card_storage"
-                                        app:layout_constraintEnd_toEndOf="@+id/card_storage" />
-
-                                    <androidx.appcompat.widget.AppCompatTextView
-                                        android:id="@+id/tv_storage"
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:layout_marginStart="@dimen/px68"
-                                        android:layout_marginTop="@dimen/px18"
-                                        android:text="@string/storage"
-                                        android:textColor="@color/fixed_black"
-                                        android:textSize="@dimen/px16"
-                                        app:layout_constraintStart_toStartOf="@+id/card_storage"
-                                        app:layout_constraintTop_toTopOf="@+id/card_storage" />
-
-                                    <androidx.appcompat.widget.AppCompatTextView
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:text="@string/capacity_storage"
-                                        app:layout_constraintStart_toStartOf="@+id/tv_storage"
-                                        app:layout_constraintTop_toBottomOf="@+id/tv_storage" />
-
-                                    <androidx.appcompat.widget.AppCompatTextView
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:layout_marginStart="@dimen/px68"
-                                        android:layout_marginBottom="@dimen/px16"
-                                        android:text="@string/percent"
-                                        android:textColor="@color/fixed_black"
-                                        android:textSize="@dimen/px10"
-                                        app:layout_constraintBottom_toBottomOf="@+id/card_storage"
-                                        app:layout_constraintStart_toStartOf="@+id/card_storage" />
-
-                                    <androidx.appcompat.widget.AppCompatImageView
-                                        android:id="@+id/card_drive"
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:layout_marginStart="@dimen/px12"
-                                        android:layout_marginEnd="@dimen/px16"
-                                        android:src="@drawable/ic_drive_card"
-                                        app:layout_constraintEnd_toEndOf="parent"
-                                        app:layout_constraintStart_toEndOf="@+id/card_storage"
-                                        app:layout_constraintTop_toTopOf="parent" />
-
-                                    <androidx.appcompat.widget.AppCompatImageView
-                                        android:id="@+id/bg_drive"
-                                        android:layout_width="@dimen/px48"
-                                        android:layout_height="@dimen/px48"
-                                        android:layout_marginStart="@dimen/px12"
-                                        android:layout_marginTop="@dimen/px12"
-                                        android:src="@drawable/ic_bg_drive"
-                                        app:layout_constraintStart_toStartOf="@+id/card_drive"
-                                        app:layout_constraintTop_toTopOf="@+id/card_drive" />
-
-                                    <androidx.appcompat.widget.AppCompatImageView
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:src="@drawable/ic_drive"
-                                        app:layout_constraintBottom_toBottomOf="@+id/bg_drive"
-                                        app:layout_constraintEnd_toEndOf="@+id/bg_drive"
-                                        app:layout_constraintStart_toStartOf="@+id/bg_drive"
-                                        app:layout_constraintTop_toTopOf="@+id/bg_drive" />
-
-                                    <androidx.appcompat.widget.AppCompatTextView
-                                        android:id="@+id/tv_drive"
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:layout_marginStart="@dimen/px68"
-                                        android:layout_marginTop="@dimen/px18"
-                                        android:text="@string/drive"
-                                        android:textColor="@color/fixed_black"
-                                        android:textSize="@dimen/px16"
-                                        app:layout_constraintStart_toStartOf="@+id/card_drive"
-                                        app:layout_constraintTop_toTopOf="@+id/card_drive" />
-
-                                    <androidx.appcompat.widget.AppCompatTextView
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:layout_marginStart="@dimen/px68"
-                                        android:layout_marginBottom="@dimen/px16"
-                                        android:text="@string/percent"
-                                        android:textColor="@color/fixed_black"
-                                        android:textSize="@dimen/px10"
-                                        app:layout_constraintBottom_toBottomOf="@+id/card_drive"
-                                        app:layout_constraintStart_toStartOf="@+id/card_drive" />
-
-                                    <androidx.appcompat.widget.AppCompatTextView
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:text="@string/capacity_storage"
-                                        app:layout_constraintStart_toStartOf="@+id/tv_drive"
-                                        app:layout_constraintTop_toBottomOf="@+id/tv_drive" />
-
-
-                                    <androidx.appcompat.widget.AppCompatImageView
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:layout_marginEnd="@dimen/px12"
-                                        android:layout_marginBottom="@dimen/px14"
-                                        android:src="@drawable/ic_subtract"
-                                        app:layout_constraintBottom_toBottomOf="@+id/card_drive"
-                                        app:layout_constraintEnd_toEndOf="@+id/card_drive" />
-
-                                </androidx.constraintlayout.widget.ConstraintLayout>
-
-                            </HorizontalScrollView>
-
-                        </RelativeLayout>
-
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-
-                </androidx.cardview.widget.CardView>
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/tvRecent"
