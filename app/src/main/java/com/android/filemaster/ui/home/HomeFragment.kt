@@ -3,6 +3,7 @@ package com.android.filemaster.ui.home
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -16,6 +17,7 @@ import com.android.filemaster.data.viewmodel.MainViewModel
 import com.android.filemaster.data.viewmodel.FileViewModel
 import com.android.filemaster.databinding.FragmentHomeBinding
 import com.android.filemaster.module.getAppColor
+import com.tapon.ds.view.toolbar.Toolbar
 
 class HomeFragment : BaseFragment<FragmentHomeBinding>(), ToolbarActionListener {
 
