@@ -30,13 +30,12 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), ToolbarActionListener 
     private val TAG = "HomeFragment"
     override fun getLayoutId(): Int {
         return R.layout.fragment_home
+        a()
     }
 
 
 
-    private fun a() {
-        TODO("Not yet implemented")
-    }
+
     fun a (){
         var a = binding.gl
         var c = binding.containerPremium
