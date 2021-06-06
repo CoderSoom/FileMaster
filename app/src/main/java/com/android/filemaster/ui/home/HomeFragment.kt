@@ -34,7 +34,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), ToolbarActionListener 
 
     override fun getToolbar(): Toolbar {
         return binding.toolbarHome
-        var a = binding.containerPremium
+        var a = binding.gl
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
