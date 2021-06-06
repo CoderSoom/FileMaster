@@ -8,6 +8,7 @@ import com.android.filemaster.data.model.FileCustom
 import com.android.filemaster.data.model.ListStorage
 import com.android.filemaster.data.repository.FileRepository
 import com.android.filemaster.model.ItemFileRecent
+import com.android.filemaster.model.ListStorageMin
 import com.android.filemaster.module.asLiveData
 import com.android.filemaster.utils.DataFake
 import kotlinx.coroutines.launch
@@ -29,8 +30,9 @@ class FileViewModel() : ViewModel() {
     private val _listFileRecentForDay = MutableLiveData<MutableList<ItemFileRecent>>()
     val listFileRecentForDay = _listFileRecentForDay.asLiveData()
 
+    private val _listStorage = MutableLiveData<MutableList<ListStorage>>()
+    val listStorage = _listStorage.asLiveData()
 
-    val listStorge = MutableLiveData<List<ListStorage>>()
 
     private val todayFileDefault = mutableListOf<FileCustom>()
     private val weekFileDefault = mutableListOf<FileCustom>()
@@ -38,6 +40,14 @@ class FileViewModel() : ViewModel() {
 
     val isExpanded by lazy {
         MutableLiveData(false)
+    }
+
+
+    fun getListStorage(ctx: Context){
+        viewModelScope.launch {
+            val result = fileRepository.getListStorage(ctx)
+            _listStorage.postValue(result)
+        }
     }
 
 
@@ -54,6 +64,7 @@ class FileViewModel() : ViewModel() {
             _listFileAccess.postValue(result)
         }
     }
+
 
     fun getListFake() {
         val result = DataFake.list
@@ -105,8 +116,6 @@ class FileViewModel() : ViewModel() {
         _listFileRecentForDay.postValue(today)
     }
 
-    fun getListStorage() {
-        listStorge.value = DataFake.listStorage
-    }
+
 
 }

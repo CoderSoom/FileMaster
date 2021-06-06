@@ -38,8 +38,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), ToolbarActionListener 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel.getListFake()
-        viewModel.getListStorage()
-//        viewModel.getListAccess(requireActivity())
+        viewModel.getListStorage(requireActivity())
+        viewModel.getListAccess(requireActivity())
         viewModel.getListRecent(requireActivity())
     }
 
@@ -68,14 +68,10 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), ToolbarActionListener 
 
         binding.recentAdapter = recentAdapter
         binding.rvListRecents.layoutManager =
-            LinearLayoutManager(requireActivity(), LinearLayoutManager.HORIZONTAL, false)
+            LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         binding.rvListRecents.isNestedScrollingEnabled = true
 
-        //        binding.progressStorage.setProgress(totalMemorySize, amountOfMemoryUsed)
-//        binding.tvUsedStorage.text= getFileSize(amountOfMemoryUsed) +" / " +getFileSize(totalMemorySize)
-//        binding.tvUsed.text = (getUsedStorage()+" USED")
 
-//        Toast.makeText(requireActivity(), getUsedStorage()l, Toast.LENGTH_SHORT).show()
 
         binding.moreRecent.setOnClickListener {
             mainViewModel.hideMenu()
@@ -102,11 +98,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), ToolbarActionListener 
             viewModel.expanded(!viewModel.isExpanded.value!!)
         }
 
-        viewModel.listStorge.observe(viewLifecycleOwner) {
-//             if (it){
-//
-//             }
-//             storageAdapter.list = it
+        viewModel.listStorage.observe(viewLifecycleOwner) {
+             storageAdapter.list = it
         }
     }
 

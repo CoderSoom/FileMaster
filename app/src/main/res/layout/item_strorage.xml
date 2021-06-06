@@ -3,6 +3,21 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
+
+
+    <data>
+        <import type="android.view.View" />
+
+        <import type="com.android.filemaster.ui.home.HomeFragment" />
+
+        <variable
+            name="viewModel"
+            type="HomeFragment" />
+        <variable
+            name="item"
+            type="com.android.filemaster.data.model.ListStorage" />
+    </data>
+
     <androidx.cardview.widget.CardView
         android:id="@+id/card_storage"
         android:layout_width="wrap_content"
@@ -46,8 +61,10 @@
 
                     <com.android.filemaster.ui.customview.CircularProgressBar
                         android:id="@+id/progress_storage"
+                        setProgressbar="@{item}"
                         android:layout_width="@dimen/px42"
                         android:layout_height="@dimen/px42"
+                        android:visibility="@{viewModel.[0] ? View.VISIBLE : View.GONE}"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -55,6 +72,7 @@
                         app:strokeWidth="@dimen/px2" />
 
                     <androidx.appcompat.widget.AppCompatImageView
+                        setImageDrawable="@{item.imgStorage}"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerInParent="true"
@@ -72,7 +90,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/px12"
                     android:layout_marginTop="@dimen/px4"
-                    android:text="@string/storage"
+                    android:text="@{item.nameStorage}"
                     android:textColor="@color/fixed_black"
                     android:textSize="@dimen/px16"
                     app:layout_constraintStart_toEndOf="@id/constan_progress"
@@ -83,7 +101,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignLeft="@+id/tv_storage"
-                    android:text="@string/capacity_storage"
+                    android:text="@{item.sizeName}"
                     app:layout_constraintStart_toStartOf="@+id/tv_storage"
                     app:layout_constraintTop_toBottomOf="@+id/tv_storage" />
 
@@ -97,7 +115,7 @@
                 android:layout_alignBottom="@+id/card_storage_img"
                 android:layout_marginLeft="@dimen/px70"
                 android:layout_marginBottom="@dimen/px16"
-                android:text="@string/percent"
+                android:text="@{item.usedStorage}"
                 android:textColor="@color/fixed_black"
                 android:textSize="@dimen/px10"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -109,7 +127,6 @@
                 android:layout_height="wrap_content"
                 app:layout_constraintBottom_toBottomOf="@id/constan_parent"
                 app:layout_constraintEnd_toEndOf="@+id/constan_parent">
-
 
 
                 <androidx.appcompat.widget.AppCompatImageView

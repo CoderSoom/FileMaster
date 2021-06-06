@@ -14,6 +14,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.RecyclerView
 import com.android.filemaster.data.model.FileCustom
+import com.android.filemaster.data.model.ListStorage
+import com.android.filemaster.ui.customview.CircularProgressBar
 import com.android.filemaster.utils.FileManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
@@ -45,13 +47,29 @@ fun <T> MutableLiveData<T>.asLiveData() = this as LiveData<T>
 fun setImage(img: ImageView, path: String) {
     if (FileManager.setImageFile(path) == 1) {
         Glide.with(img)
-            .load(Uri.fromFile(File(path)))
-            .apply( RequestOptions().override(100, 100))
-            .into(img)
+                .load(Uri.fromFile(File(path)))
+                .apply(RequestOptions().override(100, 100))
+                .into(img)
     } else {
         img.setImageResource(FileManager.setImageFile(path))
     }
 }
 
+@BindingAdapter("setImageDrawable")
+fun setImageDrawable(img: ImageView, path: Int) {
+    img.setImageResource(path)
+}
+
+@BindingAdapter("setProgressbar")
+fun CircularProgressBar.setProgressbar(item: ListStorage) {
+    if (item.totalMemorySize !=null && item.amountOfMemoryUsed!=null) {
+        this.setProgress(item.amountOfMemoryUsed!!.toInt(), item.totalMemorySize!!.toInt())
+    }else{
+    }
+}
+
+
+
+
 fun getAppColor(@ColorRes colorRes: Int, context: Context? = appInstance) =
-    context?.let { ContextCompat.getColor(it, colorRes) } ?: Color.TRANSPARENT
+        context?.let { ContextCompat.getColor(it, colorRes) } ?: Color.TRANSPARENT
