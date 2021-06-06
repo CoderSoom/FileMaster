@@ -37,7 +37,10 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), ToolbarActionListener 
         Toast.makeText(requireContext(), "ádfasdfasdf", Toast.LENGTH_SHORT).show()
         Toast.makeText(requireContext(), "ádfasdfasdfasdf", Toast.LENGTH_SHORT).show()
     }
-
+    fun a (){
+        var a = binding.gl
+        var c = binding.addOnPropertyChangedCallback()
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel.getListFake()
