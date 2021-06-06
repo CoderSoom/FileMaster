@@ -30,16 +30,19 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), ToolbarActionListener 
     private val TAG = "HomeFragment"
     override fun getLayoutId(): Int {
         return R.layout.fragment_home
+    }
+
+    override fun getToolbar(): Toolbar {
+        return binding.toolbarHome
+        Toast.makeText(requireContext(), "ádfasdfasdf", Toast.LENGTH_SHORT).show()
+        Toast.makeText(requireContext(), "ádfasdfasdfasdf", Toast.LENGTH_SHORT).show()
         a()
     }
 
-
-
-
-    fun a (){
-        var a = binding.gl
-        var c = binding.containerPremium
+    private fun a() {
+        TODO("Not yet implemented")
     }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel.getListFake()
