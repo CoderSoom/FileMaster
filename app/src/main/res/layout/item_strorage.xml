@@ -3,13 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-ádfasdfasdfasdfasd
+
 
     <data>
         <import type="android.view.View" />
 
         <import type="com.android.filemaster.ui.home.HomeFragment" />
-
+sdfsdfasdfasdfasdf
         <variable
             name="viewModel"
             type="HomeFragment" />
