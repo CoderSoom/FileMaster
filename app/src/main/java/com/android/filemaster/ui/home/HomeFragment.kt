@@ -32,13 +32,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), ToolbarActionListener 
         return R.layout.fragment_home
     }
 
-    override fun getToolbar(): Toolbar {
-        return binding.toolbarHome
-        a()
-        Toast.makeText(requireContext(), "ádfasdfasdf", Toast.LENGTH_SHORT).show()
-        Toast.makeText(requireContext(), "ádfasdfasdfasdf", Toast.LENGTH_SHORT).show()
-        a()
-    }
+
 
     private fun a() {
         TODO("Not yet implemented")
