@@ -34,12 +34,13 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), ToolbarActionListener 
 
     override fun getToolbar(): Toolbar {
         return binding.toolbarHome
+        a()
         Toast.makeText(requireContext(), "ádfasdfasdf", Toast.LENGTH_SHORT).show()
         Toast.makeText(requireContext(), "ádfasdfasdfasdf", Toast.LENGTH_SHORT).show()
     }
     fun a (){
         var a = binding.gl
-        var c = binding.addOnPropertyChangedCallback()
+        var c = binding.containerPremium
     }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
