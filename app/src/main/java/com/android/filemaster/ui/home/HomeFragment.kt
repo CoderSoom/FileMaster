@@ -3,6 +3,7 @@ package com.android.filemaster.ui.home
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
@@ -33,6 +34,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), ToolbarActionListener 
 
     override fun getToolbar(): Toolbar {
         return binding.toolbarHome
+        var a = binding.containerPremium
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
