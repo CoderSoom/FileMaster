@@ -37,6 +37,11 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), ToolbarActionListener 
         a()
         Toast.makeText(requireContext(), "ádfasdfasdf", Toast.LENGTH_SHORT).show()
         Toast.makeText(requireContext(), "ádfasdfasdfasdf", Toast.LENGTH_SHORT).show()
+        a()
+    }
+
+    private fun a() {
+        TODO("Not yet implemented")
     }
     fun a (){
         var a = binding.gl
