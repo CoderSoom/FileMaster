@@ -14,13 +14,15 @@ import com.android.filemaster.base.BaseFragment
 import com.android.filemaster.data.adapter.FileAdapter
 import com.android.filemaster.data.adapter.RecentHomeAdapter
 import com.android.filemaster.data.adapter.StorageAdapter
+import com.android.filemaster.data.model.FileCustom
+import com.android.filemaster.data.model.ItemDate
 import com.android.filemaster.data.viewmodel.FileViewModel
 import com.android.filemaster.data.viewmodel.MainViewModel
 import com.android.filemaster.databinding.FragmentHomeBinding
 import com.android.filemaster.module.getAppColor
 import com.tapon.ds.view.toolbar.Toolbar
 
-class HomeFragment : BaseFragment<FragmentHomeBinding>() {
+class HomeFragment : BaseFragment<FragmentHomeBinding>(), ToolbarActionListener {
     private val viewModel by viewModels<FileViewModel>()
     private val fileAdapter = FileAdapter()
     private val storageAdapter = StorageAdapter()
@@ -77,26 +79,48 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
 
 //        Toast.makeText(requireActivity(), getUsedStorage()l, Toast.LENGTH_SHORT).show()
 
-        binding.moreRecent.setOnClickListener {
-            mainViewModel.hideMenu()
-            findNavController().navigate(R.id.action_homeFragment_to_recentsFragment)
-        }
+
     }
 
     private fun observeViewModel() {
         viewModel.liveCurrentFile.observe(viewLifecycleOwner) {
             fileAdapter.list = it
         }
-
+        recentAdapter.listener = object : RecentHomeAdapter.RecentListener {
+            override fun onClickItem(position: Int, item: FileCustom) {
+                if (item.name.equals(getString(R.string.more)) && item.date.equals("")) {
+                    mainViewModel.hideMenu()
+                    findNavController().navigate(R.id.action_homeFragment_to_recentsFragment)
+                }
+            }
+        }
         viewModel.listFileRecent.observe(viewLifecycleOwner) {
             Log.d(TAG, "observeViewModel: $it")
             if (it.size <= 4) {
                 recentAdapter.list = it
-                binding.moreRecent.visibility = View.INVISIBLE
+                when (it.size) {
+                    1 -> {
+                        for (i in it.size-1..0){
+                            it.add(i,FileCustom("", "", "", "abc.xxx"))
+                        }
+                    }
+                    2 -> {
+                        for (i in it.size-1..0){
+                            it.add(i,FileCustom("", "", "", "abc.xxx"))
+                        }
+                    }
+                    3 -> {
+                        it.add(FileCustom("", "", "", "abc.xxx"))
+                    }
+                }
+
             } else {
-                recentAdapter.list = it.subList(0, 3)
-                binding.moreRecent.visibility = View.VISIBLE
+                val list = it.subList(0, 3)
+                list.add(list.size, FileCustom(getString(R.string.more), "", "", ".more"))
+                recentAdapter.list = list
+
             }
+
         }
         binding.tvExpand.setOnClickListener {
             viewModel.expanded(!viewModel.isExpanded.value!!)

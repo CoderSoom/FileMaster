@@ -20,14 +20,14 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="@dimen/px84"
         android:layout_height="wrap_content"
-        android:onClick="@{()->itemListener.onClickItem(itemPosition)}">
+        android:onClick="@{()->itemListener.onClickItem(itemPosition,item)}">
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/imgIcon"
             setImage="@{item.path}"
+            android:layout_width="44dp"
+            android:layout_height="47dp"
             android:scaleType="centerCrop"
-            android:layout_width="@dimen/px40"
-            android:layout_height="@dimen/px40"
             android:src="@drawable/ic_doc"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"

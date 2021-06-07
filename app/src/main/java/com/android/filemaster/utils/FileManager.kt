@@ -110,6 +110,9 @@ object FileManager {
             Constant.TF_JPG, Constant.TF_PNG ->{
               return 1
             }
+            Constant.TF_MORE ->{
+                return R.drawable.ic_more_file
+            }
         }
         return R.drawable.ic_file_none
     }

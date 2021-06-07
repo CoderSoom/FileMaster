@@ -21,7 +21,7 @@ object Constant {
     val TF_DOC = "doc"
     val TF_MOV = "mov"
     val TF_MPEG4 = "mpeg4"
-
+    val TF_MORE ="more"
 
 
 

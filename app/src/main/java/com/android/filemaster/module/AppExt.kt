@@ -44,6 +44,13 @@ fun <T : RecyclerView.ViewHolder> RecyclerView.applyAdapter(applyAdapter: Recycl
 fun TextView.getDetailFile(item: FileCustom) {
     this.text = FileManager.convertBytes(item.size!!.toLong()) +" | "+FileManager.formatDate(item.date!!.toLong())
 }
+@SuppressLint("SetTextI18n")
+@BindingAdapter("getDetailFileMulti")
+fun TextView.getDetailFileMulti(item: BaseMultiViewHolderAdapter.BaseModelType) {
+    if (item is FileCustom){
+        this.text = FileManager.convertBytes(item.size!!.toLong()) +" | "+FileManager.formatDate(item.date!!.toLong())
+    }
+}
 fun <T> MutableLiveData<T>.asLiveData() = this as LiveData<T>
 
 @BindingAdapter("tv_set_text_by_multi_holder")
@@ -68,6 +75,20 @@ fun setImage(img: ImageView, path: String) {
             .into(img)
     } else {
         img.setImageResource(FileManager.setImageFile(path))
+    }
+}
+@BindingAdapter("setImageMulti")
+fun ImageView.setImageMulti(item: BaseMultiViewHolderAdapter.BaseModelType){
+    if (item is FileCustom){
+        if (FileManager.setImageFile(item.path.toString()) == 1) {
+            Glide.with(this)
+                .load(Uri.fromFile(File(item.path.toString())))
+                .apply( RequestOptions().override(100, 100))
+                .error(R.drawable.ic_image)
+                .into(this)
+        } else {
+            this.setImageResource(FileManager.setImageFile(item.path.toString()))
+        }
     }
 }
 
