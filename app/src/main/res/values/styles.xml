@@ -3,9 +3,9 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorPrimary">@color/brand</item>
+        <item name="colorPrimaryDark">@color/brand_500</item>
+        <item name="colorAccent">@color/brand_100</item>
         <item name="android:windowTranslucentStatus">true</item>
         <item name="android:windowTranslucentNavigation">true</item>
     </style>
@@ -21,9 +21,27 @@
 
     <style name="Home.Label.Category" parent="Overline">
         <item name="android:textAllCaps">true</item>
-        <item name="android:layout_marginStart">@dimen/px28</item>
+        <item name="android:layout_marginStart">@dimen/px16</item>
         <item name="android:layout_marginTop">@dimen/px14</item>
+        <item name="android:layout_marginBottom">@dimen/px14</item>
         <item name="android:textColor">@color/label_sec</item>
+    </style>
+
+    <style name="Item.Title.Text" parent="Paragraph">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginStart">@dimen/px12</item>
+        <item name="android:layout_marginTop">@dimen/px8</item>
+        <item name="android:layout_marginEnd">@dimen/px4</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:maxLines">1</item>
+    </style>
+
+    <style name="Item.Subtitle.Text" parent="Item.Title.Text">
+        <item name="android:textSize">@dimen/sp14</item>
+        <item name="lineHeight">@dimen/px20</item>
+        <item name="android:layout_marginTop">0dp</item>
+        <item name="android:layout_marginBottom">@dimen/px8</item>
     </style>
 
 </resources>

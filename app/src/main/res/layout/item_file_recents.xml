@@ -20,33 +20,46 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="@dimen/px84"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/px8"
+        android:layout_marginBottom="@dimen/px8"
         android:onClick="@{()->itemListener.onClickItem(itemPosition)}">
 
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/imgIcon"
-            setImage="@{item.path}"
-            android:scaleType="centerCrop"
-            android:layout_width="@dimen/px40"
-            android:layout_height="@dimen/px40"
-            android:src="@drawable/ic_doc"
-            app:layout_constraintBottom_toBottomOf="parent"
+        <androidx.cardview.widget.CardView
+            android:id="@+id/img_wrapper"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="@dimen/px4"
+            app:cardElevation="0dp"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/iv_icon"
+                setImage="@{item.path}"
+                android:layout_width="@dimen/px40"
+                android:layout_height="@dimen/px40"
+                android:scaleType="fitCenter"
+                android:src="@drawable/ic_doc" />
+        </androidx.cardview.widget.CardView>
 
         <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/tvFileName"
-            android:layout_width="@dimen/px66"
-            android:layout_height="@dimen/px20"
-            android:singleLine="true"
+            android:id="@+id/tv_title"
+            style="@style/Paragraph2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/px8"
+            android:layout_marginTop="@dimen/px8"
+            android:layout_marginEnd="@dimen/px8"
+            android:ellipsize="end"
+            android:maxLines="1"
             android:text="@{item.name}"
             android:textAlignment="center"
             android:textColor="@color/label_prim"
-            android:textSize="@dimen/sp14"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/imgIcon" />
+            app:layout_constraintTop_toBottomOf="@id/img_wrapper" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
 
