@@ -11,7 +11,9 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.android.filemaster.R
 import com.android.filemaster.base.BaseFragment
+import com.android.filemaster.data.adapter.FileAdapter
 import com.android.filemaster.data.adapter.RecentApdapter
+import com.android.filemaster.data.model.FileCustom
 import com.android.filemaster.data.model.ItemDate
 import com.android.filemaster.data.viewmodel.FileViewModel
 import com.android.filemaster.data.viewmodel.MainViewModel
@@ -45,7 +47,14 @@ class RecentsFragment : BaseFragment<FragmentRecentsBinding>() {
             this.context,
             LinearLayoutManager.VERTICAL, false
         )
+        val fileApdapter = FileAdapter()
+        fileApdapter.listener = object :FileAdapter.FileListener{
+            override fun onItemClick(position: Int, item: FileCustom) {
+                val bottomSheet = MoreActionFragment()
+                bottomSheet.show(childFragmentManager,tag)
+            }
 
+        }
 
         binding.btnBack.setOnClickListener {
             mainViewModel.showMenu()
@@ -83,8 +92,6 @@ class RecentsFragment : BaseFragment<FragmentRecentsBinding>() {
         viewModel.recentMulti.observe(viewLifecycleOwner){
             recentAdapter.list = it
         }
-
-
     }
 
     private fun filter(str: String) {

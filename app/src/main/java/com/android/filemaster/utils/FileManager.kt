@@ -511,27 +511,32 @@ object FileManager {
         return apks
     }
 
-    fun formatDate(millis: Long): String {
-        if (millis!= null){
+    fun formatDate(millis: Long?): String {
+        if (millis== null){
+          return "0"
+        }
+        else{
             val formater: DateFormat = SimpleDateFormat("dd.MMM.yyyy",Locale.US)
             return formater.format(Date(millis *1000))
         }
-        return ""
 
     }
 
-    fun convertBytes(size: Long): String {
-        if (size <= 0) {
-            return "0"
+    fun convertBytes(size: String?): String {
+        if (size== null) {
+            return "0b"
+        } else {
+            val units = arrayOf("B", "Kb", "Mb", "Gb", "Tb")
+            val digitGroups = (Math.log10(size.toDouble()) / Math.log10(1024.0)).toInt()
+            return DecimalFormat("#,##0.#").format(
+                size.toLong() / Math.pow(
+                    1024.0,
+                    digitGroups.toDouble()
+                )
+            ) + " " + units[digitGroups]
+
+
         }
-        val units = arrayOf("B", "Kb", "Mb", "Gb", "Tb")
-        val digitGroups = (Math.log10(size.toDouble()) / Math.log10(1024.0)).toInt()
-        return DecimalFormat("#,##0.#").format(
-            size / Math.pow(
-                1024.0,
-                digitGroups.toDouble()
-            )
-        ) + " " + units[digitGroups]
     }
 
     suspend fun getListScreenShots(): ArrayList<String> = withContext(Dispatchers.Default) {

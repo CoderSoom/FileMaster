@@ -80,16 +80,17 @@ class FileViewModel() : ViewModel() {
     }
 
 
-
     fun getListStorage() {
         listStorge.value = DataFake.listStorage
     }
+
     fun getListRecentForDay(context: Context) {
         val recents = mutableListOf<BaseMultiViewHolderAdapter.BaseModelType>()
         var countToday = 0
         var countThisWeek = 0
         var indexOfThisWeek = 0
-
+        val list = fileRepository.getListFileRecent(context)
+       recents.addAll(list)
         run loop@{
             val cal = Calendar.getInstance()
             cal.set(Calendar.HOUR_OF_DAY, 0)
@@ -97,61 +98,26 @@ class FileViewModel() : ViewModel() {
             cal.set(Calendar.SECOND, 0)
             cal.set(Calendar.MILLISECOND, 0)
 
-            val list = fileRepository.getListFileRecent(context)
-            list.forEachIndexed { index, item ->
-                if (item.date!!.toLong() > cal.timeInMillis / 1000) {
+            recents.forEachIndexed { index, item ->
+                if ((item as FileCustom).date!!.toLong() > cal.timeInMillis / 1000) {
                     countToday++
-                    recents.add(index, item)
-                }
-                else {
+//                    recents.add(index, item)
+                } else {
                     countThisWeek = recents.size - countToday
                     indexOfThisWeek = index + 1
-                    recents.add(index, item)
+//                    recents.add(index, item)
                     recents.add(0, ItemDate("Today", countToday.toString()))
                     return@loop
                 }
-                Log.d(TAG, "getListRecentForDay: "+ list.size)
+                Log.d(TAG, "getListRecentForDay: " + list.size)
 
             }
 
         }
         recents.add(indexOfThisWeek, ItemDate("The week", countThisWeek.toString()))
-        Log.d(TAG, "getListRecentForDay: " + recents.size.toString())
+        Log.d(TAG, "getListRecentForDay: " + recents.toString())
         recentMulti.value = recents
     }
-//
-//    fun getListRecentForDay(context: Context) {
-//        val recents = mutableListOf<BaseMultiViewHolderAdapter.BaseModelType>()
-//        var countToday = 0
-//        var countThisWeek = 0
-//        var indexOfThisWeek = 0
-//        val list = fileRepository.getListFileRecent(context)
-//
-//            val cal = Calendar.getInstance()
-//            cal.set(Calendar.HOUR_OF_DAY, 0)
-//            cal.set(Calendar.MINUTE, 0)
-//            cal.set(Calendar.SECOND, 0)
-//            cal.set(Calendar.MILLISECOND, 0)
 
-//           for (i in 0..list.size-1){
-//                   Log.d(TAG, "getList: "+ i)
-//
-//                   if (list[i].date!!.toLong() > cal.timeInMillis / 1000) {
-//                       countToday++
-//                       recents.add(i+1, list[i])
-//                   }
-//                   else {
-//                       countThisWeek = list.size - countToday
-//                       indexOfThisWeek = i + 2
-//                       recents.add(indexOfThisWeek, list[i])
-//
-//            }
-
-//        }
-//        recents.add(0, ItemDate("Today", countToday.toString()))
-//        recents.add(list.size, ItemDate("The week", countThisWeek.toString()))
-//        Log.d(TAG, "getListRecentForDay: " + recents.size.toString())
-//        recentMulti.value = recents
-//    }
 
 }

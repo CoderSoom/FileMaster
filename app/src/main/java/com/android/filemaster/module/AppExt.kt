@@ -42,13 +42,13 @@ fun <T : RecyclerView.ViewHolder> RecyclerView.applyAdapter(applyAdapter: Recycl
 @SuppressLint("SetTextI18n")
 @BindingAdapter("tv_get_detail")
 fun TextView.getDetailFile(item: FileCustom) {
-    this.text = FileManager.convertBytes(item.size!!.toLong()) +" | "+FileManager.formatDate(item.date!!.toLong())
+    this.text = FileManager.convertBytes(item.size!!) +" | "+FileManager.formatDate(item.date!!.toLong())
 }
 @SuppressLint("SetTextI18n")
 @BindingAdapter("getDetailFileMulti")
 fun TextView.getDetailFileMulti(item: BaseMultiViewHolderAdapter.BaseModelType) {
     if (item is FileCustom){
-        this.text = FileManager.convertBytes(item.size!!.toLong()) +" | "+FileManager.formatDate(item.date!!.toLong())
+        this.text = FileManager.convertBytes(item.size) +" | "+FileManager.formatDate(item.date!!.toLong())
     }
 }
 fun <T> MutableLiveData<T>.asLiveData() = this as LiveData<T>

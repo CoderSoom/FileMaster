@@ -13,7 +13,7 @@
         type="Integer" />
     <variable
         name="listener"
-        type="com.android.filemaster.data.adapter.RecentApdapter.Irecent" />
+        type="com.android.filemaster.data.adapter.RecentApdapter.IRecent" />
 </data>
 
 

@@ -100,13 +100,13 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), ToolbarActionListener 
                 recentAdapter.list = it
                 when (it.size) {
                     1 -> {
-                        for (i in it.size-1..0){
-                            it.add(i,FileCustom("", "", "", "abc.xxx"))
+                        for (i in it.size - 1..0) {
+                            it.add(i, FileCustom("", "", "", "abc.xxx"))
                         }
                     }
                     2 -> {
-                        for (i in it.size-1..0){
-                            it.add(i,FileCustom("", "", "", "abc.xxx"))
+                        for (i in it.size - 1..0) {
+                            it.add(i, FileCustom("", "", "", "abc.xxx"))
                         }
                     }
                     3 -> {
