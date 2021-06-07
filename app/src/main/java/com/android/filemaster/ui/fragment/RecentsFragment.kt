@@ -80,17 +80,11 @@ class RecentsFragment : BaseFragment<FragmentRecentsBinding>() {
 
     private fun observeViewModel() {
         val itemDate = mutableListOf<ItemDate>()
-
         viewModel.getListRecentForDay(requireActivity())
-        viewModel.getListRecentForWeek(requireActivity())
         viewModel.listFileRecentForWeek.observe(viewLifecycleOwner){
             recentAdapter.list = it
         }
-        itemDate.add(  ItemDate("Today","123"))
-        recentAdapter.list = itemDate
-//        viewModel.listFileRecentForDay.observe(viewLifecycleOwner) {
-//
-//        }
+
 
     }
 

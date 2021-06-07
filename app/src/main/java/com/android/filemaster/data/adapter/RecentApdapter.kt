@@ -12,7 +12,8 @@ class RecentApdapter :
         const val VIEW_TYPE_DATE = 0
         const val VIEW_TYPE_ITEM = 1
     }
-    interface Irecent:BaseListener{
+
+    interface Irecent : BaseListener {
 
     }
 }

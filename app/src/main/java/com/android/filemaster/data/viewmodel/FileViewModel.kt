@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.android.filemaster.base.BaseMultiViewHolderAdapter
 import com.android.filemaster.data.model.FileCustom
 import com.android.filemaster.data.model.ItemDate
 import com.android.filemaster.data.model.ListStorage
@@ -14,7 +15,7 @@ import kotlinx.coroutines.launch
 import java.util.*
 
 class FileViewModel() : ViewModel() {
-
+    private val TAG ="FileViewModel"
     private val fileRepository = FileRepository()
 
     private val _listFileRecent = MutableLiveData<MutableList<FileCustom>>()
@@ -28,8 +29,7 @@ class FileViewModel() : ViewModel() {
 
     private val _listFileRecentForDay = MutableLiveData<MutableList<FileCustom>>()
     val listFileRecentForDay = _listFileRecentForDay.asLiveData()
-
-
+    val recentMulti = MutableLiveData<MutableList<BaseMultiViewHolderAdapter.BaseModelType>>()
     val listStorge = MutableLiveData<List<ListStorage>>()
 
 
@@ -78,7 +78,7 @@ class FileViewModel() : ViewModel() {
         }
     }
 
-    fun getListRecentForDay(ctx: Context) {
+    fun getRecentForDay(ctx: Context) {
         val cal = Calendar.getInstance()
         cal.set(Calendar.HOUR_OF_DAY, 0)
         cal.set(Calendar.MINUTE, 0)
@@ -89,11 +89,14 @@ class FileViewModel() : ViewModel() {
             if (recent.date!!.toLong() > cal.timeInMillis / 1000) {
                 todayFileDefault.add(recent)
             }
+            else{
+
+            }
             ItemDate("Today",todayFileDefault.size.toString())
             _listFileRecentForDay.postValue(todayFileDefault)
         }
     }
-    fun getListRecentForWeek(ctx: Context) {
+    fun getRecentForWeek(ctx: Context) {
         val cal = Calendar.getInstance()
         cal.set(Calendar.HOUR_OF_DAY, 0)
         cal.set(Calendar.MINUTE, 0)
@@ -112,6 +115,34 @@ class FileViewModel() : ViewModel() {
 
     fun getListStorage() {
         listStorge.value = DataFake.listStorage
+    }
+    fun getListRecentForDay(context: Context){
+        val recents = mutableListOf<BaseMultiViewHolderAdapter.BaseModelType>()
+        var countToday = 0
+        var countThisWeek = 0
+        var indexOfThisWeek = 0
+
+        run loop@{
+            val cal = Calendar.getInstance()
+            cal.set(Calendar.HOUR_OF_DAY, 0)
+            cal.set(Calendar.MINUTE, 0)
+            cal.set(Calendar.SECOND, 0)
+            cal.set(Calendar.MILLISECOND, 0)
+
+           recents.forEachIndexed { index, item ->
+                if ((item as FileCustom) .date!!.toLong() > cal.timeInMillis / 1000) {
+                    countToday++
+                }
+                else{
+                    countThisWeek = recents.size - countToday
+                    indexOfThisWeek = index + 1
+                    recents.add(0,ItemDate("Today",countToday.toString()))
+                }
+                ItemDate("Today",todayFileDefault.size.toString())
+            }
+            recents.add(indexOfThisWeek,ItemDate("The week",countThisWeek.toString()))
+            recentMulti.value = recents
+        }
     }
 
 }

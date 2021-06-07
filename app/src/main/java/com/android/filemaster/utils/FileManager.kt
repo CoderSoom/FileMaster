@@ -449,8 +449,8 @@ object FileManager {
 
     fun getListRecent(
         context: Context
-    ): ArrayList<FileCustom> {
-        val apks = ArrayList<FileCustom>()
+    ): MutableList<FileCustom> {
+        val apks = mutableListOf<FileCustom>()
         val sort = MediaStore.MediaColumns.DATE_ADDED + " DESC"
         val uri = MediaStore.Files.getContentUri("external")
         val projection =

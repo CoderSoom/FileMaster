@@ -20,7 +20,7 @@ import com.android.filemaster.databinding.FragmentHomeBinding
 import com.android.filemaster.module.getAppColor
 import com.tapon.ds.view.toolbar.Toolbar
 
-class HomeFragment : BaseFragment<FragmentHomeBinding>(), ToolbarActionListener {
+class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     private val viewModel by viewModels<FileViewModel>()
     private val fileAdapter = FileAdapter()
     private val storageAdapter = StorageAdapter()
@@ -31,8 +31,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), ToolbarActionListener 
         return R.layout.fragment_home
     }
 
-    override fun getToolbar(): Toolbar {
-        return binding.toolbarHome
+    override fun getToolbar(): Toolbar? {
+        return null
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
