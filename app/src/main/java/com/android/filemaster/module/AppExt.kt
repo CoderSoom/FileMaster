@@ -42,7 +42,7 @@ fun <T : RecyclerView.ViewHolder> RecyclerView.applyAdapter(applyAdapter: Recycl
 @BindingAdapter("tv_get_detail")
 fun TextView.getDetailFile(item: FileDefault) {
     this.text =
-        FileManager.convertBytes(item.size?.toLong()) + " | " + FileManager.formatDate(item.date!!.toLong())
+        FileManager.convertBytes(item.size?.toLong()) + " | " + FileManager.formatDate(item.date?.toLong())
 }
 
 @SuppressLint("SetTextI18n")
@@ -50,7 +50,7 @@ fun TextView.getDetailFile(item: FileDefault) {
 fun TextView.getDetailFileMulti(item: BaseMultiViewHolderAdapter.BaseModelType) {
     if (item is FileCustom) {
         this.text =
-            FileManager.convertBytes(item.size?.toLong()) + " | " + FileManager.formatDate(item.date!!.toLong())
+            FileManager.convertBytes(item.size?.toLong()) + " | " + FileManager.formatDate(item.date?.toLong())
     }
 }
 

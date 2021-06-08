@@ -180,11 +180,11 @@
 
                         <androidx.recyclerview.widget.RecyclerView
                             android:id="@+id/rv_list_recents"
+                            rv_set_adapter="@{recentAdapter}"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
                             android:nestedScrollingEnabled="false"
                             android:overScrollMode="never"
-                            rv_set_adapter="@{recentAdapter}"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
@@ -241,11 +241,42 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/recent_label">
 
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/cl_no_access"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:id="@+id/imvNoAccess"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/px16"
+                            android:layout_marginTop="@dimen/px16"
+                            android:layout_marginBottom="@dimen/px16"
+                            android:src="@drawable/ic_start_empty"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            style="@style/Paragraph2"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/px8"
+                            android:layout_marginEnd="@dimen/px16"
+                            android:text="@string/no_access_file"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toEndOf="@id/imvNoAccess"
+                            app:layout_constraintTop_toTopOf="parent" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/rvQuickAccess"
                         rv_set_adapter="@{fileAdapter}"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
+                        android:visibility="gone"
                         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                         tools:listitem="@layout/item_file" />
 

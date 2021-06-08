@@ -82,7 +82,7 @@ object FileManager {
             Constant.TF_MP3 -> {
                 return R.drawable.ic_audio
             }
-            Constant.TF_DOC, Constant.TF_DOCX,Constant.TF_TXT, Constant.TF_RTF, Constant.TF_RTX -> {
+            Constant.TF_DOC, Constant.TF_DOCX, Constant.TF_TXT, Constant.TF_RTF, Constant.TF_RTX -> {
                 return R.drawable.ic_doc
             }
             Constant.TF_MOV, Constant.TF_MP4, Constant.TF_MPEG4 -> {
@@ -235,7 +235,8 @@ object FileManager {
         return DecimalFormat("#,##0.#").format(size / 1024.0.pow(digitGroups.toDouble()))
             .toString() + " " + units[digitGroups]
     }
-    fun createUri(context: Context,path: String):Uri{
+
+    fun createUri(context: Context, path: String): Uri {
         return Uri.fromFile(File(path))
     }
 
@@ -452,10 +453,17 @@ object FileManager {
             listApp
         }
 
-    fun getListAccess(context: Context): ArrayList<FileCustom> {
-        val accessFiles = ArrayList<FileCustom>()
-
+    fun getListAccess(context: Context): ArrayList<FileDefault> {
+        val accessFiles = ArrayList<FileDefault>()
         return accessFiles
+/*        val arrTest = arrayListOf<FileDefault>(
+            FileDefault("Doc1", null, null, "/storage/emulated/0/Android/data.pdf"),
+            FileDefault("Doc2", "0", null, "/storage/emulated/0/Android/data.apk"),
+            FileDefault("Doc3", "0", null, "/storage/emulated/0/Android/data.rar"),
+
+            )
+        return arrTest*/
+
     }
 
     fun getListRecentMulti(
@@ -580,7 +588,7 @@ object FileManager {
     }
 
     fun convertBytes(size: Long?): String {
-        if (size == null || size <=0) {
+        if (size == null || size <= 0) {
             return "0B"
         } else {
             val units = arrayOf("B", "Kb", "Mb", "Gb", "Tb")
@@ -794,6 +802,7 @@ object FileManager {
             Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION
         context.contentResolver.takePersistableUriPermission(rootDir!!, modeFlags)
     }
+
     @JvmName("createUri1")
     fun createUri(context: Context?, str: String?): Uri {
         return if (Build.VERSION.SDK_INT < 24) {

@@ -27,10 +27,9 @@ class FileViewModel() : ViewModel() {
     private val _listFileRecentMulti = MutableLiveData<MutableList<FileDefault>>()
     val listFileRecentMulti = _listFileRecentSingLe.asLiveData()
 
-    private val _listFileAccess = MutableLiveData<MutableList<FileCustom>>()
+    private val _listFileAccess = MutableLiveData<MutableList<FileDefault>>()
     val listFileAccess = _listFileAccess.asLiveData()
 
-    val liveAllFile = MutableLiveData<List<FileDefault>>()
     val liveCurrentFile = MutableLiveData<List<FileDefault>>()
 
     val recentMulti = MutableLiveData<MutableList<BaseMultiViewHolderAdapter.BaseModelType>>()
@@ -52,24 +51,24 @@ class FileViewModel() : ViewModel() {
         viewModelScope.launch {
             val result = fileRepository.getListAccess(ctx)
             _listFileAccess.postValue(result)
-        }
-    }
-
-    fun getListFake() {
-        val result = DataFake.list
-        liveAllFile.value = result
-        if (isExpanded.value == false) {
-            liveCurrentFile.value = result.subList(0, 5)
+            if (isExpanded.value == false) {
+//                if (result.isEmpty()) {
+//                    liveCurrentFile.value = result
+//                } else liveCurrentFile.value = result.subList(0, 5)
+                if (result.size <= 5) {
+                    liveCurrentFile.value = result
+                } else liveCurrentFile.value = result.subList(0, 5)
+            }
         }
     }
 
     fun expanded(enable: Boolean) {
         isExpanded.value = enable
         if (isExpanded.value == false) {
-            val result = liveAllFile.value?.subList(0, 5)
+            val result = _listFileAccess.value?.subList(0, 5)
             liveCurrentFile.value = result?.toMutableList()
         } else {
-            val result = liveAllFile.value
+            val result = _listFileAccess.value
             liveCurrentFile.value = result?.toMutableList()
         }
     }
