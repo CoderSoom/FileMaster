@@ -5,10 +5,8 @@ import com.android.filemaster.base.BaseAdapter
 import com.android.filemaster.base.BaseListener
 import com.android.filemaster.data.model.FileCustom
 
-class FileAdapter : BaseAdapter<FileCustom>(R.layout.item_file_multi) {
-
+class FileAdapter : BaseAdapter<FileCustom>(R.layout.item_file) {
     interface FileListener : BaseListener {
-        fun onItemClick(position: Int, item: FileCustom)
+        fun onItemClick(position: Int)
     }
-
 }

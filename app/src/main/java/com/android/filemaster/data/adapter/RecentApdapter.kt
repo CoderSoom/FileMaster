@@ -15,6 +15,6 @@ class RecentApdapter :
     }
 
     interface IRecent : BaseListener {
-       fun onClickItem(position:Int,item:FileCustom)
+        fun onClickItem(position: Int, item: FileCustom)
     }
 }
