@@ -8,7 +8,7 @@ import com.android.filemaster.data.model.ListStorage
 
 class StorageAdapter : BaseAdapter<ListStorage>(R.layout.item_strorage) {
 
-    interface FileListener : BaseListener {
-        fun onItemClick(position: Int, item: FileCustom)
+    interface StorageLister : BaseListener {
+        fun onItemClick(position: Int): ListStorage
     }
 }

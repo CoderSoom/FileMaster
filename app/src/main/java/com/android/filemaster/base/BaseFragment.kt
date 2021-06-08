@@ -22,7 +22,7 @@ abstract class BaseFragment<VB : ViewDataBinding> : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         if (!::myInflater.isInitialized) {
-            myInflater = LayoutInflater.from(requireActivity())
+            myInflater = LayoutInflater.from(context)
         }
         binding = DataBindingUtil.inflate(myInflater, getLayoutId(), container, false)
         binding.lifecycleOwner = viewLifecycleOwner

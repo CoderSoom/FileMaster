@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+<data>
+    <import type="com.android.filemaster.base.BaseMultiViewHolderAdapter.BaseModelType"/>
+    <variable
+        name="item"
+        type="BaseModelType" />
+
+    <variable
+        name="position"
+        type="Integer" />
+    <variable
+        name="listener"
+        type="com.android.filemaster.data.adapter.SearchAdapter.ISearch" />
+</data>
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraint_top"
+            app:layout_constraintRight_toRightOf="parent"
+            android:background="@color/sys_gray_6"
+            android:paddingRight="@dimen/px16"
+            android:paddingLeft="@dimen/px16"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/px40">
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/iv_arrow"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:src="@drawable/ic_arrow_down"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_time"
+                android:layout_marginStart="@dimen/px8"
+                tv_set_text_by_multi_holder="@{item}"
+                android:textAllCaps="true"
+                android:textSize="@dimen/sp10"
+                android:textColor="@color/label_sec"
+                app:layout_constraintLeft_toRightOf="@id/iv_arrow"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+            <androidx.appcompat.widget.AppCompatTextView
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_marginEnd="@dimen/px8"
+                android:textSize="@dimen/px12"
+                android:textColor="@color/label_sec"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

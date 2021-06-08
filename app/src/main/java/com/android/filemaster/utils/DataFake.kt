@@ -1,5 +1,6 @@
 package com.android.filemaster.utils
 
+import com.android.filemaster.R
 import com.android.filemaster.data.model.FileCustom
 import com.android.filemaster.data.model.ListStorage
 
