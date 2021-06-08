@@ -125,6 +125,7 @@ class MainActivity : AppCompatActivity(),
             .setMessage(R.string.description_read_external_storage)
             .setButtonCancelText(R.string.cancel_permission)
             .setButtonAllowText(R.string.go_setting)
+            .setCancelable(false)
             .setListener(object : StoragePermissionDialog.OnActionListener {
                 override fun onAccept() {
                     CheckingPermission.goSettingsForPermission(this@MainActivity)

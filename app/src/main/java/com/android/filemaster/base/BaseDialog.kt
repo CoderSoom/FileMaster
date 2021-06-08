@@ -22,20 +22,23 @@ abstract class BaseDialog(val context: Context) {
         parentView = getDialogView()
     }
 
-    fun show(isCancelable: Boolean, showKeyboard: Boolean) {
+    fun show() {
+        val activity = context as Activity
+        if (activity.isFinishing) {
+            return
+        }
+
         mDialogBuilder!!.setView(parentView)
+        mDialogBuilder!!.setCancelable(isCancelable)
         if (mDialog == null) {
             mDialog = mDialogBuilder!!.create()
+            mDialog!!.setCancelable(isCancelable)
+            mDialog!!.setCanceledOnTouchOutside(isCancelable)
             mDialog!!.setOnDismissListener { onDismissDialog() }
         }
         try {
             val window = mDialog!!.window
-            if (window != null) {
-                window.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-                if (showKeyboard) {
-                    window.setSoftInputMode(5)
-                }
-            }
+            window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         } catch (ex: Exception) {
             ex.printStackTrace()
         }
@@ -51,25 +54,10 @@ abstract class BaseDialog(val context: Context) {
         onShowingDialog()
     }
 
-    protected fun setCancellable(cancellable: Boolean) {
-        if (mDialog != null) {
-            mDialog!!.setCancelable(cancellable)
-        }
-    }
-
+    protected abstract val isCancelable: Boolean
     protected abstract fun onDismissDialog()
     protected abstract fun onShowingDialog()
     protected abstract fun getDialogView(): View?
-
-    abstract fun isCancelable(): Boolean
-
-    fun show() {
-        val activity = context as Activity
-        if (activity.isFinishing) {
-            return
-        }
-        this.show(true, false)
-    }
 
     val isShowing: Boolean
         get() = if (mDialog != null && mDialog!!.isShowing) {

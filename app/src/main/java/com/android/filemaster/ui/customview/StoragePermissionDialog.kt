@@ -10,7 +10,6 @@ import com.android.filemaster.databinding.StoragePermissionDialogBinding
 
 class StoragePermissionDialog(context: Context) :
     BaseDialog(context), View.OnClickListener {
-    private var isCancel: Boolean = false
     private var listener: OnActionListener? = null
     private var mBinding: StoragePermissionDialogBinding? = null
 
@@ -50,13 +49,12 @@ class StoragePermissionDialog(context: Context) :
     }
 
     fun setCancelable(cancel: Boolean): StoragePermissionDialog {
-        this.isCancel = cancel
+        this.isCancelable = cancel
         return this
     }
 
-    override fun isCancelable(): Boolean {
-        return this.isCancel
-    }
+    override var isCancelable = false
+        private set
 
     override fun getDialogView(): View? {
         try {
