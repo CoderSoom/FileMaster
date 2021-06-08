@@ -534,8 +534,6 @@ object FileManager {
                     digitGroups.toDouble()
                 )
             ) + " " + units[digitGroups]
-
-
         }
     }
 

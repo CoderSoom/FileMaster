@@ -122,6 +122,14 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), ToolbarActionListener 
             }
 
         }
+        recentAdapter.listener = object :RecentHomeAdapter.RecentListener{
+            override fun onClickItem(position: Int, item: FileCustom) {
+                if (item.name.equals("More") && item.path.equals(".more")){
+                    findNavController().navigate(R.id.action_homeFragment_to_recentsFragment)
+                }
+            }
+
+        }
         binding.tvExpand.setOnClickListener {
             viewModel.expanded(!viewModel.isExpanded.value!!)
         }
