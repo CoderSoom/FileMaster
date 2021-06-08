@@ -6,75 +6,87 @@ import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
 import android.os.Environment
-import android.util.Log
 import android.view.MenuItem
 import androidx.activity.viewModels
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.Navigation
 import com.android.filemaster.R
-import com.android.filemaster.base.BaseActivity
 import com.android.filemaster.data.viewmodel.MainViewModel
 import com.android.filemaster.databinding.ActivityMainBinding
+import com.android.filemaster.ui.customview.StoragePermissionDialog
+import com.android.filemaster.utils.AppPrefs
 import com.android.filemaster.utils.CheckingPermission
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
-class MainActivity : BaseActivity<ActivityMainBinding>(),
+class MainActivity : AppCompatActivity(),
     BottomNavigationView.OnNavigationItemSelectedListener {
-    private val TAG = "MainActivity"
-    private val mainViewModel by viewModels<MainViewModel>()
 
-    override fun getLayoutId(): Int {
-        return R.layout.activity_main
+    private var isStartSettingPermission = false
+    private val mainViewModel by viewModels<MainViewModel>()
+    protected var mBinding: ActivityMainBinding? = null
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        requestPermission()
     }
 
-    override fun init() {
+    private fun requestPermission() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             if (!Environment.isExternalStorageManager()) {
-                CheckingPermission.reqStoreMananger(this)
+                val permisionDialog = StoragePermissionDialog(this)
+                permisionDialog.setTitle(R.string.grant_permission)
+                    .setMessage(
+                        getString(
+                            R.string.permission_message_android_11,
+                            getString(R.string.app_name)
+                        )
+                    ).setButtonAllowText(R.string.allow_permission)
+                    .setButtonCancelText(R.string.cancel_permission)
+                    .setListener(object : StoragePermissionDialog.OnActionListener {
+                        override fun onAccept() {
+                            CheckingPermission.requestManageStoragePermission(this@MainActivity)
+                        }
+
+                        override fun onCancel() {
+                            finish()
+                        }
+                    }).show()
                 return
             }
         } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (CheckingPermission.isNotStoragePmsGranted(this)) {
                 ActivityCompat.requestPermissions(
                     this,
-                    arrayOf(
-                        Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                        Manifest.permission.READ_EXTERNAL_STORAGE
-                    ),
+                    CheckingPermission.PERMISSION_STORAGE,
                     CheckingPermission.REQ_STORAGE_PERMISSION_CODE
                 )
                 return
             }
         }
-        initData()
-        initView()
+        this.initData()
     }
 
     private fun initData() {
-        mBinding.lifecycleOwner = this
-        mBinding.navigationBottom.setOnNavigationItemSelectedListener(this)
-        mBinding.navigationBottom.itemIconTintList = null
-        mBinding.mainViewModel = mainViewModel
+        println("DUYDQ->  [initData]")
+        mBinding = DataBindingUtil.setContentView(this, R.layout.activity_main)
+
+        mBinding!!.lifecycleOwner = this
+        mBinding!!.navigationBottom.setOnNavigationItemSelectedListener(this)
+        mBinding!!.navigationBottom.itemIconTintList = null
+        mBinding!!.mainViewModel = mainViewModel
     }
-
-    private fun initView() {
-
-    }
-
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, resultData: Intent?) {
         super.onActivityResult(requestCode, resultCode, resultData)
-        if (requestCode == CheckingPermission.REQ_FILE_MANAGER_ACCESS_CODE) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R && Environment.isExternalStorageManager()) {
-                initData()
-                initView()
-            }
+        if (requestCode == CheckingPermission.REQUEST_CODE_MANAGE_STORAGE_PERMISSION) {
+            requestPermission()
         }
-
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<String>,
@@ -82,21 +94,58 @@ class MainActivity : BaseActivity<ActivityMainBinding>(),
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == CheckingPermission.REQ_STORAGE_PERMISSION_CODE) {
+            val instance = AppPrefs.instance
             for (permission in permissions) {
-                if (ActivityCompat.checkSelfPermission(
-                        this,
-                        permission
-                    ) == PackageManager.PERMISSION_GRANTED
-                ) {
-                    if (permission.equals(android.Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-                        Log.d(TAG, "onRequestPermissionsResult: vao day")
-                        initData()
-//            initView()
+                if (!ActivityCompat.shouldShowRequestPermissionRationale(this, permission)) {
+                    if (ActivityCompat.checkSelfPermission(
+                            this,
+                            permission
+                        ) == PackageManager.PERMISSION_GRANTED
+                    ) {
+                        if (permission == Manifest.permission.WRITE_EXTERNAL_STORAGE) {
+                            this.initData()
+                            return
+                        }
+                    } else if (permission == Manifest.permission.WRITE_EXTERNAL_STORAGE) {
+                        instance!!.applyDontShowAgain()
                     }
                 }
             }
+            if (instance!!.isDontShowAgain) {
+                showDialogPermission()
+            } else {
+                finish()
+            }
         }
+    }
 
+    private fun showDialogPermission() {
+        StoragePermissionDialog(this)
+            .setTitle(R.string.grant_permission)
+            .setMessage(R.string.description_read_external_storage)
+            .setButtonCancelText(R.string.cancel_permission)
+            .setButtonAllowText(R.string.go_setting)
+            .setListener(object : StoragePermissionDialog.OnActionListener {
+                override fun onAccept() {
+                    CheckingPermission.goSettingsForPermission(this@MainActivity)
+                    isStartSettingPermission = true
+                }
+
+                override fun onCancel() {
+                    finish()
+                }
+            }).show()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (isStartSettingPermission) {
+            if (CheckingPermission.isNotStoragePmsGranted(this)) {
+                finish()
+                return
+            }
+            this.initData()
+        }
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
