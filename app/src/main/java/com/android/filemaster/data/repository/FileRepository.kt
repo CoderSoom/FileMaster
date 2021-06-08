@@ -10,4 +10,5 @@ class FileRepository {
 
     fun getListAccess(context: Context) = FileManager.getListAccess(context)
 
+    fun getListStorage(context: Context) = FileManager.getListStorage(context)
 }

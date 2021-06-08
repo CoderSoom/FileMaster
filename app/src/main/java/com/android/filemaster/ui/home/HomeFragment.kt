@@ -18,6 +18,7 @@ import com.android.filemaster.data.viewmodel.FileViewModel
 import com.android.filemaster.data.viewmodel.MainViewModel
 import com.android.filemaster.databinding.FragmentHomeBinding
 import com.android.filemaster.module.getAppColor
+import com.android.filemaster.ui.customview.SpaceItemDecoation
 import com.tapon.ds.view.toolbar.Toolbar
 
 class HomeFragment : BaseFragment<FragmentHomeBinding>(), ToolbarActionListener {
@@ -38,9 +39,11 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), ToolbarActionListener 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel.getListFake()
-        viewModel.getListStorage()
+        viewModel.getListStorage(requireActivity())
 //        viewModel.getListAccess(requireActivity())
         viewModel.getListRecent(requireActivity())
+
+
     }
 
 
@@ -71,16 +74,12 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), ToolbarActionListener 
             LinearLayoutManager(requireActivity(), LinearLayoutManager.HORIZONTAL, false)
         binding.rvListRecents.isNestedScrollingEnabled = true
 
-        //        binding.progressStorage.setProgress(totalMemorySize, amountOfMemoryUsed)
-//        binding.tvUsedStorage.text= getFileSize(amountOfMemoryUsed) +" / " +getFileSize(totalMemorySize)
-//        binding.tvUsed.text = (getUsedStorage()+" USED")
-
-//        Toast.makeText(requireActivity(), getUsedStorage()l, Toast.LENGTH_SHORT).show()
-
         binding.moreRecent.setOnClickListener {
             mainViewModel.hideMenu()
             findNavController().navigate(R.id.action_homeFragment_to_recentsFragment)
         }
+        val itemSpace = SpaceItemDecoation(resources.getDimension(R.dimen.px10))
+        binding.rvListStorage.addItemDecoration(itemSpace)
     }
 
     private fun observeViewModel() {
@@ -102,11 +101,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), ToolbarActionListener 
             viewModel.expanded(!viewModel.isExpanded.value!!)
         }
 
-        viewModel.listStorge.observe(viewLifecycleOwner) {
-//             if (it){
-//
-//             }
-//             storageAdapter.list = it
+        viewModel.listStorage.observe(viewLifecycleOwner) {
+            storageAdapter.list = it
         }
     }
 

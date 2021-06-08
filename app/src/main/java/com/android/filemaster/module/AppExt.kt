@@ -5,6 +5,7 @@ import android.content.Context
 import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.net.Uri
+import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.ColorRes
@@ -14,6 +15,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.RecyclerView
 import com.android.filemaster.data.model.FileCustom
+import com.android.filemaster.data.model.ListStorage
+import com.android.filemaster.ui.customview.CircularProgressBar
 import com.android.filemaster.utils.FileManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
@@ -55,3 +58,34 @@ fun setImage(img: ImageView, path: String) {
 
 fun getAppColor(@ColorRes colorRes: Int, context: Context? = appInstance) =
     context?.let { ContextCompat.getColor(it, colorRes) } ?: Color.TRANSPARENT
+
+
+
+
+@BindingAdapter("setImageDrawable")
+fun setImageDrawable(img: ImageView, path: Int) {
+    img.setImageResource(path)
+}
+
+@BindingAdapter("setProgressbar")
+fun CircularProgressBar.setProgressbar(item: ListStorage) {
+    if (item.totalMemorySize !=null && item.amountOfMemoryUsed!=null) {
+        this.setProgress(item.amountOfMemoryUsed!!.toInt(), item.totalMemorySize!!.toInt())
+    }else{
+    }
+}
+
+@BindingAdapter("setVisibleStorage")
+fun CircularProgressBar.setVisibleStorage(item: ListStorage) {
+    if (item.nameStorage != "Storage") {
+        this.visibility = View.INVISIBLE
+    }
+}
+
+@BindingAdapter("setVisibleImages")
+fun ImageView.setVisibleImages(item: ListStorage) {
+    if (item.nameStorage != "Storage") {
+        this.visibility = View.VISIBLE
+    }
+}
+

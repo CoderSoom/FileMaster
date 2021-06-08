@@ -1,21 +1,25 @@
 package com.android.filemaster.utils
 
 import android.annotation.SuppressLint
+import android.app.usage.StorageStatsManager
 import android.content.Context
 import android.content.Intent
 import android.content.pm.ApplicationInfo
 import android.database.Cursor
-import android.graphics.BitmapFactory
 import android.media.MediaScannerConnection
 import android.net.Uri
+import android.os.Build
 import android.os.Environment
+import android.os.StatFs
+import android.os.storage.StorageManager
 import android.provider.MediaStore
 import android.text.TextUtils
 import android.util.Log
+import androidx.appcompat.app.AppCompatActivity
 import androidx.documentfile.provider.DocumentFile
 import com.android.filemaster.R
 import com.android.filemaster.data.model.FileCustom
-import com.android.filemaster.model.FileDefault
+import com.android.filemaster.data.model.ListStorage
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.io.File
@@ -33,8 +37,117 @@ import kotlin.math.pow
 
 
 object FileManager {
+    private var availableMemorySize: Long = 0L
+    private var amountOfMemoryUsed: Long = 0L
+    private var totalMemorySize: Long = 0L
+    var used: Double = 0.0
+
     var listImg = arrayListOf<FileCustom>()
-    val TAG = "giangtd"
+    val TAG = "anhlt"
+
+
+    //List Search
+    var listSearchImg: MutableList<FileCustom> = ArrayList()
+
+
+    fun getListStorage(context: Context): ArrayList<ListStorage> {
+        getStorageUsed(context)
+        var listStorage: ArrayList<ListStorage> = ArrayList()
+        listStorage.add(
+            ListStorage(
+                R.drawable.ic_folder,
+                "Storage",
+                totalMemorySize,
+                amountOfMemoryUsed,
+                getUsedStorage(),
+                getFileSize(amountOfMemoryUsed) + " / " + getFileSize(totalMemorySize),
+                R.drawable.ic_clear,
+                R.drawable.ic_clear_pressed
+            )
+        )
+        listStorage.add(
+            ListStorage(
+                R.drawable.ic_drive,
+                "Account",
+                null,
+                null,
+                "SYNCED",
+                "account@gmail.com",
+                R.drawable.ic_next,
+                R.drawable.ic_next_pressed
+            )
+        )
+        return listStorage
+    }
+
+    fun getListSearch(context: Context, searchName: String): MutableList<FileCustom> {
+        var listImg = getListImage(context)
+        for (listFile in listImg) {
+            if ((listFile.name.toString().toUpperCase().contains(searchName.toUpperCase()))) {
+                listSearchImg.add(listFile)
+            }
+        }
+        return listSearchImg
+    }
+
+    private fun getStorageUsed(context: Context) {
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            try {
+                val storageManager =
+                    context.getSystemService(AppCompatActivity.STORAGE_SERVICE) as StorageManager
+                val storageVolume =
+                    Objects.requireNonNull(storageManager).primaryStorageVolume
+                val storageStatsManager =
+                    context.getSystemService(Context.STORAGE_STATS_SERVICE) as StorageStatsManager
+                val uuId = storageVolume.uuid
+                val uuid: UUID =
+                    if (uuId == null) StorageManager.UUID_DEFAULT else UUID.fromString(uuId)
+                availableMemorySize = storageStatsManager.getFreeBytes(uuid)
+                totalMemorySize = storageStatsManager.getTotalBytes(uuid)
+                amountOfMemoryUsed = totalMemorySize - availableMemorySize
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        } else {
+
+            availableMemorySize = getAvailableInternalMemorySize()
+            totalMemorySize = getTotalInternalMemorySize()
+            amountOfMemoryUsed = totalMemorySize - availableMemorySize
+
+        }
+
+    }
+
+    fun getUsedStorage(): String {
+        used = ((amountOfMemoryUsed.toDouble() / totalMemorySize.toDouble()) * 100)
+        return DecimalFormat("#,##0").format(used).toString() + "% USED"
+    }
+
+    fun getAvailableInternalMemorySize(): Long {
+        return StatFs(Environment.getDataDirectory().path).freeBytes
+    }
+
+    fun getTotalInternalMemorySize(): Long {
+        return StatFs(Environment.getDataDirectory().path).totalBytes
+    }
+
+    fun getDate(milliSeconds: Long, dateFormat: String?): String? {
+
+        val formatter = SimpleDateFormat(dateFormat)
+
+        val calendar = Calendar.getInstance()
+        calendar.timeInMillis = milliSeconds
+        return formatter.format(calendar.time)
+    }
+
+    fun getFileSize(size: Long): String? {
+        if (size <= 0) return "0"
+        val units = arrayOf("B", "KB", "MB", "GB", "TB")
+        val digitGroups = (log10(size.toDouble()) / log10(1024.0)).toInt()
+        return DecimalFormat("#,##0.#").format(size / 1024.0.pow(digitGroups.toDouble()))
+            .toString() + units[digitGroups]
+    }
 
     @Throws(IOException::class)
     fun copy(src: File?, dst: File?) {
@@ -108,8 +221,8 @@ object FileManager {
             Constant.TF_RAR -> {
                 return R.drawable.ic_file_rar
             }
-            Constant.TF_JPG, Constant.TF_PNG ->{
-              return 1
+            Constant.TF_JPG, Constant.TF_PNG -> {
+                return 1
             }
         }
         return R.drawable.ic_file_none
@@ -212,22 +325,6 @@ object FileManager {
         return audios
     }
 
-    fun getDate(milliSeconds: Long, dateFormat: String?): String? {
-
-        val formatter = SimpleDateFormat(dateFormat)
-
-        val calendar = Calendar.getInstance()
-        calendar.timeInMillis = milliSeconds
-        return formatter.format(calendar.time)
-    }
-
-    fun getFileSize(size: Long): String? {
-        if (size <= 0) return "0"
-        val units = arrayOf("B", "KB", "MB", "GB", "TB")
-        val digitGroups = (log10(size.toDouble()) / log10(1024.0)).toInt()
-        return DecimalFormat("#,##0.#").format(size / 1024.0.pow(digitGroups.toDouble()))
-            .toString() + " " + units[digitGroups]
-    }
 
     suspend fun getListVideo(context: Context): ArrayList<String> =
         withContext(Dispatchers.Default) {
@@ -450,7 +547,7 @@ object FileManager {
 
     fun getListRecent(
         context: Context
-    ): ArrayList<FileCustom> {
+    ): MutableList<FileCustom> {
         val apks = ArrayList<FileCustom>()
         val sort = MediaStore.MediaColumns.DATE_ADDED + " DESC"
         val uri = MediaStore.Files.getContentUri("external")
@@ -491,12 +588,8 @@ object FileManager {
 
 
 
-                    if (fileName!=null){
-                        apks.add(FileCustom(fileName,fileDate, fileSize,filePath))
-                        Log.d(TAG, "Data  : $filePath")
-                        Log.d(TAG, "Name : $fileName")
-                        Log.d(TAG, "Size : $fileSize")
-                        Log.d(TAG, "Date: $fileDate")
+                    if (fileName != null) {
+                        apks.add(FileCustom(fileName, fileDate, fileSize, filePath))
                     }
 
 

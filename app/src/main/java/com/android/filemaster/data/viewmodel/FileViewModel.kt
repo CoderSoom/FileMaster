@@ -30,7 +30,8 @@ class FileViewModel() : ViewModel() {
     val listFileRecentForDay = _listFileRecentForDay.asLiveData()
 
 
-    val listStorge = MutableLiveData<List<ListStorage>>()
+    private val _listStorage = MutableLiveData<MutableList<ListStorage>>()
+    val listStorage = _listStorage.asLiveData()
 
     private val todayFileDefault = mutableListOf<FileCustom>()
     private val weekFileDefault = mutableListOf<FileCustom>()
@@ -105,8 +106,12 @@ class FileViewModel() : ViewModel() {
         _listFileRecentForDay.postValue(today)
     }
 
-    fun getListStorage() {
-        listStorge.value = DataFake.listStorage
+    fun getListStorage(ctx: Context){
+        viewModelScope.launch {
+            val result = fileRepository.getListStorage(ctx)
+            _listStorage.postValue(result)
+        }
     }
+
 
 }
