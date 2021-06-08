@@ -11,18 +11,23 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.android.filemaster.R
 import com.android.filemaster.base.BaseFragment
 import com.android.filemaster.data.adapter.FileAdapter
+import com.android.filemaster.data.adapter.FileAdapterMulti
 import com.android.filemaster.data.adapter.RecentHomeAdapter
 import com.android.filemaster.data.adapter.StorageAdapter
 import com.android.filemaster.data.model.FileCustom
+import com.android.filemaster.data.model.FileDefault
 import com.android.filemaster.data.viewmodel.FileViewModel
 import com.android.filemaster.data.viewmodel.MainViewModel
 import com.android.filemaster.databinding.FragmentHomeBinding
 import com.android.filemaster.module.getAppColor
+import com.android.filemaster.utils.DataFake
+import com.android.filemaster.utils.StartFileManager
 import com.tapon.ds.view.toolbar.Toolbar
 
 class HomeFragment : BaseFragment<FragmentHomeBinding>(), ToolbarActionListener {
     private val viewModel by viewModels<FileViewModel>()
     private val fileAdapter = FileAdapter()
+    private val fileAdapterRecent = FileAdapterMulti()
     private val storageAdapter = StorageAdapter()
     private val recentAdapter = RecentHomeAdapter()
     private val mainViewModel by activityViewModels<MainViewModel>()
@@ -63,9 +68,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), ToolbarActionListener 
 
         binding.viewModel = viewModel
         binding.fileAdapter = fileAdapter
-
         binding.storageAdapter = storageAdapter
-
         binding.recentAdapter = recentAdapter
         binding.rvListRecents.layoutManager =
             LinearLayoutManager(requireActivity(), LinearLayoutManager.HORIZONTAL, false)
@@ -83,51 +86,48 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), ToolbarActionListener 
 //        viewModel.liveCurrentFile.observe(viewLifecycleOwner) {
 //            fileAdapter.list = it
 //        }
-
+        fileAdapter.list = DataFake.list
         recentAdapter.listener = object : RecentHomeAdapter.RecentListener {
-            override fun onClickItem(position: Int, item: FileCustom) {
-                if (item.name.equals(getString(R.string.more)) && item.date.equals("")) {
+            override fun onClickItem(position: Int, item: FileDefault) {
+                if (item.name.equals(getString(R.string.more)) && item.path.equals(".more")) {
                     mainViewModel.hideMenu()
                     findNavController().navigate(R.id.action_homeFragment_to_recentsFragment)
+                }
+                else{
+                    StartFileManager().openNomarlFile(requireContext(),item)
                 }
             }
         }
 
-        viewModel.listFileRecent.observe(viewLifecycleOwner) {
-            Log.d(TAG, "observeViewModel: $it")
+        viewModel.listFileRecentSingle.observe(viewLifecycleOwner) {
+
             if (it.size <= 4) {
-                recentAdapter.list = it
                 when (it.size) {
                     1 -> {
-                        for (i in it.size - 1..0) {
-                            it.add(i, FileCustom("", "", "", "abc.xxx"))
-                        }
+                        it.add(FileDefault("", "", "", "abc.xxx"))
+                        it.add(FileDefault("", "", "", "abc.xxx"))
+                        it.add(FileDefault("", "", "", "abc.xxx"))
+
                     }
                     2 -> {
-                        for (i in it.size - 1..0) {
-                            it.add(i, FileCustom("", "", "", "abc.xxx"))
-                        }
+                        it.add(FileDefault("", "", "", "abc.xxx"))
+                        it.add(FileDefault("", "", "", "abc.xxx"))
                     }
                     3 -> {
-                        it.add(FileCustom("", "", "", "abc.xxx"))
+                        it.add(FileDefault("", "", "", "abc.xxx"))
                     }
                 }
+                recentAdapter.list = it
+
 
             } else {
                 val list = it.subList(0, 3)
-                list.add(list.size, FileCustom(getString(R.string.more), "", "", ".more"))
+                list.add(list.size, FileDefault(getString(R.string.more), "", "", ".more"))
                 recentAdapter.list = list
 
             }
         }
-        recentAdapter.listener = object :RecentHomeAdapter.RecentListener{
-            override fun onClickItem(position: Int, item: FileCustom) {
-                if (item.name.equals("More") && item.path.equals(".more")){
-                    findNavController().navigate(R.id.action_homeFragment_to_recentsFragment)
-                }
-            }
 
-        }
         binding.tvExpand.setOnClickListener {
             viewModel.expanded(!viewModel.isExpanded.value!!)
         }

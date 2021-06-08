@@ -180,8 +180,10 @@
 
                         <androidx.recyclerview.widget.RecyclerView
                             android:id="@+id/rv_list_recents"
+                            android:nestedScrollingEnabled="false"
+                            android:overScrollMode="never"
                             rv_set_adapter="@{recentAdapter}"
-                            android:layout_width="wrap_content"
+                            android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"

@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.android.filemaster.base.BaseMultiViewHolderAdapter
 import com.android.filemaster.data.model.FileCustom
+import com.android.filemaster.data.model.FileDefault
 import com.android.filemaster.data.model.ItemDate
 import com.android.filemaster.data.model.ListStorage
 import com.android.filemaster.data.repository.FileRepository
@@ -20,14 +21,17 @@ class FileViewModel() : ViewModel() {
     private val TAG = "FileViewModel"
     private val fileRepository = FileRepository()
 
-    private val _listFileRecent = MutableLiveData<MutableList<FileCustom>>()
-    val listFileRecent = _listFileRecent.asLiveData()
+    private val _listFileRecentSingLe = MutableLiveData<MutableList<FileDefault>>()
+    val listFileRecentSingle = _listFileRecentSingLe.asLiveData()
+
+    private val _listFileRecentMulti = MutableLiveData<MutableList<FileDefault>>()
+    val listFileRecentMulti = _listFileRecentSingLe.asLiveData()
 
     private val _listFileAccess = MutableLiveData<MutableList<FileCustom>>()
     val listFileAccess = _listFileAccess.asLiveData()
 
-    val liveAllFile = MutableLiveData<List<FileCustom>>()
-    val liveCurrentFile = MutableLiveData<List<FileCustom>>()
+    val liveAllFile = MutableLiveData<List<FileDefault>>()
+    val liveCurrentFile = MutableLiveData<List<FileDefault>>()
 
     val recentMulti = MutableLiveData<MutableList<BaseMultiViewHolderAdapter.BaseModelType>>()
     val listStorge = MutableLiveData<List<ListStorage>>()
@@ -39,8 +43,8 @@ class FileViewModel() : ViewModel() {
 
     fun getListRecent(ctx: Context) {
         viewModelScope.launch {
-            val result = fileRepository.getListFileRecent(ctx)
-            _listFileRecent.postValue(result)
+            val result = fileRepository.getListFileRecentSingle(ctx)
+            _listFileRecentSingLe.postValue(result)
         }
     }
 
@@ -80,7 +84,7 @@ class FileViewModel() : ViewModel() {
         var countToday = 0
         var countThisWeek = 0
         var indexOfThisWeek = 0
-        val list = fileRepository.getListFileRecent(context)
+        val list = fileRepository.getListFileRecentMulti(context)
         recents.addAll(list)
         run loop@{
             val cal = Calendar.getInstance()

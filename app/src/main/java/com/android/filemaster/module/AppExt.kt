@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.android.filemaster.R
 import com.android.filemaster.base.BaseMultiViewHolderAdapter
 import com.android.filemaster.data.model.FileCustom
+import com.android.filemaster.data.model.FileDefault
 import com.android.filemaster.data.model.ItemDate
 import com.android.filemaster.utils.FileManager
 import com.bumptech.glide.Glide
@@ -39,9 +40,9 @@ fun <T : RecyclerView.ViewHolder> RecyclerView.applyAdapter(applyAdapter: Recycl
 
 @SuppressLint("SetTextI18n")
 @BindingAdapter("tv_get_detail")
-fun TextView.getDetailFile(item: FileCustom) {
+fun TextView.getDetailFile(item: FileDefault) {
     this.text =
-        FileManager.convertBytes(item.size!!) + " | " + FileManager.formatDate(item.date!!.toLong())
+        FileManager.convertBytes(item.size?.toLong()) + " | " + FileManager.formatDate(item.date!!.toLong())
 }
 
 @SuppressLint("SetTextI18n")
@@ -49,7 +50,7 @@ fun TextView.getDetailFile(item: FileCustom) {
 fun TextView.getDetailFileMulti(item: BaseMultiViewHolderAdapter.BaseModelType) {
     if (item is FileCustom) {
         this.text =
-            FileManager.convertBytes(item.size) + " | " + FileManager.formatDate(item.date!!.toLong())
+            FileManager.convertBytes(item.size?.toLong()) + " | " + FileManager.formatDate(item.date!!.toLong())
     }
 }
 

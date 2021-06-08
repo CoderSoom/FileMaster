@@ -7,13 +7,17 @@ import android.content.pm.ApplicationInfo
 import android.database.Cursor
 import android.media.MediaScannerConnection
 import android.net.Uri
+import android.os.Build
 import android.os.Environment
 import android.provider.MediaStore
 import android.text.TextUtils
 import android.util.Log
+import androidx.core.content.FileProvider
 import androidx.documentfile.provider.DocumentFile
+import com.android.filemaster.BuildConfig
 import com.android.filemaster.R
 import com.android.filemaster.data.model.FileCustom
+import com.android.filemaster.data.model.FileDefault
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.io.File
@@ -73,13 +77,12 @@ object FileManager {
 
     fun setImageFile(path: String): Int {
         val parts = path.split(".").toTypedArray()
-        Log.d(TAG, "setImageFile: " + parts.get(parts.size - 1))
         val tail = parts.get(parts.size - 1)
         when (tail) {
             Constant.TF_MP3 -> {
                 return R.drawable.ic_audio
             }
-            Constant.TF_DOC, Constant.TF_DOCX, Constant.TF_RTF, Constant.TF_RTX -> {
+            Constant.TF_DOC, Constant.TF_DOCX,Constant.TF_TXT, Constant.TF_RTF, Constant.TF_RTX -> {
                 return R.drawable.ic_doc
             }
             Constant.TF_MOV, Constant.TF_MP4, Constant.TF_MPEG4 -> {
@@ -109,11 +112,14 @@ object FileManager {
             Constant.TF_JPG, Constant.TF_PNG -> {
                 return 1
             }
-            Constant.TF_MORE -> {
+            Constant.IC_MORE -> {
                 return R.drawable.ic_more_file
             }
+            Constant.IC_PLACE_HOLDER -> {
+                return R.drawable.ic_file_place_holder
+            }
         }
-        return R.drawable.ic_file_none
+        return R.drawable.ic_file_unknow
     }
 
     fun getListImage(context: Context): ArrayList<FileCustom> {
@@ -228,6 +234,9 @@ object FileManager {
         val digitGroups = (log10(size.toDouble()) / log10(1024.0)).toInt()
         return DecimalFormat("#,##0.#").format(size / 1024.0.pow(digitGroups.toDouble()))
             .toString() + " " + units[digitGroups]
+    }
+    fun createUri(context: Context,path: String):Uri{
+        return Uri.fromFile(File(path))
     }
 
     suspend fun getListVideo(context: Context): ArrayList<String> =
@@ -449,10 +458,63 @@ object FileManager {
         return accessFiles
     }
 
-    fun getListRecent(
+    fun getListRecentMulti(
         context: Context
     ): MutableList<FileCustom> {
         val apks = mutableListOf<FileCustom>()
+        val sort = MediaStore.MediaColumns.DATE_ADDED + " DESC"
+        val uri = MediaStore.Files.getContentUri("external")
+        val projection =
+            arrayOf(
+                MediaStore.Files.FileColumns.DATA,
+                MediaStore.Files.FileColumns.DISPLAY_NAME,
+                MediaStore.Files.FileColumns.SIZE,
+                MediaStore.Files.FileColumns.DATE_MODIFIED,
+                MediaStore.Files.FileColumns.MIME_TYPE
+            )
+        val calendar = Calendar.getInstance()
+        calendar.add(Calendar.DATE, -7)
+        val timeInMillis = calendar.timeInMillis / 1000
+
+        val cursor: Cursor? = context.contentResolver.query(
+            uri,
+            projection,
+            "date_modified" + ">?",
+            arrayOf("" + timeInMillis),
+            sort
+        )
+
+        try {
+            cursor?.let {
+                val clData = it.getColumnIndex(MediaStore.Files.FileColumns.DATA)
+                val clName = it.getColumnIndex(MediaStore.Files.FileColumns.DISPLAY_NAME)
+                val clSize = it.getColumnIndex(MediaStore.Files.FileColumns.SIZE)
+                val clDate = it.getColumnIndex(MediaStore.Files.FileColumns.DATE_MODIFIED)
+                var hasRow = it.moveToFirst()
+
+                while (hasRow) {
+                    val filePath = it.getString(clData)
+                    val fileName = it.getString(clName)
+                    val fileSize = it.getString(clSize)
+                    val fileDate = it.getString(clDate)
+                    if (fileName != null) {
+                        apks.add(FileCustom(fileName, fileDate, fileSize, filePath))
+                    }
+
+
+                    hasRow = it.moveToNext()
+                }
+            }
+        } finally {
+            cursor?.close()
+        }
+        return apks
+    }
+
+    fun getListRecentSingle(
+        context: Context
+    ): MutableList<FileDefault> {
+        val apks = mutableListOf<FileDefault>()
         val sort = MediaStore.MediaColumns.DATE_ADDED + " DESC"
         val uri = MediaStore.Files.getContentUri("external")
         val projection =
@@ -493,11 +555,7 @@ object FileManager {
 
 
                     if (fileName != null) {
-                        apks.add(FileCustom(fileName, fileDate, fileSize, filePath))
-                        Log.d(TAG, "Data  : $filePath")
-                        Log.d(TAG, "Name : $fileName")
-                        Log.d(TAG, "Size : $fileSize")
-                        Log.d(TAG, "Date: $fileDate")
+                        apks.add(FileDefault(fileName, fileDate, fileSize, filePath))
                     }
 
 
@@ -510,6 +568,7 @@ object FileManager {
         return apks
     }
 
+
     fun formatDate(millis: Long?): String {
         if (millis == null) {
             return "0"
@@ -520,18 +579,18 @@ object FileManager {
 
     }
 
-    fun convertBytes(size: String?): String {
-        if (size == null) {
-            return "0b"
+    fun convertBytes(size: Long?): String {
+        if (size == null || size <=0) {
+            return "0B"
         } else {
             val units = arrayOf("B", "Kb", "Mb", "Gb", "Tb")
             val digitGroups = (Math.log10(size.toDouble()) / Math.log10(1024.0)).toInt()
             return DecimalFormat("#,##0.#").format(
-                size.toLong() / Math.pow(
+                size / Math.pow(
                     1024.0,
                     digitGroups.toDouble()
                 )
-            ) + " " + units[digitGroups]
+            ) + "" + units[digitGroups]
         }
     }
 
@@ -735,6 +794,18 @@ object FileManager {
             Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION
         context.contentResolver.takePersistableUriPermission(rootDir!!, modeFlags)
     }
+    @JvmName("createUri1")
+    fun createUri(context: Context?, str: String?): Uri {
+        return if (Build.VERSION.SDK_INT < 24) {
+            Uri.fromFile(File(str))
+        } else try {
+            val provideName: String = BuildConfig.APPLICATION_ID.toString() + ".provider"
+            FileProvider.getUriForFile(context!!, provideName, File(str))
+        } catch (e: IllegalArgumentException) {
+            Uri.Builder().build()
+        }
+    }
+
 
 }
 
