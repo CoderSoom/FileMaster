@@ -17,7 +17,6 @@ abstract class BaseActivity<VB : ViewDataBinding> : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        this.mBinding = DataBindingUtil.setContentView(this, getLayoutId())
-        this.init()
+        init()
     }
 }

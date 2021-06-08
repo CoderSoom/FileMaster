@@ -16,6 +16,7 @@ import kotlinx.coroutines.launch
 import java.util.*
 
 class FileViewModel() : ViewModel() {
+
     private val TAG = "FileViewModel"
     private val fileRepository = FileRepository()
 
@@ -28,18 +29,8 @@ class FileViewModel() : ViewModel() {
     val liveAllFile = MutableLiveData<List<FileCustom>>()
     val liveCurrentFile = MutableLiveData<List<FileCustom>>()
 
-    private val _listFileRecentForDay = MutableLiveData<MutableList<FileCustom>>()
-    val listFileRecentForDay = _listFileRecentForDay.asLiveData()
     val recentMulti = MutableLiveData<MutableList<BaseMultiViewHolderAdapter.BaseModelType>>()
     val listStorge = MutableLiveData<List<ListStorage>>()
-
-
-    private val _listFileRecentForWeek = MutableLiveData<MutableList<FileCustom>>()
-    val listFileRecentForWeek = _listFileRecentForWeek.asLiveData()
-
-    private val todayFileDefault = mutableListOf<FileCustom>()
-
-    private val weekFileDefault = mutableListOf<FileCustom>()
 
     val isExpanded by lazy {
         MutableLiveData(false)
@@ -61,11 +52,11 @@ class FileViewModel() : ViewModel() {
     }
 
     fun getListFake() {
-//        val result = DataFake.list
-//        liveAllFile.value = result
-//        if (isExpanded.value == false) {
-//            liveCurrentFile.value = result.subList(0, 5)
-//        }
+        val result = DataFake.list
+        liveAllFile.value = result
+        if (isExpanded.value == false) {
+            liveCurrentFile.value = result.subList(0, 5)
+        }
     }
 
     fun expanded(enable: Boolean) {
@@ -90,7 +81,7 @@ class FileViewModel() : ViewModel() {
         var countThisWeek = 0
         var indexOfThisWeek = 0
         val list = fileRepository.getListFileRecent(context)
-       recents.addAll(list)
+        recents.addAll(list)
         run loop@{
             val cal = Calendar.getInstance()
             cal.set(Calendar.HOUR_OF_DAY, 0)
@@ -101,11 +92,9 @@ class FileViewModel() : ViewModel() {
             recents.forEachIndexed { index, item ->
                 if ((item as FileCustom).date!!.toLong() > cal.timeInMillis / 1000) {
                     countToday++
-//                    recents.add(index, item)
                 } else {
                     countThisWeek = recents.size - countToday
                     indexOfThisWeek = index + 1
-//                    recents.add(index, item)
                     recents.add(0, ItemDate("Today", countToday.toString()))
                     return@loop
                 }

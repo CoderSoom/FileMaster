@@ -5,7 +5,6 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.ApplicationInfo
 import android.database.Cursor
-import android.graphics.BitmapFactory
 import android.media.MediaScannerConnection
 import android.net.Uri
 import android.os.Environment
@@ -107,10 +106,10 @@ object FileManager {
             Constant.TF_RAR -> {
                 return R.drawable.ic_file_rar
             }
-            Constant.TF_JPG, Constant.TF_PNG ->{
-              return 1
+            Constant.TF_JPG, Constant.TF_PNG -> {
+                return 1
             }
-            Constant.TF_MORE ->{
+            Constant.TF_MORE -> {
                 return R.drawable.ic_more_file
             }
         }
@@ -493,8 +492,8 @@ object FileManager {
 
 
 
-                    if (fileName!=null){
-                        apks.add(FileCustom(fileName,fileDate, fileSize,filePath))
+                    if (fileName != null) {
+                        apks.add(FileCustom(fileName, fileDate, fileSize, filePath))
                         Log.d(TAG, "Data  : $filePath")
                         Log.d(TAG, "Name : $fileName")
                         Log.d(TAG, "Size : $fileSize")
@@ -512,18 +511,17 @@ object FileManager {
     }
 
     fun formatDate(millis: Long?): String {
-        if (millis== null){
-          return "0"
-        }
-        else{
-            val formater: DateFormat = SimpleDateFormat("dd.MMM.yyyy",Locale.US)
-            return formater.format(Date(millis *1000))
+        if (millis == null) {
+            return "0"
+        } else {
+            val formater: DateFormat = SimpleDateFormat("dd.MMM.yyyy", Locale.US)
+            return formater.format(Date(millis * 1000))
         }
 
     }
 
     fun convertBytes(size: String?): String {
-        if (size== null) {
+        if (size == null) {
             return "0b"
         } else {
             val units = arrayOf("B", "Kb", "Mb", "Gb", "Tb")
@@ -534,8 +532,6 @@ object FileManager {
                     digitGroups.toDouble()
                 )
             ) + " " + units[digitGroups]
-
-
         }
     }
 

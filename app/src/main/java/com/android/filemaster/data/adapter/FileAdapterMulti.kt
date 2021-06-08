@@ -5,9 +5,10 @@ import com.android.filemaster.base.BaseAdapter
 import com.android.filemaster.base.BaseListener
 import com.android.filemaster.data.model.FileCustom
 
-class RecentHomeAdapter : BaseAdapter<FileCustom>(R.layout.item_file_recents) {
-    interface RecentListener : BaseListener {
-        fun onClickItem(position: Int, item: FileCustom)
+class FileAdapterMulti : BaseAdapter<FileCustom>(R.layout.item_file_multi) {
+
+    interface FileListener : BaseListener {
+        fun onItemClick(position: Int, item: FileCustom)
     }
 
 }

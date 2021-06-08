@@ -3,7 +3,6 @@ package com.android.filemaster.ui.home
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
@@ -15,7 +14,6 @@ import com.android.filemaster.data.adapter.FileAdapter
 import com.android.filemaster.data.adapter.RecentHomeAdapter
 import com.android.filemaster.data.adapter.StorageAdapter
 import com.android.filemaster.data.model.FileCustom
-import com.android.filemaster.data.model.ItemDate
 import com.android.filemaster.data.viewmodel.FileViewModel
 import com.android.filemaster.data.viewmodel.MainViewModel
 import com.android.filemaster.databinding.FragmentHomeBinding
@@ -33,8 +31,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), ToolbarActionListener 
         return R.layout.fragment_home
     }
 
-    override fun getToolbar(): Toolbar? {
-        return null
+    override fun getToolbar(): Toolbar {
+        return binding.toolbarHome
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -79,13 +77,13 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), ToolbarActionListener 
 
 //        Toast.makeText(requireActivity(), getUsedStorage()l, Toast.LENGTH_SHORT).show()
 
-
     }
 
     private fun observeViewModel() {
-        viewModel.liveCurrentFile.observe(viewLifecycleOwner) {
-            fileAdapter.list = it
-        }
+//        viewModel.liveCurrentFile.observe(viewLifecycleOwner) {
+//            fileAdapter.list = it
+//        }
+
         recentAdapter.listener = object : RecentHomeAdapter.RecentListener {
             override fun onClickItem(position: Int, item: FileCustom) {
                 if (item.name.equals(getString(R.string.more)) && item.date.equals("")) {
@@ -94,6 +92,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), ToolbarActionListener 
                 }
             }
         }
+
         viewModel.listFileRecent.observe(viewLifecycleOwner) {
             Log.d(TAG, "observeViewModel: $it")
             if (it.size <= 4) {
@@ -120,7 +119,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), ToolbarActionListener 
                 recentAdapter.list = list
 
             }
-
         }
         binding.tvExpand.setOnClickListener {
             viewModel.expanded(!viewModel.isExpanded.value!!)
