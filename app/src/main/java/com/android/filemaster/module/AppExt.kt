@@ -5,6 +5,8 @@ import android.content.Context
 import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.net.Uri
+import android.util.Log
+import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.ColorRes
@@ -13,7 +15,10 @@ import androidx.databinding.BindingAdapter
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.RecyclerView
+import com.android.filemaster.R
+import com.android.filemaster.base.BaseMultiViewHolderAdapter
 import com.android.filemaster.data.model.FileCustom
+import com.android.filemaster.data.model.ItemDate
 import com.android.filemaster.data.model.ListStorage
 import com.android.filemaster.ui.customview.CircularProgressBar
 import com.android.filemaster.utils.FileManager
@@ -41,6 +46,13 @@ fun TextView.getDetailFile(item: FileCustom) {
     this.text = item.size + " | " + FileManager.formatDate(item.date)
 }
 
+@BindingAdapter("getDetailFileMulti")
+fun TextView.getDetailFileMulti(item: BaseMultiViewHolderAdapter.BaseModelType) {
+    if (item is FileCustom){
+//        this.text = FileManager.getFileSize(item.size) +" | "+FileManager.formatDate(item.date!!.toLong())
+    }
+}
+
 fun <T> MutableLiveData<T>.asLiveData() = this as LiveData<T>
 
 @BindingAdapter("setImage")
@@ -55,6 +67,43 @@ fun setImage(img: ImageView, path: String) {
     }
 }
 
+
+
+
+@BindingAdapter("tv_set_text_by_multi_holder")
+fun TextView.tvSetTextByMultiHolder(item: BaseMultiViewHolderAdapter.BaseModelType) {
+    if (item is ItemDate) {
+        text = item.date
+    }
+}
+@BindingAdapter("tv_set_text_by_multi_holder_file")
+fun TextView.tvSetTextByMultiHolderFile(item: BaseMultiViewHolderAdapter.BaseModelType) {
+    if (item is FileCustom) {
+        text = item.name
+    }
+}
+
+@BindingAdapter("setImageMulti")
+fun ImageView.setImageMulti(item: BaseMultiViewHolderAdapter.BaseModelType){
+    if (item is FileCustom){
+        if (FileManager.setImageFile(item.path.toString()) == 1) {
+            Glide.with(this)
+                .load(Uri.fromFile(File(item.path.toString())))
+                .apply( RequestOptions().override(100, 100))
+                .error(R.drawable.ic_image)
+                .into(this)
+        } else {
+            this.setImageResource(FileManager.setImageFile(item.path.toString()))
+        }
+    }
+}
+
+
+
+
+
+
+
 @BindingAdapter("setImageDrawable")
 fun setImageDrawable(img: ImageView, path: Int) {
     img.setImageResource(path)
@@ -67,6 +116,21 @@ fun CircularProgressBar.setProgressbar(item: ListStorage) {
     }else{
     }
 }
+
+@BindingAdapter("setVisibleStorage")
+fun CircularProgressBar.setVisibleStorage(item: ListStorage) {
+    if (item.nameStorage != "Storage") {
+        this.visibility = View.INVISIBLE
+    }
+}
+
+@BindingAdapter("setVisibleImages")
+fun ImageView.setVisibleImages(item: ListStorage) {
+    if (item.nameStorage != "Storage") {
+        this.visibility = View.VISIBLE
+    }
+}
+
 
 
 

@@ -1,16 +1,19 @@
 package com.android.filemaster.data.viewmodel
 
 import android.content.Context
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.android.filemaster.base.BaseMultiViewHolderAdapter
 import com.android.filemaster.data.model.FileCustom
+import com.android.filemaster.data.model.ItemDate
 import com.android.filemaster.data.model.ListStorage
 import com.android.filemaster.data.repository.FileRepository
 import com.android.filemaster.model.ItemFileRecent
-import com.android.filemaster.model.ListStorageMin
 import com.android.filemaster.module.asLiveData
 import com.android.filemaster.utils.DataFake
+import com.android.filemaster.utils.FileManager
 import kotlinx.coroutines.launch
 import java.util.*
 
@@ -18,25 +21,38 @@ class FileViewModel() : ViewModel() {
 
     private val fileRepository = FileRepository()
 
-    private val _listFileRecent = MutableLiveData<MutableList<FileCustom>>()
-    val listFileRecent = _listFileRecent.asLiveData()
-
-    private val _listFileAccess = MutableLiveData<MutableList<FileCustom>>()
-    val listFileAccess = _listFileAccess.asLiveData()
-
     val liveAllFile = MutableLiveData<List<FileCustom>>()
     val liveCurrentFile = MutableLiveData<List<FileCustom>>()
-
-    private val _listFileRecentForDay = MutableLiveData<MutableList<ItemFileRecent>>()
-    val listFileRecentForDay = _listFileRecentForDay.asLiveData()
 
     private val _listStorage = MutableLiveData<MutableList<ListStorage>>()
     val listStorage = _listStorage.asLiveData()
 
+    private val _listFileRecent = MutableLiveData<MutableList<FileCustom>>()
+    val listFileRecent = _listFileRecent.asLiveData()
+
+    private val _listFileRecentForDay = MutableLiveData<MutableList<ItemFileRecent>>()
+    val listFileRecentForDay = _listFileRecentForDay.asLiveData()
 
     private val todayFileDefault = mutableListOf<FileCustom>()
     private val weekFileDefault = mutableListOf<FileCustom>()
     private val today = mutableListOf<ItemFileRecent>()
+
+    private val _listFileAccess = MutableLiveData<MutableList<FileCustom>>()
+    val listFileAccess = _listFileAccess.asLiveData()
+
+    private val _listSearch = MutableLiveData<MutableList<FileCustom>>()
+    val listSearch = _listSearch.asLiveData()
+
+    private val _listFileSeach = MutableLiveData<MutableList<ItemFileRecent>>()
+    val listFileSeach =_listFileSeach.asLiveData()
+    val recentMulti = MutableLiveData<MutableList<BaseMultiViewHolderAdapter.BaseModelType>>()
+
+    private val imgSearch = mutableListOf<FileCustom>()
+    private val allFileSearch = mutableListOf<ItemFileRecent>()
+
+
+
+
 
     val isExpanded by lazy {
         MutableLiveData(false)
@@ -49,6 +65,15 @@ class FileViewModel() : ViewModel() {
             _listStorage.postValue(result)
         }
     }
+
+    fun getListSearch(ctx: Context){
+        viewModelScope.launch {
+            val result = fileRepository.getListSearch(ctx)
+            Log.d("anlt", "getListSearch: "+result)
+            _listSearch.postValue(result)
+        }
+    }
+
 
 
     fun getListRecent(ctx: Context) {
@@ -116,6 +141,22 @@ class FileViewModel() : ViewModel() {
         _listFileRecentForDay.postValue(today)
     }
 
+    fun getListSeachAll(context: Context){
+        val recents = mutableListOf<BaseMultiViewHolderAdapter.BaseModelType>()
+        var countToday = 0
+        var countThisWeek = 0
+        var indexOfThisWeek = 0
+        val list = fileRepository.getListFileRecent(context)
+        recents.addAll(list)
+        recents.add(0, ItemDate("Folder", "null"))
+        recentMulti.value = recents
+
+
+
+    }
+
 
 
 }
+
+

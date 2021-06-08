@@ -9,6 +9,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.android.filemaster.R
 import com.android.filemaster.base.BaseFragment
@@ -34,14 +35,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), ToolbarActionListener 
 
     override fun getToolbar(): Toolbar {
         return binding.toolbarHome
-        Toast.makeText(requireContext(), "ádfasdfasdf", Toast.LENGTH_SHORT).show()
-        Toast.makeText(requireContext(), "ádfasdfasdfasdf", Toast.LENGTH_SHORT).show()
-        a()
     }
 
-    private fun a() {
-        TODO("Not yet implemented")
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,13 +44,13 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), ToolbarActionListener 
         viewModel.getListStorage(requireActivity())
         viewModel.getListAccess(requireActivity())
         viewModel.getListRecent(requireActivity())
+        viewModel.getListSearch(requireActivity())
     }
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initData()
-
         observeViewModel()
 
     }
@@ -78,13 +73,13 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), ToolbarActionListener 
         binding.rvListRecents.layoutManager =
             LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         binding.rvListRecents.isNestedScrollingEnabled = true
-
-
-
         binding.moreRecent.setOnClickListener {
             mainViewModel.hideMenu()
             findNavController().navigate(R.id.action_homeFragment_to_recentsFragment)
         }
+        val itemSpace = SpaceItemDecoation(resources.getDimension(R.dimen.px10))
+        binding.rvListStorage.addItemDecoration(itemSpace)
+
     }
 
     private fun observeViewModel() {
@@ -107,7 +102,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), ToolbarActionListener 
         }
 
         viewModel.listStorage.observe(viewLifecycleOwner) {
-             storageAdapter.list = it
+            storageAdapter.list = it
+
         }
     }
 

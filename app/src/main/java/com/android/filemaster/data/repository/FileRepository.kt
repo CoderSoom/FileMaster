@@ -13,4 +13,6 @@ class FileRepository {
 
 
     fun getListStorage(context: Context) = FileManager.getListStorage(context)
+
+    fun getListSearch(context: Context) = FileManager.getListSearch(context, "12")
 }
