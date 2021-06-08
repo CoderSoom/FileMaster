@@ -55,13 +55,9 @@
             app:toolbarLogo="@drawable/ic_logo"
             app:toolbarViewStyle="logo" />
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/container_premium"
+        <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/px16"
-            android:layout_marginEnd="@dimen/px16"
-            android:background="@drawable/bg_home_premium"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/toolbar_home"
@@ -157,114 +153,237 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rv_list_recents"
-                    rv_set_adapter="@{recentAdapter}"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@id/gl"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <androidx.constraintlayout.widget.Guideline
-                    android:id="@+id/gl"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    app:layout_constraintGuide_percent="0.75" />
+                android:paddingBottom="@dimen/px12">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/more_recent"
+                    android:id="@+id/container_premium"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:visibility="@{viewModel.listFileRecent.size() >= 3 ? View.VISIBLE : View.GONE}"
-                    app:layout_constraintLeft_toRightOf="@id/gl"
-                    app:layout_constraintTop_toTopOf="parent">
+                    android:layout_marginStart="@dimen/px16"
+                    android:layout_marginEnd="@dimen/px16"
+                    android:background="@drawable/bg_home_premium"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_goneMarginTop="?android:actionBarSize">
 
-                    <androidx.appcompat.widget.AppCompatImageView
-                        android:id="@+id/imgIcon"
-                        android:layout_width="wrap_content"
+                    <TextView
+                        android:id="@+id/label_title_premium"
+                        style="@style/Subheading2"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/ic_more"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintRight_toRightOf="parent"
+                        android:layout_marginStart="@dimen/px16"
+                        android:layout_marginTop="@dimen/px8"
+                        android:layout_marginEnd="@dimen/px4"
+                        android:drawablePadding="@dimen/px4"
+                        android:maxLines="1"
+                        android:text="@string/discover_premium"
+                        android:textColor="@color/fixed_white"
+                        app:drawableEndCompat="@drawable/ic_home_premium_crown"
+                        app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
-                    <androidx.appcompat.widget.AppCompatTextView
-                        android:id="@+id/tvFileName"
-                        android:layout_width="@dimen/px66"
-                        android:layout_height="@dimen/px20"
-                        android:singleLine="true"
-                        android:text="@string/more"
-                        android:textAlignment="center"
-                        android:textColor="@color/label_prim"
-                        android:textSize="@dimen/sp14"
+                    <TextView
+                        style="@style/Caption"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/px16"
+                        android:layout_marginEnd="@dimen/px4"
+                        android:layout_marginBottom="@dimen/px8"
+                        android:maxLines="1"
+                        android:text="@string/home_container_premium_subtitle"
+                        android:textColor="@color/fixed_grey"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@id/btn_premium"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/label_title_premium" />
+
+                    <TextView
+                        android:id="@+id/btn_premium"
+                        style="@style/Small.Button.Yellow"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="@dimen/px12"
+                        android:text="@string/home_premium_text_btn"
+                        android:textColor="@color/fixed_black"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <RelativeLayout
+                    android:id="@+id/storage_premium"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/px12"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/container_premium">
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rv_list_storage"
+                        rv_set_adapter="@{storageAdapter}"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:listitem="@layout/item_strorage" />
+
+                </RelativeLayout>
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvRecent"
+                    style="@style/Home.Label.Category"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/px28"
+                    android:layout_marginTop="@dimen/px22"
+                    android:text="@string/recents"
+                    app:layout_constraintStart_toStartOf="@id/storage_premium"
+                    app:layout_constraintTop_toBottomOf="@id/storage_premium" />
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/recentView"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/px96"
+                    android:layout_below="@id/storage_premium"
+                    android:layout_marginStart="@dimen/px12"
+                    android:layout_marginTop="@dimen/px12"
+                    android:layout_marginEnd="@dimen/px12"
+                    android:elevation="0dp"
+                    app:cardBackgroundColor="@color/fixed_white"
+                    app:cardCornerRadius="@dimen/px12"
+                    app:layout_constraintTop_toBottomOf="@id/tvRecent">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="@dimen/px8"
+                        android:layout_marginBottom="@dimen/px8"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintRight_toRightOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/imgIcon" />
-                </androidx.constraintlayout.widget.ConstraintLayout>
+                        app:layout_constraintTop_toTopOf="parent">
 
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/rv_list_recents"
+                            rv_set_adapter="@{recentAdapter}"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:fadingEdgeLength="0dp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toStartOf="@id/gl"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <androidx.constraintlayout.widget.Guideline
+                            android:id="@+id/gl"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            app:layout_constraintGuide_percent="0.75" />
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/more_recent"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_marginTop="@dimen/px8"
+                            android:layout_marginBottom="@dimen/px8"
+                            android:visibility="@{viewModel.listFileRecent.size() >= 3 ? View.VISIBLE : View.GONE}"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toEndOf="@id/gl"
+                            app:layout_constraintTop_toTopOf="parent">
+
+                            <androidx.appcompat.widget.AppCompatImageView
+                                android:id="@+id/iv_icon"
+                                android:layout_width="@dimen/px40"
+                                android:layout_height="@dimen/px40"
+                                android:src="@drawable/ic_more"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:id="@+id/tv_title"
+                                style="@style/Paragraph2"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/px8"
+                                android:ellipsize="end"
+                                android:maxLines="1"
+                                android:text="@string/more"
+                                android:textAlignment="center"
+                                android:textColor="@color/label_prim"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintLeft_toLeftOf="parent"
+                                app:layout_constraintRight_toRightOf="parent"
+                                app:layout_constraintTop_toBottomOf="@id/iv_icon" />
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                </androidx.cardview.widget.CardView>
+
+                <RelativeLayout
+                    android:id="@+id/recent_label"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/px12"
+                    android:layout_marginTop="@dimen/px8"
+                    android:layout_marginEnd="@dimen/px12"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/recentView">
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tvAccess"
+                        style="@style/Home.Label.Category"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/quick_access" />
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/tvExpand"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginTop="@dimen/px8"
+                        android:layout_marginEnd="@dimen/px12"
+                        android:layout_marginBottom="@dimen/px8"
+                        android:src="@{viewModel.isExpanded == true ? @drawable/ic_arrow_expand : @drawable/ic_arrow_collapse_right}"
+                        android:textAllCaps="true"
+                        android:textColor="@color/brand"
+                        android:textSize="@dimen/sp10"
+                        android:visibility="@{viewModel.liveCurrentFile.size() >= 5 ? View.VISIBLE : View.GONE}"
+                        tools:text="@string/expand" />
+                </RelativeLayout>
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/recentView"
+                    android:layout_marginStart="@dimen/px12"
+                    android:layout_marginEnd="@dimen/px12"
+                    android:layout_marginBottom="@dimen/px50"
+                    android:elevation="0dp"
+                    app:cardCornerRadius="@dimen/px12"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/recent_label">
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rvQuickAccess"
+                        rv_set_adapter="@{fileAdapter}"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        tools:listitem="@layout/item_file" />
+
+                </androidx.cardview.widget.CardView>
             </androidx.constraintlayout.widget.ConstraintLayout>
-
-        </androidx.cardview.widget.CardView>
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/tvAccess"
-            style="@style/Home.Label.Category"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/quick_access"
-            app:layout_constraintStart_toStartOf="@id/storage_premium"
-            app:layout_constraintTop_toBottomOf="@id/recentView" />
-
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/tvExpand"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/px16"
-            android:layout_marginEnd="@dimen/px20"
-            android:src="@{viewModel.isExpanded == false ? @drawable/ic_expand : @drawable/ic_narrow}"
-            android:textAllCaps="true"
-            android:textColor="@color/brand"
-            android:textSize="@dimen/sp10"
-            android:visibility="@{viewModel.liveCurrentFile.size() >= 5 ? View.VISIBLE : View.GONE}"
-            app:layout_constraintEnd_toEndOf="@id/storage_premium"
-            app:layout_constraintLeft_toRightOf="@id/tvAccess"
-            app:layout_constraintTop_toBottomOf="@id/recentView"
-            tools:text="@string/expand" />
-
-        <!--                android:visibility="@{viewModel.listFileAccess.size() >= 5 ? View.VISIBLE : View.GONE}"-->
-
-        <androidx.cardview.widget.CardView
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_below="@id/recentView"
-            android:layout_marginStart="@dimen/px12"
-            android:layout_marginTop="@dimen/px12"
-            android:layout_marginEnd="@dimen/px12"
-            android:layout_marginBottom="@dimen/px12"
-            android:elevation="@dimen/px10"
-            app:cardCornerRadius="@dimen/px12"
-            app:layout_constraintTop_toBottomOf="@id/tvAccess">
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rvQuickAccess"
-                rv_set_adapter="@{fileAdapter}"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:listitem="@layout/item_file" />
-
-        </androidx.cardview.widget.CardView>
+        </androidx.core.widget.NestedScrollView>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

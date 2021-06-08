@@ -40,9 +40,10 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), ToolbarActionListener 
         super.onCreate(savedInstanceState)
         viewModel.getListFake()
         viewModel.getListStorage(requireActivity())
-        viewModel.getListAccess(requireActivity())
+//        viewModel.getListAccess(requireActivity())
         viewModel.getListRecent(requireActivity())
-        viewModel.getListSearch(requireActivity())
+
+
     }
 
 
@@ -71,14 +72,13 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), ToolbarActionListener 
         binding.rvListRecents.layoutManager =
             LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         binding.rvListRecents.isNestedScrollingEnabled = true
+
         binding.moreRecent.setOnClickListener {
             mainViewModel.hideMenu()
             findNavController().navigate(R.id.action_homeFragment_to_recentsFragment)
         }
-
         val itemSpace = SpaceItemDecoation(resources.getDimension(R.dimen.px10))
         binding.rvListStorage.addItemDecoration(itemSpace)
-
     }
 
     private fun observeViewModel() {
@@ -102,7 +102,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), ToolbarActionListener 
 
         viewModel.listStorage.observe(viewLifecycleOwner) {
             storageAdapter.list = it
-
         }
     }
 

@@ -83,14 +83,14 @@ class CircularProgressBar(context: Context?, attrs: AttributeSet?, defStyleAttr:
 
     }
 
-    private fun calcSweepAngleFromProgress(maxProgress: Long, progress: Long): Float {
+    private fun calcSweepAngleFromProgress(maxProgress: Int, progress: Int): Float {
         return mMaxSweepAngle / maxProgress * progress
     }
 
 
-    fun setProgress(maxProgress: Long, progress: Long) {
+    fun setProgress(maxProgress: Int, progress: Int) {
         val animator =
-                ValueAnimator.ofFloat(mSweepAngleBackground, calcSweepAngleFromProgress(maxProgress, progress))
+            ValueAnimator.ofFloat(mSweepAngleBackground, calcSweepAngleFromProgress(maxProgress, progress))
         animator.interpolator = DecelerateInterpolator()
         animator.duration = mAnimationDuration.toLong()
         animator.addUpdateListener { valueAnimator ->

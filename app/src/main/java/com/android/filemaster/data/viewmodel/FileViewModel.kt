@@ -48,6 +48,8 @@ class FileViewModel() : ViewModel() {
 
 
 
+    private val _listStorage = MutableLiveData<MutableList<ListStorage>>()
+    val listStorage = _listStorage.asLiveData()
 
 
     val isExpanded by lazy {
@@ -136,19 +138,12 @@ class FileViewModel() : ViewModel() {
         _listFileRecentForDay.postValue(today)
     }
 
-
-    fun getListSeachAll(context: Context){
-        val recents = mutableListOf<BaseMultiViewHolderAdapter.BaseModelType>()
-        var countToday = 0
-        var countThisWeek = 0
-        var indexOfThisWeek = 0
-        val list = fileRepository.getListFileRecent(context)
-        recents.addAll(list)
-//        recents.add(0, ItemDate("Folder", "null"))
-//        recentMulti.value = recents
-
-
-
+    fun getListStorage(ctx: Context){
+        viewModelScope.launch {
+            val result = fileRepository.getListStorage(ctx)
+            _listStorage.postValue(result)
+        }
     }
+
 
 }

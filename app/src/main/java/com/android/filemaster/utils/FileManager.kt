@@ -6,7 +6,6 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.ApplicationInfo
 import android.database.Cursor
-import android.graphics.BitmapFactory
 import android.media.MediaScannerConnection
 import android.net.Uri
 import android.os.Build
@@ -21,7 +20,6 @@ import androidx.documentfile.provider.DocumentFile
 import com.android.filemaster.R
 import com.android.filemaster.data.model.FileCustom
 import com.android.filemaster.data.model.ListStorage
-import com.android.filemaster.model.FileDefault
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.io.File
@@ -75,7 +73,7 @@ object FileManager {
                 null,
                 "SYNCED",
                 "account@gmail.com",
-                R.drawable.ic_arrow,
+                R.drawable.ic_next,
                 R.drawable.ic_next_pressed
             )
         )
@@ -223,8 +221,8 @@ object FileManager {
             Constant.TF_RAR -> {
                 return R.drawable.ic_file_rar
             }
-            Constant.TF_JPG, Constant.TF_PNG ->{
-              return 1
+            Constant.TF_JPG, Constant.TF_PNG -> {
+                return 1
             }
         }
         return R.drawable.ic_file_none
@@ -326,8 +324,6 @@ object FileManager {
         }
         return audios
     }
-
-
 
 
     suspend fun getListVideo(context: Context): ArrayList<String> =
