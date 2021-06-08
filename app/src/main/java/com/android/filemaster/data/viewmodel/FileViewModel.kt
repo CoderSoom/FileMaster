@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.android.filemaster.base.BaseMultiViewHolderAdapter
 import com.android.filemaster.data.model.FileCustom
 import com.android.filemaster.data.model.ListStorage
 import com.android.filemaster.data.repository.FileRepository
@@ -41,7 +42,6 @@ class FileViewModel() : ViewModel() {
 
     private val _listFileSeach = MutableLiveData<MutableList<ItemFileRecent>>()
     val listFileSeach =_listFileSeach.asLiveData()
-    val recentMulti = MutableLiveData<MutableList<BaseMultiViewHolderAdapter.BaseModelType>>()
 
     private val imgSearch = mutableListOf<FileCustom>()
     private val allFileSearch = mutableListOf<ItemFileRecent>()
@@ -65,7 +65,6 @@ class FileViewModel() : ViewModel() {
     fun getListSearch(ctx: Context){
         viewModelScope.launch {
             val result = fileRepository.getListSearch(ctx)
-            Log.d("anlt", "getListSearch: "+result)
             _listSearch.postValue(result)
         }
     }
@@ -137,6 +136,7 @@ class FileViewModel() : ViewModel() {
         _listFileRecentForDay.postValue(today)
     }
 
+
     fun getListSeachAll(context: Context){
         val recents = mutableListOf<BaseMultiViewHolderAdapter.BaseModelType>()
         var countToday = 0
@@ -144,8 +144,8 @@ class FileViewModel() : ViewModel() {
         var indexOfThisWeek = 0
         val list = fileRepository.getListFileRecent(context)
         recents.addAll(list)
-        recents.add(0, ItemDate("Folder", "null"))
-        recentMulti.value = recents
+//        recents.add(0, ItemDate("Folder", "null"))
+//        recentMulti.value = recents
 
 
 

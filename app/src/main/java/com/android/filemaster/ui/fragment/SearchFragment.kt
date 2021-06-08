@@ -34,10 +34,10 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>() {
     }
 
     private fun observeViewModel() {
-        viewModel.recentMulti.observe(viewLifecycleOwner){
-            searchAdapter.list = it
-            Log.d("anhlt", "observeViewModel: "+it.toString())
-        }
+//        viewModel.recentMulti.observe(viewLifecycleOwner){
+//            searchAdapter.list = it
+//            Log.d("anhlt", "observeViewModel: "+it.toString())
+//        }
     }
 
 }

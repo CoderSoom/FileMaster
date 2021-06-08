@@ -5,6 +5,8 @@ import android.content.Context
 import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.net.Uri
+import android.util.Log
+import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.ColorRes
@@ -13,7 +15,12 @@ import androidx.databinding.BindingAdapter
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.RecyclerView
+import com.android.filemaster.R
+import com.android.filemaster.base.BaseMultiViewHolderAdapter
 import com.android.filemaster.data.model.FileCustom
+import com.android.filemaster.data.model.ItemDate
+import com.android.filemaster.data.model.ListStorage
+import com.android.filemaster.ui.customview.CircularProgressBar
 import com.android.filemaster.utils.FileManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
@@ -105,8 +112,8 @@ fun setImageDrawable(img: ImageView, path: Int) {
 @BindingAdapter("setProgressbar")
 fun CircularProgressBar.setProgressbar(item: ListStorage) {
     if (item.totalMemorySize !=null && item.amountOfMemoryUsed!=null) {
-        this.setProgress(item.amountOfMemoryUsed!!.toInt(), item.totalMemorySize!!.toInt())
-    }else{
+        this.setProgress(64000000000, 32573829120)
+        Log.d("anhlt", "setProgressbar: ")
     }
 }
 
@@ -137,7 +144,7 @@ fun setImgResource(img: ImageView, path: Int?) {
 }
 
 @BindingAdapter("setProgressBar")
-fun setProgressBar(circularProcessbar: CircularProgressBar, process: Int?, processMax: Int?) {
+fun setProgressBar(circularProcessbar: CircularProgressBar, process: Long?, processMax: Long?) {
     if (process != null && processMax !==null) {
         circularProcessbar.setProgress(processMax, process)
     }

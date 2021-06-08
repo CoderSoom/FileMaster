@@ -1,4 +1,4 @@
-package com.android.filemaster.ui.home
+package com.android.filemaster.ui.customview
 
 import android.graphics.Rect
 import android.view.View
