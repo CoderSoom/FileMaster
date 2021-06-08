@@ -15,6 +15,7 @@
         tools:context=".ui.fragment.SearchFragment">
 
         <androidx.recyclerview.widget.RecyclerView
+            android:background="#DD1D1D"
             rv_set_adapter="@{searchAdapter}"
             android:layout_width="match_parent"
             android:layout_height="match_parent"

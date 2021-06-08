@@ -77,6 +77,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), ToolbarActionListener 
             mainViewModel.hideMenu()
             findNavController().navigate(R.id.action_homeFragment_to_recentsFragment)
         }
+
         val itemSpace = SpaceItemDecoation(resources.getDimension(R.dimen.px10))
         binding.rvListStorage.addItemDecoration(itemSpace)
 
