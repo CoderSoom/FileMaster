@@ -1,25 +1,21 @@
 package com.android.filemaster.utils
 
 import android.annotation.SuppressLint
-import android.app.usage.StorageStatsManager
 import android.content.Context
 import android.content.Intent
 import android.content.pm.ApplicationInfo
 import android.database.Cursor
+import android.graphics.BitmapFactory
 import android.media.MediaScannerConnection
 import android.net.Uri
-import android.os.Build
 import android.os.Environment
-import android.os.StatFs
-import android.os.storage.StorageManager
 import android.provider.MediaStore
 import android.text.TextUtils
 import android.util.Log
-import androidx.appcompat.app.AppCompatActivity
 import androidx.documentfile.provider.DocumentFile
 import com.android.filemaster.R
 import com.android.filemaster.data.model.FileCustom
-import com.android.filemaster.data.model.ListStorage
+import com.android.filemaster.model.FileDefault
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.io.File
@@ -221,8 +217,8 @@ object FileManager {
             Constant.TF_RAR -> {
                 return R.drawable.ic_file_rar
             }
-            Constant.TF_JPG, Constant.TF_PNG -> {
-                return 1
+            Constant.TF_JPG, Constant.TF_PNG ->{
+              return 1
             }
         }
         return R.drawable.ic_file_none
@@ -324,6 +320,16 @@ object FileManager {
         }
         return audios
     }
+
+    fun getDate(milliSeconds: Long, dateFormat: String?): String? {
+
+        val formatter = SimpleDateFormat(dateFormat)
+
+        val calendar = Calendar.getInstance()
+        calendar.timeInMillis = milliSeconds
+        return formatter.format(calendar.time)
+    }
+
 
 
     suspend fun getListVideo(context: Context): ArrayList<String> =

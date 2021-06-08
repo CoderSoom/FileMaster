@@ -30,7 +30,7 @@ class RecentsFragment : BaseFragment<FragmentRecentsBinding>() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel.getListRecentForDay(requireActivity())
+//        viewModel.getListRecentForDay(context)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -48,7 +48,7 @@ class RecentsFragment : BaseFragment<FragmentRecentsBinding>() {
 
         binding.btnBack.setOnClickListener {
             mainViewModel.showMenu()
-            requireActivity().onBackPressed()
+//            context.onBackPressed()
         }
 
         binding.btnSearch.setOnClickListener {
@@ -87,8 +87,8 @@ class RecentsFragment : BaseFragment<FragmentRecentsBinding>() {
     }
 
     private fun hideSoftKeyboard(view: View) {
-        val imm =
-            requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        imm.hideSoftInputFromWindow(view.windowToken, 0)
+//        val imm =
+//            context!!.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+//        imm.hideSoftInputFromWindow(view.windowToken, 0)
     }
 }

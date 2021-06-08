@@ -5,8 +5,6 @@ import android.content.Context
 import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.net.Uri
-import android.util.Log
-import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.ColorRes
@@ -15,12 +13,7 @@ import androidx.databinding.BindingAdapter
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.RecyclerView
-import com.android.filemaster.R
-import com.android.filemaster.base.BaseMultiViewHolderAdapter
 import com.android.filemaster.data.model.FileCustom
-import com.android.filemaster.data.model.ItemDate
-import com.android.filemaster.data.model.ListStorage
-import com.android.filemaster.ui.customview.CircularProgressBar
 import com.android.filemaster.utils.FileManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
@@ -135,5 +128,21 @@ fun ImageView.setVisibleImages(item: ListStorage) {
 
 
 
+@BindingAdapter("setImgResource")
+fun setImgResource(img: ImageView, path: Int?) {
+    if (path != null) {
+        img.setImageResource(path)
+    }
+
+}
+
+@BindingAdapter("setProgressBar")
+fun setProgressBar(circularProcessbar: CircularProgressBar, process: Int?, processMax: Int?) {
+    if (process != null && processMax !==null) {
+        circularProcessbar.setProgress(processMax, process)
+    }
+
+}
+
 fun getAppColor(@ColorRes colorRes: Int, context: Context? = appInstance) =
-        context?.let { ContextCompat.getColor(it, colorRes) } ?: Color.TRANSPARENT
+    context?.let { ContextCompat.getColor(it, colorRes) } ?: Color.TRANSPARENT

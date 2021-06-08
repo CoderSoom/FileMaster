@@ -1,19 +1,15 @@
 package com.android.filemaster.data.viewmodel
 
 import android.content.Context
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.android.filemaster.base.BaseMultiViewHolderAdapter
 import com.android.filemaster.data.model.FileCustom
-import com.android.filemaster.data.model.ItemDate
 import com.android.filemaster.data.model.ListStorage
 import com.android.filemaster.data.repository.FileRepository
 import com.android.filemaster.model.ItemFileRecent
 import com.android.filemaster.module.asLiveData
 import com.android.filemaster.utils.DataFake
-import com.android.filemaster.utils.FileManager
 import kotlinx.coroutines.launch
 import java.util.*
 
@@ -155,8 +151,4 @@ class FileViewModel() : ViewModel() {
 
     }
 
-
-
 }
-
-
