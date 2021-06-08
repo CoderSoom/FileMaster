@@ -47,22 +47,10 @@ class FileViewModel() : ViewModel() {
     private val allFileSearch = mutableListOf<ItemFileRecent>()
 
 
-
-    private val _listStorage = MutableLiveData<MutableList<ListStorage>>()
-    val listStorage = _listStorage.asLiveData()
-
-
     val isExpanded by lazy {
         MutableLiveData(false)
     }
 
-
-    fun getListStorage(ctx: Context){
-        viewModelScope.launch {
-            val result = fileRepository.getListStorage(ctx)
-            _listStorage.postValue(result)
-        }
-    }
 
     fun getListSearch(ctx: Context){
         viewModelScope.launch {

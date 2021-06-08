@@ -5,6 +5,7 @@ import android.content.Context
 import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.net.Uri
+import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
@@ -17,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.android.filemaster.R
 import com.android.filemaster.base.BaseMultiViewHolderAdapter
 import com.android.filemaster.data.model.FileCustom
+import com.android.filemaster.data.model.ItemDate
 import com.android.filemaster.data.model.ListStorage
 import com.android.filemaster.ui.customview.CircularProgressBar
 import com.android.filemaster.utils.FileManager
@@ -46,7 +48,7 @@ fun TextView.getDetailFile(item: FileCustom) {
 
 @BindingAdapter("getDetailFileMulti")
 fun TextView.getDetailFileMulti(item: BaseMultiViewHolderAdapter.BaseModelType) {
-    if (item is FileCustom){
+    if (item is FileCustom) {
 //        this.text = FileManager.getFileSize(item.size) +" | "+FileManager.formatDate(item.date!!.toLong())
     }
 }
@@ -57,15 +59,13 @@ fun <T> MutableLiveData<T>.asLiveData() = this as LiveData<T>
 fun setImage(img: ImageView, path: String) {
     if (FileManager.setImageFile(path) == 1) {
         Glide.with(img)
-                .load(Uri.fromFile(File(path)))
-                .apply(RequestOptions().override(100, 100))
-                .into(img)
+            .load(Uri.fromFile(File(path)))
+            .apply(RequestOptions().override(100, 100))
+            .into(img)
     } else {
         img.setImageResource(FileManager.setImageFile(path))
     }
 }
-
-
 
 
 @BindingAdapter("tv_set_text_by_multi_holder")
@@ -74,6 +74,7 @@ fun TextView.tvSetTextByMultiHolder(item: BaseMultiViewHolderAdapter.BaseModelTy
         text = item.date
     }
 }
+
 @BindingAdapter("tv_set_text_by_multi_holder_file")
 fun TextView.tvSetTextByMultiHolderFile(item: BaseMultiViewHolderAdapter.BaseModelType) {
     if (item is FileCustom) {
@@ -82,12 +83,12 @@ fun TextView.tvSetTextByMultiHolderFile(item: BaseMultiViewHolderAdapter.BaseMod
 }
 
 @BindingAdapter("setImageMulti")
-fun ImageView.setImageMulti(item: BaseMultiViewHolderAdapter.BaseModelType){
-    if (item is FileCustom){
+fun ImageView.setImageMulti(item: BaseMultiViewHolderAdapter.BaseModelType) {
+    if (item is FileCustom) {
         if (FileManager.setImageFile(item.path.toString()) == 1) {
             Glide.with(this)
                 .load(Uri.fromFile(File(item.path.toString())))
-                .apply( RequestOptions().override(100, 100))
+                .apply(RequestOptions().override(100, 100))
                 .error(R.drawable.ic_image)
                 .into(this)
         } else {
@@ -95,42 +96,6 @@ fun ImageView.setImageMulti(item: BaseMultiViewHolderAdapter.BaseModelType){
         }
     }
 }
-
-
-
-
-
-
-
-@BindingAdapter("setImageDrawable")
-fun setImageDrawable(img: ImageView, path: Int) {
-    img.setImageResource(path)
-}
-
-@BindingAdapter("setProgressbar")
-fun CircularProgressBar.setProgressbar(item: ListStorage) {
-    if (item.totalMemorySize !=null && item.amountOfMemoryUsed!=null) {
-        this.setProgress(64000000000, 32573829120)
-        Log.d("anhlt", "setProgressbar: ")
-    }
-}
-
-@BindingAdapter("setVisibleStorage")
-fun CircularProgressBar.setVisibleStorage(item: ListStorage) {
-    if (item.nameStorage != "Storage") {
-        this.visibility = View.INVISIBLE
-    }
-}
-
-@BindingAdapter("setVisibleImages")
-fun ImageView.setVisibleImages(item: ListStorage) {
-    if (item.nameStorage != "Storage") {
-        this.visibility = View.VISIBLE
-    }
-}
-
-
-
 
 
 @BindingAdapter("setImgResource")
@@ -142,8 +107,8 @@ fun setImgResource(img: ImageView, path: Int?) {
 }
 
 @BindingAdapter("setProgressBar")
-fun setProgressBar(circularProcessbar: CircularProgressBar, process: Long?, processMax: Long?) {
-    if (process != null && processMax !==null) {
+fun setProgressBar(circularProcessbar: CircularProgressBar, process: Int?, processMax: Int?) {
+    if (process != null && processMax !== null) {
         circularProcessbar.setProgress(processMax, process)
     }
 
@@ -153,8 +118,6 @@ fun getAppColor(@ColorRes colorRes: Int, context: Context? = appInstance) =
     context?.let { ContextCompat.getColor(it, colorRes) } ?: Color.TRANSPARENT
 
 
-
-
 @BindingAdapter("setImageDrawable")
 fun setImageDrawable(img: ImageView, path: Int) {
     img.setImageResource(path)
@@ -162,9 +125,9 @@ fun setImageDrawable(img: ImageView, path: Int) {
 
 @BindingAdapter("setProgressbar")
 fun CircularProgressBar.setProgressbar(item: ListStorage) {
-    if (item.totalMemorySize !=null && item.amountOfMemoryUsed!=null) {
+    if (item.totalMemorySize != null && item.amountOfMemoryUsed != null) {
         this.setProgress(item.amountOfMemoryUsed!!.toInt(), item.totalMemorySize!!.toInt())
-    }else{
+    } else {
     }
 }
 

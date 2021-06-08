@@ -73,8 +73,8 @@ object FileManager {
                 null,
                 "SYNCED",
                 "account@gmail.com",
-                R.drawable.ic_next,
-                R.drawable.ic_next_pressed
+                R.drawable.ic_home_cloud_cta,
+                R.drawable.ic_home_cloud_cta_pressed
             )
         )
         return listStorage

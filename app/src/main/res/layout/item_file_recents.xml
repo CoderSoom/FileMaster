@@ -39,7 +39,7 @@
                 setImage="@{item.path}"
                 android:layout_width="@dimen/px40"
                 android:layout_height="@dimen/px40"
-                android:scaleType="fitCenter"
+                android:scaleType="centerCrop"
                 android:src="@drawable/ic_doc" />
         </androidx.cardview.widget.CardView>
 

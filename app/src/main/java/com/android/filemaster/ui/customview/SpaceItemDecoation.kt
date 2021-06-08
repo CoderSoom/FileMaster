@@ -2,10 +2,9 @@ package com.android.filemaster.ui.customview
 
 import android.graphics.Rect
 import android.view.View
-import androidx.core.view.get
 import androidx.recyclerview.widget.RecyclerView
 
-class SpaceItemDecoation(val verticalSpaceHeight: Float) : RecyclerView.ItemDecoration() {
+class SpaceItemDecoation(val itemSpace: Float) : RecyclerView.ItemDecoration() {
 
     override fun getItemOffsets(
         outRect: Rect,
@@ -14,10 +13,8 @@ class SpaceItemDecoation(val verticalSpaceHeight: Float) : RecyclerView.ItemDeco
         state: RecyclerView.State
     ) {
         super.getItemOffsets(outRect, view, parent, state)
-        if (parent.getChildAdapterPosition(view) == 0) {
-            outRect.left = verticalSpaceHeight.toInt()
-        } else if (parent.getChildAdapterPosition(view) == parent.adapter!!.itemCount - 1) {
-            outRect.right = verticalSpaceHeight.toInt()
+        if (parent.getChildAdapterPosition(view) == parent.adapter!!.itemCount - 1) {
+            outRect.right = itemSpace.toInt()
         }
     }
 }

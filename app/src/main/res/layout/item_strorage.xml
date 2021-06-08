@@ -2,16 +2,20 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
+
     <data>
+
         <variable
             name="item"
             type="com.android.filemaster.data.model.ListStorage" />
     </data>
+
     <androidx.cardview.widget.CardView
         android:id="@+id/card_storage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/px6"
+        android:layout_marginStart="@dimen/px12"
+        android:layout_marginBottom="@dimen/px12"
         app:cardCornerRadius="@dimen/px12"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -22,66 +26,61 @@
             android:layout_height="wrap_content">
 
             <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/card_storage_img"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_storage_card"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-            <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/ic_clear"
+                setImageDrawable="@{item.imgIcon}"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                setImageDrawable="@{item.imgIcon}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent" />
+
             <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/progress_container"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/px12"
-                android:layout_marginTop="@dimen/px12"
+                android:layout_marginStart="@dimen/px16"
+                android:layout_marginTop="@dimen/px16"
+                android:layout_marginEnd="@dimen/px16"
                 app:layout_constraintStart_toStartOf="@+id/constan_parent"
                 app:layout_constraintTop_toTopOf="@+id/constan_parent">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/constan_progress"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/px4"
-                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:layout_width="@dimen/px48"
+                    android:layout_height="@dimen/px48"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
+
                     <androidx.appcompat.widget.AppCompatImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        setVisibleImages="@{item}"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:src="@drawable/ic_bg_drive"
+                        android:visibility="invisible"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        android:src="@drawable/ic_bg_drive"
-                        android:visibility="invisible"
-                        setVisibleImages="@{item}"/>
+                        app:layout_constraintTop_toTopOf="parent" />
 
 
                     <com.android.filemaster.ui.customview.CircularProgressBar
                         android:id="@+id/progress_storage"
-                        android:layout_width="@dimen/px42"
-                        android:layout_height="@dimen/px42"
+                        setProgressbar="@{item}"
+                        setVisibleStorage="@{item}"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        setProgressbar="@{item}"
-                        setVisibleStorage="@{item}"
                         app:layout_constraintTop_toTopOf="parent"
                         app:strokeWidth="@dimen/px2" />
 
                     <androidx.appcompat.widget.AppCompatImageView
+                        setImageDrawable="@{item.imgStorage}"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerInParent="true"
-                        setImageDrawable="@{item.imgStorage}"
+                        android:layout_marginEnd="@dimen/px4"
+                        android:layout_marginBottom="@dimen/px4"
                         app:layout_constraintBottom_toBottomOf="@+id/constan_progress"
                         app:layout_constraintEnd_toEndOf="@+id/constan_progress"
                         app:layout_constraintStart_toStartOf="@+id/constan_progress"
@@ -93,40 +92,43 @@
                     android:id="@+id/tv_storage"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/px56"
-                    android:layout_marginTop="@dimen/px4"
+                    android:layout_marginStart="@dimen/px12"
                     android:text="@{item.nameStorage}"
-                    android:textColor="@color/fixed_black"
-                    android:textSize="@dimen/px16"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    android:textColor="@color/label_prim"
+                    android:textSize="@dimen/sp16"
+                    app:layout_constraintStart_toEndOf="@id/constan_progress"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="@tools:sample/cities" />
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/tv_used_storage"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignLeft="@+id/tv_storage"
+                    android:layout_alignStart="@+id/tv_storage"
+                    android:layout_marginEnd="@dimen/px66"
                     android:text="@{item.sizeName}"
+                    android:textColor="@color/label_sec"
+                    android:textSize="@dimen/sp12"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="@+id/tv_storage"
-                    app:layout_constraintTop_toBottomOf="@+id/tv_storage" />
+                    app:layout_constraintTop_toBottomOf="@+id/tv_storage"
+                    tools:text="@tools:sample/cities" />
 
-
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tv_used"
+                    style="@style/Overline"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/px12"
+                    android:layout_marginBottom="@dimen/px16"
+                    android:text="@{item.usedStorage}"
+                    android:textColor="@color/label_prim"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="@id/tv_used_storage"
+                    app:layout_constraintTop_toBottomOf="@id/tv_used_storage"
+                    app:layout_goneMarginBottom="@dimen/px16"
+                    tools:text="@tools:sample/cities" />
             </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/tv_used"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignBottom="@+id/card_storage_img"
-                android:layout_marginLeft="@dimen/px68"
-                android:layout_marginBottom="@dimen/px16"
-                android:text="@{item.usedStorage}"
-                android:textColor="@color/fixed_black"
-                android:textSize="@dimen/px10"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_goneMarginBottom="@dimen/px16" />
-
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>

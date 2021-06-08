@@ -9,10 +9,11 @@ import android.graphics.RectF
 import android.util.AttributeSet
 import android.view.View
 import android.view.animation.DecelerateInterpolator
+import androidx.core.content.ContextCompat
 import com.android.filemaster.R
 
 class CircularProgressBar(context: Context?, attrs: AttributeSet?, defStyleAttr: Int) :
-        View(context, attrs, defStyleAttr) {
+    View(context, attrs, defStyleAttr) {
     private var mViewWidth = 0
     private var mViewHeight = 0
     private val mStartAngle = -90f
@@ -21,7 +22,7 @@ class CircularProgressBar(context: Context?, attrs: AttributeSet?, defStyleAttr:
     private var mStrokeWidth = 0
     private val mAnimationDuration = 1000
     private var mRoundedCorners = true
-    private var mProgressColorBackground: Int = Color.parseColor("#257DF3")
+    private var mProgressColorBackground: Int = R.color.brand
     private var mProgressColor: Int = Color.parseColor("#E0E0E0")
     private val mPaintBackground: Paint = Paint(Paint.ANTI_ALIAS_FLAG)
     private val mPaintProcess = Paint(Paint.ANTI_ALIAS_FLAG)
@@ -31,12 +32,12 @@ class CircularProgressBar(context: Context?, attrs: AttributeSet?, defStyleAttr:
 
     private fun getAllAttFromAttributeSet(attrs: AttributeSet) {
         val typeAttrs =
-                context.obtainStyledAttributes(
-                        attrs,
-                        R.styleable.CircularProgressBar
-                )
+            context.obtainStyledAttributes(
+                attrs,
+                R.styleable.CircularProgressBar
+            )
         mStrokeWidth =
-                typeAttrs.getDimensionPixelSize(R.styleable.CircularProgressBar_strokeWidth, 3)
+            typeAttrs.getDimensionPixelSize(R.styleable.CircularProgressBar_strokeWidth, 3)
         typeAttrs.recycle()
     }
 
@@ -59,8 +60,8 @@ class CircularProgressBar(context: Context?, attrs: AttributeSet?, defStyleAttr:
     private fun drawOutlineArc(canvas: Canvas) {
         val diameter = Math.min(mViewWidth, mViewHeight) - mStrokeWidth * 2
         val outerOval = RectF(
-                mStrokeWidth.toFloat(),
-                mStrokeWidth.toFloat(), diameter.toFloat(), diameter.toFloat()
+            mStrokeWidth.toFloat(),
+            mStrokeWidth.toFloat(), diameter.toFloat(), diameter.toFloat()
         )
         //DrawBackground Progress
 
@@ -72,7 +73,7 @@ class CircularProgressBar(context: Context?, attrs: AttributeSet?, defStyleAttr:
 
         ///DrawOutLine
 
-        mPaintBackground.color = mProgressColorBackground
+        mPaintBackground.color = ContextCompat.getColor(context, mProgressColorBackground)
         mPaintBackground.strokeWidth = mStrokeWidth.toFloat()
         mPaintBackground.isAntiAlias = true
         mPaintBackground.strokeCap = if (mRoundedCorners) Paint.Cap.ROUND else Paint.Cap.BUTT
@@ -90,7 +91,10 @@ class CircularProgressBar(context: Context?, attrs: AttributeSet?, defStyleAttr:
 
     fun setProgress(maxProgress: Int, progress: Int) {
         val animator =
-            ValueAnimator.ofFloat(mSweepAngleBackground, calcSweepAngleFromProgress(maxProgress, progress))
+            ValueAnimator.ofFloat(
+                mSweepAngleBackground,
+                calcSweepAngleFromProgress(maxProgress, progress)
+            )
         animator.interpolator = DecelerateInterpolator()
         animator.duration = mAnimationDuration.toLong()
         animator.addUpdateListener { valueAnimator ->
@@ -99,7 +103,6 @@ class CircularProgressBar(context: Context?, attrs: AttributeSet?, defStyleAttr:
         }
         animator.start()
     }
-
 
 
 }

@@ -23,7 +23,7 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-       viewModel.getListSeachAll(requireActivity())
+       viewModel.getListSearch(requireActivity())
 
     }
 
