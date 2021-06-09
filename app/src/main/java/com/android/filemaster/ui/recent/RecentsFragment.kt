@@ -58,11 +58,6 @@ class RecentsFragment : BaseFragment<FragmentRecentsBinding>(), ToolbarActionLis
                 val bottomSheet = MoreActionFragment()
                 bottomSheet.show(childFragmentManager, tag)
             }
-
-        }
-
-        binding.edtSearch.doAfterTextChanged {
-            filter(it.toString())
         }
     }
 

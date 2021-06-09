@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="searchAdapter"
             type="androidx.recyclerview.widget.RecyclerView.Adapter" />
@@ -14,15 +15,25 @@
         android:layout_height="match_parent"
         tools:context=".ui.search.SearchFragment">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:background="#DD1D1D"
-            rv_set_adapter="@{searchAdapter}"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+        <com.tapon.ds.view.toolbar.Toolbar
+            android:id="@+id/toolbar_search"
+            android:layout_width="0dp"
+            android:layout_height="?android:attr/actionBarSize"
             app:layout_constraintEnd_toEndOf="parent"
-            tools:listitem="@layout/item_file"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:toolbarAction2="@drawable/ic_search_black"
+            app:toolbarTitle="@string/search"
+            app:toolbarViewStyle="backTitleIcon" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            rv_set_adapter="@{searchAdapter}"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/toolbar_search"
+            tools:listitem="@layout/item_file" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
