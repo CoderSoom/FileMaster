@@ -1,4 +1,4 @@
-package com.android.filemaster.data.adapter
+package com.android.filemaster.ui.search
 
 import com.android.filemaster.R
 import com.android.filemaster.base.BaseListener
@@ -12,10 +12,6 @@ class SearchAdapter :
             R.layout.item_file_multi
         )
     ) {
-    companion object {
-        const val VIEW_TYPE_DATE = 0
-        const val VIEW_TYPE_ITEM = 1
-    }
 
     interface ISearch : BaseListener {
         fun onClickItem(position: Int, item: FileCustom)

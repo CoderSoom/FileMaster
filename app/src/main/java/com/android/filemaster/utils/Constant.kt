@@ -1,26 +1,32 @@
 package com.android.filemaster.utils
 
 object Constant {
-    val TF_JPG = "jpg"
-    val TF_PNG = "png"
-    val TF_MP3 = "mp3"
-    val TF_MP4 = "mp4"
-    val TF_HTML = "html"
-    val TF_ZIP = "zip"
-    val TF_PDF = "pdf"
-    val TF_APK = "apk"
-    val TF_RAR = "rar"
-    val TF_XLS = "xls"
-    val TF_XLSX = "xlsx"
-    val TF_PPT = "ptt"
-    val TF_PPTX = "pptx"
-    val TF_TXT = "txt"
-    val TF_RTX = "rfx"
-    val TF_RTF = "rtf"
-    val TF_DOCX = "docx"
-    val TF_DOC = "doc"
-    val TF_MOV = "mov"
-    val TF_MPEG4 = "mpeg4"
-    val IC_MORE = "more"
-    val IC_PLACE_HOLDER ="xxx"
+
+    //Type file to get icon
+    const val TF_JPG = "jpg"
+    const val TF_PNG = "png"
+    const val TF_MP3 = "mp3"
+    const val TF_MP4 = "mp4"
+    const val TF_HTML = "html"
+    const val TF_ZIP = "zip"
+    const val TF_PDF = "pdf"
+    const val TF_APK = "apk"
+    const val TF_RAR = "rar"
+    const val TF_XLS = "xls"
+    const val TF_XLSX = "xlsx"
+    const val TF_PPT = "ptt"
+    const val TF_PPTX = "pptx"
+    const val TF_TXT = "txt"
+    const val TF_RTX = "rfx"
+    const val TF_RTF = "rtf"
+    const val TF_DOCX = "docx"
+    const val TF_DOC = "doc"
+    const val TF_MOV = "mov"
+    const val TF_MPEG4 = "mpeg4"
+    const val IC_MORE = "more"
+    const val IC_PLACE_HOLDER = "xxx"
+
+    //Viewtype for multiviewholder
+    const val VIEW_TYPE_DATE = 0
+    const val VIEW_TYPE_ITEM = 1
 }

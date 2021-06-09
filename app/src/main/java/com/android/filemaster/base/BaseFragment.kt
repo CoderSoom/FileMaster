@@ -4,17 +4,23 @@ import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.view.*
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
+import com.android.filemaster.ui.main.MainActivity
 import com.tapon.ds.view.toolbar.Toolbar
 
 abstract class BaseFragment<VB : ViewDataBinding> : Fragment() {
     protected lateinit var binding: VB
 
     private lateinit var myInflater: LayoutInflater
+    private lateinit var callback: OnBackPressedCallback
 
+    protected val activityOwner by lazy {
+        requireActivity() as MainActivity
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -37,9 +43,21 @@ abstract class BaseFragment<VB : ViewDataBinding> : Fragment() {
             setStatusColor(getStatusBarColor()!!, isDarkText()!!)
         }
         super.onViewCreated(view, savedInstanceState)
+        setBackPressedDispatcher()
     }
 
     abstract fun getLayoutId(): Int
+
+    private fun setBackPressedDispatcher() {
+        callback = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                onBackPressed()
+            }
+        }
+        activityOwner.onBackPressedDispatcher.addCallback(viewLifecycleOwner, callback)
+    }
+
+    open fun onBackPressed() {}
 
     private fun initToolbar() {
         val toolbar = this.getToolbar() ?: return

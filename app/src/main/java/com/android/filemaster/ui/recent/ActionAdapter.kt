@@ -1,9 +1,7 @@
-package com.android.filemaster.data.adapter
+package com.android.filemaster.ui.recent
 
 import android.util.Log
 import android.view.View
-import androidx.recyclerview.widget.DividerItemDecoration
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.android.filemaster.R
 import com.android.filemaster.base.BaseAdapter
 import com.android.filemaster.base.BaseListener

@@ -16,25 +16,32 @@
         <action
             android:id="@+id/action_homeFragment_to_searchFragment"
             app:destination="@id/searchFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_fileInsightFragment"
+            app:destination="@id/fileInsightFragment" />
     </fragment>
     <fragment
         android:id="@+id/browserFragment"
-        android:name="com.android.filemaster.ui.fragment.BrowserFragment"
+        android:name="com.android.filemaster.ui.browser.BrowserFragment"
         android:label="BrowserFragment" />
     <fragment
         android:id="@+id/menuFragment"
-        android:name="com.android.filemaster.ui.fragment.MenuFragment"
+        android:name="com.android.filemaster.ui.menu.MenuFragment"
         android:label="MenuFragment" />
     <fragment
         android:id="@+id/recentsFragment"
-        android:name="com.android.filemaster.ui.fragment.RecentsFragment"
+        android:name="com.android.filemaster.ui.recent.RecentsFragment"
         android:label="RecentsFragment" />
     <fragment
         android:id="@+id/cleanerFragment"
-        android:name="com.android.filemaster.ui.fragment.CleanerFragment"
+        android:name="com.android.filemaster.ui.cleaner.CleanerFragment"
         android:label="CleanerFragment" />
     <fragment
         android:id="@+id/searchFragment"
-        android:name="com.android.filemaster.ui.fragment.SearchFragment"
+        android:name="com.android.filemaster.ui.search.SearchFragment"
         android:label="SearchFragment" />
+    <fragment
+        android:id="@+id/fileInsightFragment"
+        android:name="com.android.filemaster.ui.fileinsight.FileInsightFragment"
+        android:label="FileInsightFragment" />
 </navigation>

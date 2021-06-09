@@ -1,4 +1,4 @@
-package com.android.filemaster.data.adapter
+package com.android.filemaster.ui.home
 
 import com.android.filemaster.R
 import com.android.filemaster.base.BaseAdapter

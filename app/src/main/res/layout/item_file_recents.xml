@@ -14,7 +14,7 @@
 
         <variable
             name="itemListener"
-            type="com.android.filemaster.data.adapter.RecentHomeAdapter.RecentListener" />
+            type="com.android.filemaster.ui.home.RecentHomeAdapter.RecentListener" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

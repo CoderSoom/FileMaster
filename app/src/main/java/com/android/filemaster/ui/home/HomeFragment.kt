@@ -12,8 +12,6 @@ import com.android.filemaster.R
 import com.android.filemaster.base.BaseFragment
 import com.android.filemaster.data.adapter.FileAdapter
 import com.android.filemaster.data.adapter.FileAdapterMulti
-import com.android.filemaster.data.adapter.RecentHomeAdapter
-import com.android.filemaster.data.adapter.StorageAdapter
 import com.android.filemaster.data.model.FileDefault
 import com.android.filemaster.data.viewmodel.FileViewModel
 import com.android.filemaster.data.viewmodel.MainViewModel
@@ -31,10 +29,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), ToolbarActionListener 
     private val mainViewModel by activityViewModels<MainViewModel>()
     override fun getLayoutId(): Int {
         return R.layout.fragment_home
-    }
-
-    val activityOwner by lazy {
-        requireActivity() as MainActivity
     }
 
     override fun getToolbar(): Toolbar {
@@ -62,7 +56,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), ToolbarActionListener 
     private fun initData() {
         binding.toolbarHome.setBackgroundColor(
             ContextCompat.getColor(
-                this.requireContext(),
+                activityOwner,
                 R.color.transparent
             )
         )
@@ -73,14 +67,14 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), ToolbarActionListener 
         binding.storageAdapter = storageAdapter
         binding.recentAdapter = recentAdapter
         binding.rvListRecents.layoutManager =
-            LinearLayoutManager(requireActivity(), LinearLayoutManager.HORIZONTAL, false)
+            LinearLayoutManager(activityOwner, LinearLayoutManager.HORIZONTAL, false)
         binding.rvListRecents.isNestedScrollingEnabled = true
 
         //        binding.progressStorage.setProgress(totalMemorySize, amountOfMemoryUsed)
 //        binding.tvUsedStorage.text= getFileSize(amountOfMemoryUsed) +" / " +getFileSize(totalMemorySize)
 //        binding.tvUsed.text = (getUsedStorage()+" USED")
 
-//        Toast.makeText(requireActivity(), getUsedStorage()l, Toast.LENGTH_SHORT).show()
+//        Toast.makeText(activityOwner, getUsedStorage(), Toast.LENGTH_SHORT).show()
 
         val itemSpace = SpaceItemDecoation(resources.getDimension(R.dimen.px12))
         binding.rvListStorage.addItemDecoration(itemSpace)
@@ -161,6 +155,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), ToolbarActionListener 
     }
 
     override fun onAction2Click() {
-        TODO("Not yet implemented")
+        mainViewModel.hideMenu()
+        findNavController().navigate(R.id.action_homeFragment_to_fileInsightFragment)
     }
 }

@@ -1,18 +1,19 @@
-package com.android.filemaster.ui.fragment
+package com.android.filemaster.ui.recent
 
 import android.content.Context
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.android.filemaster.R
 import com.android.filemaster.base.BaseFragment
 import com.android.filemaster.data.adapter.FileAdapterMulti
-import com.android.filemaster.data.adapter.RecentApdapter
 import com.android.filemaster.data.model.FileCustom
 import com.android.filemaster.data.viewmodel.FileViewModel
 import com.android.filemaster.data.viewmodel.MainViewModel
@@ -57,7 +58,7 @@ class RecentsFragment : BaseFragment<FragmentRecentsBinding>() {
 
         binding.btnBack.setOnClickListener {
             mainViewModel.showMenu()
-            requireActivity().onBackPressed()
+            findNavController().popBackStack(R.id.homeFragment, false)
         }
 
         binding.btnSearch.setOnClickListener {
@@ -86,8 +87,14 @@ class RecentsFragment : BaseFragment<FragmentRecentsBinding>() {
         })
     }
 
+    override fun onBackPressed() {
+        Log.d(TAG, "onBackPressed: ")
+        mainViewModel.showMenu()
+        findNavController().popBackStack(R.id.homeFragment, false)
+    }
+
     private fun observeViewModel() {
-        viewModel.getListRecentForDay(requireActivity())
+        viewModel.getListRecentForDay(activityOwner)
         viewModel.recentMulti.observe(viewLifecycleOwner) {
             recentAdapter.list = it
         }
@@ -98,7 +105,7 @@ class RecentsFragment : BaseFragment<FragmentRecentsBinding>() {
 
     private fun hideSoftKeyboard(view: View) {
         val imm =
-            requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            activityOwner.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         imm.hideSoftInputFromWindow(view.windowToken, 0)
     }
 }

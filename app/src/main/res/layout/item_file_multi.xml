@@ -28,16 +28,15 @@
         android:id="@+id/itemFile"
         android:layout_width="match_parent"
         android:layout_height="@dimen/px60"
-        android:background="@color/fixed_white"
-        >
+        android:background="@color/fixed_white">
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/imgIcon"
             setImageMulti="@{item}"
             android:layout_width="@dimen/px40"
             android:layout_height="@dimen/px40"
-            android:layout_marginTop="@dimen/px10"
             android:layout_marginStart="@dimen/px18"
+            android:layout_marginTop="@dimen/px10"
             android:layout_marginBottom="@dimen/px10"
             android:scaleType="centerCrop"
             android:src="@drawable/ic_doc"
@@ -48,10 +47,10 @@
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tvFileName"
             tv_set_text_by_multi_holder_file="@{item}"
-            android:layout_marginTop="@dimen/px8"
             android:layout_width="@dimen/px228"
             android:layout_height="@dimen/px24"
             android:layout_marginStart="@dimen/px12"
+            android:layout_marginTop="@dimen/px8"
             android:singleLine="true"
             android:textColor="@color/label_prim"
             android:textSize="@dimen/sp16"
@@ -62,16 +61,16 @@
 
 
         <androidx.appcompat.widget.AppCompatTextView
-            getDetailFileMulti="@{item}"
             android:id="@+id/tv_subtitle"
             style="@style/Item.Subtitle.Text"
+            getDetailFileMulti="@{item}"
             android:layout_marginBottom="8dp"
             android:textColor="@color/label_sec"
-            app:layout_constraintTop_toBottomOf="@id/tvFileName"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/iv_favourite"
             app:layout_constraintHorizontal_bias="0.23"
             app:layout_constraintStart_toEndOf="@id/imgIcon"
+            app:layout_constraintTop_toBottomOf="@id/tvFileName"
             tools:text="@tools:sample/full_names" />
 
         <androidx.appcompat.widget.AppCompatImageView

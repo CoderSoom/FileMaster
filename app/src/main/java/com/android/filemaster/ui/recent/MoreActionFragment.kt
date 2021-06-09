@@ -1,17 +1,14 @@
-package com.android.filemaster.ui.fragment
+package com.android.filemaster.ui.recent
 
 import android.app.Dialog
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.android.filemaster.R
-import com.android.filemaster.data.adapter.ActionAdapter
 import com.android.filemaster.data.model.ItemAction
 import com.android.filemaster.databinding.BottomSheetFragmentMoreActionBinding
 import com.google.android.material.bottomsheet.BottomSheetBehavior
-import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
 

@@ -1,4 +1,4 @@
-package com.android.filemaster.ui.home
+package com.android.filemaster.ui.main
 
 import android.Manifest
 import android.content.Intent

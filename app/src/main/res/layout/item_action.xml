@@ -12,7 +12,7 @@
 
         <variable
             name="listener"
-            type="com.android.filemaster.data.adapter.ActionAdapter.IAction" />
+            type="com.android.filemaster.ui.recent.ActionAdapter" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -20,50 +20,50 @@
         android:layout_height="wrap_content">
 
         <View
-            app:layout_constraintTop_toTopOf="parent"
             android:id="@+id/view_line"
             android:layout_width="match_parent"
             android:layout_height="@dimen/px2"
             android:background="@color/label_prim"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-      <androidx.constraintlayout.widget.ConstraintLayout
-          android:layout_marginTop="@dimen/px4"
-          android:id="@+id/cl"
-          android:layout_width="match_parent"
-          app:layout_constraintBottom_toBottomOf="parent"
-          app:layout_constraintStart_toStartOf="parent"
-          app:layout_constraintTop_toBottomOf="@id/view_line"
-          android:layout_height="wrap_content">
-          <androidx.appcompat.widget.AppCompatImageView
-              android:id="@+id/iv"
-              android:layout_width="wrap_content"
-              android:layout_height="wrap_content"
-              android:layout_marginStart="@dimen/px16"
-              android:layout_marginTop="@dimen/px12"
-              android:layout_marginBottom="@dimen/px12"
-              android:src="@drawable/ic_move"
-              app:layout_constraintBottom_toBottomOf="parent"
-              app:layout_constraintStart_toStartOf="parent"
-              app:layout_constraintTop_toTopOf="parent" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cl"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/px4"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/view_line">
 
-          <androidx.appcompat.widget.AppCompatTextView
-              android:layout_width="wrap_content"
-              android:layout_height="wrap_content"
-              android:layout_marginStart="@dimen/px16"
-              android:layout_marginTop="@dimen/px12"
-              android:layout_marginBottom="@dimen/px12"
-              android:src="@drawable/ic_move"
-              android:text="@string/recents"
-              android:textColor="@color/label_prim"
-              android:textSize="@dimen/sp16"
-              app:layout_constraintBottom_toBottomOf="parent"
-              app:layout_constraintStart_toEndOf="@id/iv"
-              app:layout_constraintTop_toTopOf="parent" />
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/iv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/px16"
+                android:layout_marginTop="@dimen/px12"
+                android:layout_marginBottom="@dimen/px12"
+                android:src="@drawable/ic_move"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-      </androidx.constraintlayout.widget.ConstraintLayout>
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/px16"
+                android:layout_marginTop="@dimen/px12"
+                android:layout_marginBottom="@dimen/px12"
+                android:src="@drawable/ic_move"
+                android:text="@string/recents"
+                android:textColor="@color/label_prim"
+                android:textSize="@dimen/sp16"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@id/iv"
+                app:layout_constraintTop_toTopOf="parent" />
 
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
