@@ -66,8 +66,9 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(), ToolbarActionListe
         findNavController().popBackStack(R.id.homeFragment, false)
     }
 
-    override fun onBackPressed() {
+    override fun onBackPressed(): Boolean {
         backToHome()
+        return true
     }
 
     override fun onAction2Click() {

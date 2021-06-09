@@ -61,8 +61,9 @@ class RecentsFragment : BaseFragment<FragmentRecentsBinding>(), ToolbarActionLis
         }
     }
 
-    override fun onBackPressed() {
+    override fun onBackPressed(): Boolean {
         backToHome()
+        return true
     }
 
     private fun observeViewModel() {
