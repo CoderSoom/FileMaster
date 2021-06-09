@@ -24,4 +24,6 @@
     <string name="cancel_permission">Cancel</string>
     <string name="grant_permission">Grant Permission</string>
     <string name="go_setting">Go Settings</string>
+    <string name="no_access_file">You can access files quickly from here by \"Add To Quick Access\"</string>
+
 </resources>

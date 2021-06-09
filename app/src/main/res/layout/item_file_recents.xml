@@ -6,7 +6,7 @@
 
         <variable
             name="item"
-            type="com.android.filemaster.data.model.FileCustom" />
+            type="com.android.filemaster.data.model.FileDefault" />
 
         <variable
             name="itemPosition"
@@ -22,7 +22,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/px8"
         android:layout_marginBottom="@dimen/px8"
-        android:onClick="@{()->itemListener.onClickItem(itemPosition)}">
+        android:onClick="@{()->itemListener.onClickItem(itemPosition, item)}">
 
         <androidx.cardview.widget.CardView
             android:id="@+id/img_wrapper"

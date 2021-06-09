@@ -11,11 +11,12 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.android.filemaster.R
 import com.android.filemaster.base.BaseFragment
+import com.android.filemaster.data.adapter.FileAdapterMulti
 import com.android.filemaster.data.adapter.RecentApdapter
+import com.android.filemaster.data.model.FileCustom
 import com.android.filemaster.data.viewmodel.FileViewModel
 import com.android.filemaster.data.viewmodel.MainViewModel
 import com.android.filemaster.databinding.FragmentRecentsBinding
-import com.android.filemaster.model.ItemFileRecent
 
 class RecentsFragment : BaseFragment<FragmentRecentsBinding>() {
     private val TAG = "RecentsFragment"
@@ -30,7 +31,7 @@ class RecentsFragment : BaseFragment<FragmentRecentsBinding>() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-//        viewModel.getListRecentForDay(context)
+
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -45,10 +46,18 @@ class RecentsFragment : BaseFragment<FragmentRecentsBinding>() {
             this.context,
             LinearLayoutManager.VERTICAL, false
         )
+        val fileApdapter = FileAdapterMulti()
+        fileApdapter.listener = object : FileAdapterMulti.FileListener {
+            override fun onItemClick(position: Int, item: FileCustom) {
+                val bottomSheet = MoreActionFragment()
+                bottomSheet.show(childFragmentManager, tag)
+            }
+
+        }
 
         binding.btnBack.setOnClickListener {
             mainViewModel.showMenu()
-//            context.onBackPressed()
+            requireActivity().onBackPressed()
         }
 
         binding.btnSearch.setOnClickListener {
@@ -78,7 +87,8 @@ class RecentsFragment : BaseFragment<FragmentRecentsBinding>() {
     }
 
     private fun observeViewModel() {
-        viewModel.listFileRecentForDay.observe(viewLifecycleOwner) {
+        viewModel.getListRecentForDay(requireActivity())
+        viewModel.recentMulti.observe(viewLifecycleOwner) {
             recentAdapter.list = it
         }
     }
@@ -87,8 +97,8 @@ class RecentsFragment : BaseFragment<FragmentRecentsBinding>() {
     }
 
     private fun hideSoftKeyboard(view: View) {
-//        val imm =
-//            context!!.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-//        imm.hideSoftInputFromWindow(view.windowToken, 0)
+        val imm =
+            requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(view.windowToken, 0)
     }
 }

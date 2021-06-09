@@ -1,11 +1,11 @@
 package com.android.filemaster.module
 
+import android.annotation.SuppressLint
 import android.app.Application
 import android.content.Context
 import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.net.Uri
-import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.android.filemaster.R
 import com.android.filemaster.base.BaseMultiViewHolderAdapter
 import com.android.filemaster.data.model.FileCustom
+import com.android.filemaster.data.model.FileDefault
 import com.android.filemaster.data.model.ItemDate
 import com.android.filemaster.data.model.ListStorage
 import com.android.filemaster.ui.customview.CircularProgressBar
@@ -41,15 +42,19 @@ fun <T : RecyclerView.ViewHolder> RecyclerView.applyAdapter(applyAdapter: Recycl
     }
 }
 
+@SuppressLint("SetTextI18n")
 @BindingAdapter("tv_get_detail")
-fun TextView.getDetailFile(item: FileCustom) {
-    this.text = item.size + " | " + FileManager.formatDate(item.date)
+fun TextView.getDetailFile(item: FileDefault) {
+    this.text =
+        FileManager.convertBytes(item.size?.toLong()) + " | " + FileManager.formatDate(item.date?.toLong())
 }
 
+@SuppressLint("SetTextI18n")
 @BindingAdapter("getDetailFileMulti")
 fun TextView.getDetailFileMulti(item: BaseMultiViewHolderAdapter.BaseModelType) {
     if (item is FileCustom) {
-//        this.text = FileManager.getFileSize(item.size) +" | "+FileManager.formatDate(item.date!!.toLong())
+        this.text =
+            FileManager.convertBytes(item.size?.toLong()) + " | " + FileManager.formatDate(item.date?.toLong())
     }
 }
 
@@ -61,6 +66,7 @@ fun setImage(img: ImageView, path: String) {
         Glide.with(img)
             .load(Uri.fromFile(File(path)))
             .apply(RequestOptions().override(100, 100))
+            .error(R.drawable.ic_image)
             .into(img)
     } else {
         img.setImageResource(FileManager.setImageFile(path))

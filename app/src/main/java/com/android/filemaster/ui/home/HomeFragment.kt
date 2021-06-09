@@ -1,8 +1,8 @@
 package com.android.filemaster.ui.home
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
@@ -11,8 +11,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.android.filemaster.R
 import com.android.filemaster.base.BaseFragment
 import com.android.filemaster.data.adapter.FileAdapter
+import com.android.filemaster.data.adapter.FileAdapterMulti
 import com.android.filemaster.data.adapter.RecentHomeAdapter
 import com.android.filemaster.data.adapter.StorageAdapter
+import com.android.filemaster.data.model.FileDefault
 import com.android.filemaster.data.viewmodel.FileViewModel
 import com.android.filemaster.data.viewmodel.MainViewModel
 import com.android.filemaster.databinding.FragmentHomeBinding
@@ -23,12 +25,16 @@ import com.tapon.ds.view.toolbar.Toolbar
 class HomeFragment : BaseFragment<FragmentHomeBinding>(), ToolbarActionListener {
     private val viewModel by viewModels<FileViewModel>()
     private val fileAdapter = FileAdapter()
+    private val fileAdapterRecent = FileAdapterMulti()
     private val storageAdapter = StorageAdapter()
     private val recentAdapter = RecentHomeAdapter()
     private val mainViewModel by activityViewModels<MainViewModel>()
-    private val TAG = "HomeFragment"
     override fun getLayoutId(): Int {
         return R.layout.fragment_home
+    }
+
+    val activityOwner by lazy {
+        requireActivity() as MainActivity
     }
 
     override fun getToolbar(): Toolbar {
@@ -38,10 +44,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), ToolbarActionListener 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel.getListFake()
-        viewModel.getListStorage(requireActivity())
-//        viewModel.getListAccess(requireActivity())
-        viewModel.getListRecent(requireActivity())
+        viewModel.getListStorage(activityOwner)
+        viewModel.getListAccess(activityOwner)
+        viewModel.getListRecent(activityOwner)
 
 
     }
@@ -65,37 +70,74 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), ToolbarActionListener 
 
         binding.viewModel = viewModel
         binding.fileAdapter = fileAdapter
-
         binding.storageAdapter = storageAdapter
-
         binding.recentAdapter = recentAdapter
         binding.rvListRecents.layoutManager =
-            LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+            LinearLayoutManager(requireActivity(), LinearLayoutManager.HORIZONTAL, false)
         binding.rvListRecents.isNestedScrollingEnabled = true
 
-        binding.moreRecent.setOnClickListener {
-            mainViewModel.hideMenu()
-            findNavController().navigate(R.id.action_homeFragment_to_recentsFragment)
-        }
+        //        binding.progressStorage.setProgress(totalMemorySize, amountOfMemoryUsed)
+//        binding.tvUsedStorage.text= getFileSize(amountOfMemoryUsed) +" / " +getFileSize(totalMemorySize)
+//        binding.tvUsed.text = (getUsedStorage()+" USED")
+
+//        Toast.makeText(requireActivity(), getUsedStorage()l, Toast.LENGTH_SHORT).show()
+
         val itemSpace = SpaceItemDecoation(resources.getDimension(R.dimen.px12))
         binding.rvListStorage.addItemDecoration(itemSpace)
     }
 
     private fun observeViewModel() {
         viewModel.liveCurrentFile.observe(viewLifecycleOwner) {
-            fileAdapter.list = it
-        }
-
-        viewModel.listFileRecent.observe(viewLifecycleOwner) {
-            Log.d(TAG, "observeViewModel: $it")
-            if (it.size <= 4) {
-                recentAdapter.list = it
-                binding.moreRecent.visibility = View.INVISIBLE
+            if (it.isEmpty()) {
+                binding.clNoAccess.visibility = View.VISIBLE
+                binding.rvQuickAccess.visibility = View.GONE
             } else {
-                recentAdapter.list = it.subList(0, 3)
-                binding.moreRecent.visibility = View.VISIBLE
+                binding.clNoAccess.visibility = View.GONE
+                binding.rvQuickAccess.visibility = View.VISIBLE
+                fileAdapter.list = it
             }
         }
+        recentAdapter.listener = object : RecentHomeAdapter.RecentListener {
+            override fun onClickItem(position: Int, item: FileDefault) {
+                if (item.name.equals(getString(R.string.more)) && item.path.equals(".more")) {
+                    mainViewModel.hideMenu()
+                    findNavController().navigate(R.id.action_homeFragment_to_recentsFragment)
+                } else {
+//                    StartFileManager().openNomarlFile(requireContext(), item)
+                    Toast.makeText(activityOwner, "Update soon", Toast.LENGTH_LONG).show()
+                }
+            }
+        }
+
+        viewModel.listFileRecentSingle.observe(viewLifecycleOwner) {
+
+            if (it.size <= 4) {
+                when (it.size) {
+                    1 -> {
+                        it.add(FileDefault("", "", "", "abc.xxx"))
+                        it.add(FileDefault("", "", "", "abc.xxx"))
+                        it.add(FileDefault("", "", "", "abc.xxx"))
+
+                    }
+                    2 -> {
+                        it.add(FileDefault("", "", "", "abc.xxx"))
+                        it.add(FileDefault("", "", "", "abc.xxx"))
+                    }
+                    3 -> {
+                        it.add(FileDefault("", "", "", "abc.xxx"))
+                    }
+                }
+                recentAdapter.list = it
+
+
+            } else {
+                val list = it.subList(0, 3)
+                list.add(list.size, FileDefault(getString(R.string.more), "", "", ".more"))
+                recentAdapter.list = list
+
+            }
+        }
+
         binding.tvExpand.setOnClickListener {
             viewModel.expanded(!viewModel.isExpanded.value!!)
         }
