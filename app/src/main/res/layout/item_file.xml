@@ -24,29 +24,37 @@
         android:layout_height="wrap_content"
         android:background="@color/fixed_white">
 
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/iv_icon"
-            setImage="@{item.path}"
-            android:layout_width="@dimen/px40"
-            android:layout_height="@dimen/px40"
+        <androidx.cardview.widget.CardView
+            android:id="@+id/file_icon_container"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/px16"
             android:layout_marginTop="@dimen/px10"
             android:layout_marginBottom="@dimen/px10"
-            android:scaleType="centerCrop"
-            android:src="@drawable/ic_doc"
+            app:cardCornerRadius="@dimen/px4"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/iv_icon"
+                setImage="@{item.path}"
+                android:layout_width="@dimen/px40"
+                android:layout_height="@dimen/px40"
+
+                android:scaleType="centerCrop"
+                android:src="@drawable/ic_doc" />
+        </androidx.cardview.widget.CardView>
+
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_title"
             style="@style/Item.Title.Text"
-            android:layout_marginTop="@dimen/px8"
             android:text="@{item.name}"
             android:textColor="@color/label_prim"
             app:layout_constraintBottom_toTopOf="@id/tv_subtitle"
             app:layout_constraintEnd_toStartOf="@id/iv_favourite"
-            app:layout_constraintStart_toEndOf="@id/iv_icon"
+            app:layout_constraintStart_toEndOf="@id/file_icon_container"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="@tools:sample/cities" />
 
@@ -56,10 +64,9 @@
             style="@style/Item.Subtitle.Text"
             tv_get_detail="@{item}"
             android:textColor="@color/label_sec"
-            app:layout_constraintEnd_toStartOf="@id/iv_favourite"
-            app:layout_constraintStart_toEndOf="@id/iv_icon"
-            android:layout_marginTop="@dimen/px8"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/iv_favourite"
+            app:layout_constraintStart_toEndOf="@id/file_icon_container"
             tools:text="@tools:sample/full_names" />
 
         <androidx.appcompat.widget.AppCompatImageView
