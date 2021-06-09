@@ -38,6 +38,7 @@
                 android:id="@+id/iv_icon"
                 setImage="@{item.path}"
                 android:layout_width="@dimen/px40"
+                android:adjustViewBounds="true"
                 android:layout_height="@dimen/px40"
                 android:scaleType="centerCrop"
                 android:src="@drawable/ic_doc" />

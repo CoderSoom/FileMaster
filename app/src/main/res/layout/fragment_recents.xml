@@ -22,50 +22,20 @@
         tools:context=".ui.fragment.BeowserFragment">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/toolbar"
+            android:id="@+id/toolbar_container"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/px56"
+            android:layout_height="?android:actionBarSize"
             android:background="@color/fixed_white"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/recents"
+            <com.tapon.ds.view.toolbar.Toolbar
+                android:id="@+id/toolbarRecent"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <androidx.appcompat.widget.AppCompatImageView
-                    android:id="@+id/btnBack"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/sp20"
-                    android:src="@drawable/ic_arrow_back"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/tvRecents"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/px20"
-                    android:text="@string/recents"
-                    android:textColor="@color/label_prim"
-                    android:textSize="@dimen/sp16"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toEndOf="@id/btnBack"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <androidx.appcompat.widget.AppCompatImageView
-                    android:id="@+id/btnSearch"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="@dimen/px22"
-                    android:src="@drawable/ic_search_black"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
+                android:layout_height="match_parent"
+                app:toolbarAction2="@drawable/ic_search_black"
+                app:toolbarTitle="@string/recents"
+                app:toolbarViewStyle="backTitleIcon" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/search_layout"
@@ -116,7 +86,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/toolbar"
+            app:layout_constraintTop_toBottomOf="@id/toolbar_container"
             tools:ignore="InvalidId" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

@@ -43,7 +43,6 @@ object FileManager {
     private var availableMemorySize: Long = 0L
     private var amountOfMemoryUsed: Long = 0L
     private var totalMemorySize: Long = 0L
-    var used: Double = 0.0
 
     var listImg = arrayListOf<FileCustom>()
     val TAG = "anhlt"
@@ -62,7 +61,8 @@ object FileManager {
                 "Storage",
                 totalMemorySize,
                 amountOfMemoryUsed,
-                getUsedStorage(),
+                getPercentUsageStorage(),
+                getUsedStorageInString(),
                 getFileSize(amountOfMemoryUsed) + " / " + getFileSize(totalMemorySize),
                 R.drawable.ic_clear,
                 R.drawable.ic_clear_pressed
@@ -72,6 +72,7 @@ object FileManager {
             ListStorage(
                 R.drawable.ic_drive,
                 "Account",
+                null,
                 null,
                 null,
                 "SYNCED",
@@ -113,17 +114,18 @@ object FileManager {
                 e.printStackTrace()
             }
         } else {
-
             availableMemorySize = getAvailableInternalMemorySize()
             totalMemorySize = getTotalInternalMemorySize()
             amountOfMemoryUsed = totalMemorySize - availableMemorySize
-
         }
-
     }
 
-    fun getUsedStorage(): String {
-        used = ((amountOfMemoryUsed.toDouble() / totalMemorySize.toDouble()) * 100)
+    private fun getPercentUsageStorage(): Float {
+        return ((amountOfMemoryUsed.toDouble() / totalMemorySize.toDouble()) * 100).toFloat()
+    }
+
+    private fun getUsedStorageInString(): String {
+        val used = getPercentUsageStorage()
         return DecimalFormat("#,##0").format(used).toString() + "% USED"
     }
 

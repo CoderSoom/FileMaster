@@ -21,10 +21,10 @@ import com.android.filemaster.data.model.FileCustom
 import com.android.filemaster.data.model.FileDefault
 import com.android.filemaster.data.model.ItemDate
 import com.android.filemaster.data.model.ListStorage
-import com.android.filemaster.ui.customview.CircularProgressBar
 import com.android.filemaster.utils.FileManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
+import com.mikhaellopez.circularprogressbar.CircularProgressBar
 import java.io.File
 
 private var appInstance: Application? = null
@@ -113,9 +113,9 @@ fun setImgResource(img: ImageView, path: Int?) {
 }
 
 @BindingAdapter("setProgressBar")
-fun setProgressBar(circularProcessbar: CircularProgressBar, process: Int?, processMax: Int?) {
-    if (process != null && processMax !== null) {
-        circularProcessbar.setProgress(processMax, process)
+fun setProgressBar(circularProcessbar: CircularProgressBar, process: Float?) {
+    if (process != null) {
+        circularProcessbar.progress = process
     }
 
 }
@@ -131,9 +131,8 @@ fun setImageDrawable(img: ImageView, path: Int) {
 
 @BindingAdapter("setProgressbar")
 fun CircularProgressBar.setProgressbar(item: ListStorage) {
-    if (item.totalMemorySize != null && item.amountOfMemoryUsed != null) {
-        this.setProgress(item.amountOfMemoryUsed!!.toInt(), item.totalMemorySize!!.toInt())
-    } else {
+    if (item.percentUsage != null) {
+        this.progress = item.percentUsage!!
     }
 }
 

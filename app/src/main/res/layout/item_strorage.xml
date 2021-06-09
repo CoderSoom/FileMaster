@@ -17,6 +17,8 @@
         android:layout_marginStart="@dimen/px12"
         android:layout_marginBottom="@dimen/px12"
         app:cardCornerRadius="@dimen/px12"
+        app:cardElevation="@dimen/px8"
+        android:elevation="@dimen/px8"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -61,26 +63,24 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
-
-                    <com.android.filemaster.ui.customview.CircularProgressBar
-                        android:id="@+id/progress_storage"
+                    <com.mikhaellopez.circularprogressbar.CircularProgressBar
                         setProgressbar="@{item}"
                         setVisibleStorage="@{item}"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
+                        app:cpb_background_progressbar_color="#E0E0E0"
+                        app:cpb_progressbar_color="@color/brand"
+                        app:cpb_progressbar_width="@dimen/px2"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:strokeWidth="@dimen/px2" />
+                        app:layout_constraintTop_toTopOf="parent" />
 
                     <androidx.appcompat.widget.AppCompatImageView
                         setImageDrawable="@{item.imgStorage}"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerInParent="true"
-                        android:layout_marginEnd="@dimen/px4"
-                        android:layout_marginBottom="@dimen/px4"
                         app:layout_constraintBottom_toBottomOf="@+id/constan_progress"
                         app:layout_constraintEnd_toEndOf="@+id/constan_progress"
                         app:layout_constraintStart_toStartOf="@+id/constan_progress"

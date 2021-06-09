@@ -41,8 +41,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), ToolbarActionListener 
         viewModel.getListStorage(activityOwner)
         viewModel.getListAccess(activityOwner)
         viewModel.getListRecent(activityOwner)
-
-
     }
 
 

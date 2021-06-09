@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
+import android.view.MenuItem
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.fragment.app.activityViewModels
@@ -18,8 +19,11 @@ import com.android.filemaster.data.model.FileCustom
 import com.android.filemaster.data.viewmodel.FileViewModel
 import com.android.filemaster.data.viewmodel.MainViewModel
 import com.android.filemaster.databinding.FragmentRecentsBinding
+import com.android.filemaster.ui.home.ToolbarActionListener
+import com.tapon.ds.view.toolbar.OnToolbarActionListener
+import com.tapon.ds.view.toolbar.Toolbar
 
-class RecentsFragment : BaseFragment<FragmentRecentsBinding>() {
+class RecentsFragment : BaseFragment<FragmentRecentsBinding>(), ToolbarActionListener {
     private val TAG = "RecentsFragment"
 
     private val viewModel by viewModels<FileViewModel>()
@@ -30,9 +34,8 @@ class RecentsFragment : BaseFragment<FragmentRecentsBinding>() {
         return R.layout.fragment_recents
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
+    override fun getToolbar(): Toolbar {
+        return binding.toolbarRecent
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -42,6 +45,7 @@ class RecentsFragment : BaseFragment<FragmentRecentsBinding>() {
     }
 
     private fun initData() {
+        binding.toolbarRecent.setOnToolbarActionListener(this)
         binding.adapter = recentAdapter
         binding.rcListRecents.layoutManager = LinearLayoutManager(
             this.context,
@@ -56,22 +60,17 @@ class RecentsFragment : BaseFragment<FragmentRecentsBinding>() {
 
         }
 
-        binding.btnBack.setOnClickListener {
-            mainViewModel.showMenu()
-            findNavController().popBackStack(R.id.homeFragment, false)
-        }
-
-        binding.btnSearch.setOnClickListener {
-            binding.searchLayout.visibility = View.VISIBLE
-            binding.recents.visibility = View.GONE
-            binding.edtSearch.requestFocus()
-        }
-
-        binding.btnSearchClose.setOnClickListener {
-            binding.searchLayout.visibility = View.GONE
-            binding.recents.visibility = View.VISIBLE
-            hideSoftKeyboard(it)
-        }
+//        binding.btnSearch.setOnClickListener {
+//            binding.searchLayout.visibility = View.VISIBLE
+//            binding.recents.visibility = View.GONE
+//            binding.edtSearch.requestFocus()
+//        }
+//
+//        binding.btnSearchClose.setOnClickListener {
+//            binding.searchLayout.visibility = View.GONE
+//            binding.recents.visibility = View.VISIBLE
+//            hideSoftKeyboard(it)
+//        }
 
         binding.edtSearch.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
@@ -107,5 +106,20 @@ class RecentsFragment : BaseFragment<FragmentRecentsBinding>() {
         val imm =
             activityOwner.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         imm.hideSoftInputFromWindow(view.windowToken, 0)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            android.R.id.home -> {
+                mainViewModel.showMenu()
+                findNavController().popBackStack(R.id.homeFragment, false)
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+        return false
+    }
+
+    override fun onAction2Click() {
+
     }
 }
