@@ -8,6 +8,10 @@ import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import android.widget.EditText
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
+import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -20,12 +24,9 @@ import com.android.filemaster.data.viewmodel.FileViewModel
 import com.android.filemaster.data.viewmodel.MainViewModel
 import com.android.filemaster.databinding.FragmentRecentsBinding
 import com.android.filemaster.ui.home.ToolbarActionListener
-import com.tapon.ds.view.toolbar.OnToolbarActionListener
 import com.tapon.ds.view.toolbar.Toolbar
 
 class RecentsFragment : BaseFragment<FragmentRecentsBinding>(), ToolbarActionListener {
-    private val TAG = "RecentsFragment"
-
     private val viewModel by viewModels<FileViewModel>()
     private val mainViewModel by activityViewModels<MainViewModel>()
     private val recentAdapter = RecentApdapter()
@@ -60,36 +61,13 @@ class RecentsFragment : BaseFragment<FragmentRecentsBinding>(), ToolbarActionLis
 
         }
 
-//        binding.btnSearch.setOnClickListener {
-//            binding.searchLayout.visibility = View.VISIBLE
-//            binding.recents.visibility = View.GONE
-//            binding.edtSearch.requestFocus()
-//        }
-//
-//        binding.btnSearchClose.setOnClickListener {
-//            binding.searchLayout.visibility = View.GONE
-//            binding.recents.visibility = View.VISIBLE
-//            hideSoftKeyboard(it)
-//        }
-
-        binding.edtSearch.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-            }
-
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-            }
-
-            override fun afterTextChanged(s: Editable?) {
-                filter(s.toString())
-            }
-
-        })
+        binding.edtSearch.doAfterTextChanged {
+            filter(it.toString())
+        }
     }
 
     override fun onBackPressed() {
-        Log.d(TAG, "onBackPressed: ")
-        mainViewModel.showMenu()
-        findNavController().popBackStack(R.id.homeFragment, false)
+        backToHome()
     }
 
     private fun observeViewModel() {
@@ -102,17 +80,15 @@ class RecentsFragment : BaseFragment<FragmentRecentsBinding>(), ToolbarActionLis
     private fun filter(str: String) {
     }
 
-    private fun hideSoftKeyboard(view: View) {
-        val imm =
-            activityOwner.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        imm.hideSoftInputFromWindow(view.windowToken, 0)
+    private fun backToHome() {
+        mainViewModel.showMenu()
+        findNavController().popBackStack(R.id.homeFragment, false)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             android.R.id.home -> {
-                mainViewModel.showMenu()
-                findNavController().popBackStack(R.id.homeFragment, false)
+                backToHome()
             }
             else -> super.onOptionsItemSelected(item)
         }
@@ -120,6 +96,17 @@ class RecentsFragment : BaseFragment<FragmentRecentsBinding>(), ToolbarActionLis
     }
 
     override fun onAction2Click() {
+        binding.toolbarRecent.activeInputType()
+        binding.toolbarRecent.toolbar().setNavigationOnClickListener {
+            binding.toolbarRecent.deactiveInputType()
+            binding.toolbarRecent.toolbar()
+                .setNavigationOnClickListener { backToHome() }
+        }
+    }
 
+    override fun onTextChanged(text: String) {
+    }
+
+    override fun onTextInputCleared() {
     }
 }
