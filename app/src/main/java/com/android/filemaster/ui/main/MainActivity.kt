@@ -3,17 +3,18 @@ package com.android.filemaster.ui.main
 import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.os.Build
-import android.os.Bundle
-import android.os.Environment
+import android.os.*
 import android.view.MenuItem
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.Navigation
+import androidx.navigation.fragment.NavHostFragment
 import com.android.filemaster.R
+import com.android.filemaster.base.BaseFragment
 import com.android.filemaster.data.viewmodel.MainViewModel
 import com.android.filemaster.databinding.ActivityMainBinding
 import com.android.filemaster.ui.customview.StoragePermissionDialog
@@ -26,7 +27,9 @@ class MainActivity : AppCompatActivity(),
 
     private var isStartSettingPermission = false
     private val mainViewModel by viewModels<MainViewModel>()
-    protected var mBinding: ActivityMainBinding? = null
+    private var mBinding: ActivityMainBinding? = null
+    private var doubleBackToExitPressedOnce: Boolean = false
+    private var currentFragmentId: Int? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -70,7 +73,6 @@ class MainActivity : AppCompatActivity(),
     }
 
     private fun initData() {
-        println("DUYDQ->  [initData]")
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_main)
 
         mBinding!!.lifecycleOwner = this
@@ -150,6 +152,10 @@ class MainActivity : AppCompatActivity(),
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == currentFragmentId) {
+            return false
+        }
+        currentFragmentId = item.itemId
         when (item.itemId) {
             R.id.navigation_recents -> {
                 Navigation.findNavController(this, R.id.nav_host_fragment)
@@ -157,7 +163,6 @@ class MainActivity : AppCompatActivity(),
                 return true
             }
             R.id.navigation_browser -> {
-
                 Navigation.findNavController(this, R.id.nav_host_fragment)
                     .navigate(R.id.browserFragment)
                 return true
@@ -174,6 +179,51 @@ class MainActivity : AppCompatActivity(),
             }
         }
         return false
+    }
+
+    override fun onBackPressed() {
+        try {
+            var handled = false
+            supportFragmentManager.fragments.forEach { fragment ->
+                if (fragment is NavHostFragment) {
+                    fragment.childFragmentManager.fragments.forEach { childFragment ->
+                        if (childFragment is BaseFragment<*>) {
+                            handled = childFragment.onBackPressed()
+                            if (handled)
+                                return
+                        }
+                    }
+                }
+            }
+            if (!handled) {
+                doubleBackToExit()
+            }
+        } catch (ex: Exception) {
+            ex.printStackTrace()
+            doubleBackToExit()
+        }
+//        val navController = Navigation.findNavController(this, R.id.nav_host_fragment)
+//        when (navController.currentDestination!!.id) {
+//            R.id.recentsFragment,
+//            R.id.searchFragment -> {
+//                return
+//            }
+//        }
+//        doubleBackToExit()
+    }
+
+    private fun doubleBackToExit() {
+        if (this.doubleBackToExitPressedOnce) {
+            finish()
+            return
+        }
+
+        this.doubleBackToExitPressedOnce = true
+        Toast.makeText(this, getString(R.string.back_to_exit_app), Toast.LENGTH_SHORT)
+            .show()
+        Handler(Looper.getMainLooper()!!).postDelayed({
+            doubleBackToExitPressedOnce = false
+        }, 2000)
     }
 }
 

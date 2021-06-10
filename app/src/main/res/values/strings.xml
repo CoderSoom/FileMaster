@@ -38,4 +38,6 @@
     <string name="add_to_workspace">Add to workspace</string>
     <string name="add_to_quick_access">Add to quick access</string>
     <string name="upload_to_cloud">Upload to cloud</string>
+    <string name="back_to_exit_app">Back again to exit</string>
+
 </resources>

@@ -1,6 +1,7 @@
 package com.android.filemaster.ui.search
 
 import android.os.Bundle
+import android.view.MenuItem
 import android.view.View
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
@@ -10,14 +11,20 @@ import com.android.filemaster.base.BaseFragment
 import com.android.filemaster.data.viewmodel.FileViewModel
 import com.android.filemaster.data.viewmodel.MainViewModel
 import com.android.filemaster.databinding.FragmentSearchBinding
+import com.android.filemaster.ui.home.ToolbarActionListener
+import com.tapon.ds.view.toolbar.Toolbar
 
-class SearchFragment : BaseFragment<FragmentSearchBinding>() {
+class SearchFragment : BaseFragment<FragmentSearchBinding>(), ToolbarActionListener {
     private val viewModel by viewModels<FileViewModel>()
     private val mainViewModel by activityViewModels<MainViewModel>()
     var searchAdapter = SearchAdapter()
 
     override fun getLayoutId(): Int {
         return R.layout.fragment_search
+    }
+
+    override fun getToolbar(): Toolbar {
+        return binding.toolbarSearch
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -28,8 +35,13 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        this.initData()
+        this.observeViewModel()
+    }
+
+    private fun initData() {
+        binding.toolbarSearch.setOnToolbarActionListener(this)
         binding.searchAdapter = searchAdapter
-        observeViewModel()
     }
 
     private fun observeViewModel() {
@@ -39,9 +51,39 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>() {
 //        }
     }
 
-    override fun onBackPressed() {
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            android.R.id.home -> {
+                backToHome()
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+        return false
+    }
+
+    private fun backToHome() {
         mainViewModel.showMenu()
         findNavController().popBackStack(R.id.homeFragment, false)
+    }
+
+    override fun onBackPressed(): Boolean {
+        backToHome()
+        return true
+    }
+
+    override fun onAction2Click() {
+        binding.toolbarSearch.activeInputType()
+        binding.toolbarSearch.toolbar().setNavigationOnClickListener {
+            binding.toolbarSearch.deactiveInputType()
+            binding.toolbarSearch.toolbar()
+                .setNavigationOnClickListener { backToHome() }
+        }
+    }
+
+    override fun onTextChanged(text: String) {
+    }
+
+    override fun onTextInputCleared() {
     }
 
 }

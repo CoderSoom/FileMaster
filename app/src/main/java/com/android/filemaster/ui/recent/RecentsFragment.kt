@@ -31,9 +31,7 @@ class RecentsFragment : BaseFragment<FragmentRecentsBinding>(), ToolbarActionLis
     private val viewModel by viewModels<FileViewModel>()
     private val mainViewModel by activityViewModels<MainViewModel>()
     private val recentAdapter = RecentApdapter()
-    private val fileApdapter = FileAdapterMulti()
     private val TAG = "hhh"
-
 
     override fun getLayoutId(): Int {
         return R.layout.fragment_recents
@@ -62,7 +60,7 @@ class RecentsFragment : BaseFragment<FragmentRecentsBinding>(), ToolbarActionLis
 
             override fun onLongClick(item: BaseMultiViewHolderAdapter.BaseModelType): Boolean {
                 if (item is FileCustom && super.onLongClick(item)) {
-                    
+
                     return super.onLongClick(item)
                 } else {
                     return false
@@ -85,8 +83,9 @@ class RecentsFragment : BaseFragment<FragmentRecentsBinding>(), ToolbarActionLis
         }
     }
 
-    override fun onBackPressed() {
+    override fun onBackPressed(): Boolean {
         backToHome()
+        return true
     }
 
     private fun observeViewModel() {

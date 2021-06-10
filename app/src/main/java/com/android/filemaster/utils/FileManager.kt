@@ -235,7 +235,7 @@ object FileManager {
                 return R.drawable.ic_file_place_holder
             }
         }
-        return R.drawable.ic_file_unknow
+        return R.drawable.ic_file_unknown
     }
 
     fun getListImage(context: Context): ArrayList<FileCustom> {

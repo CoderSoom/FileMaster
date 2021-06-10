@@ -35,7 +35,6 @@ abstract class BaseFragment<VB : ViewDataBinding> : Fragment() {
         initToolbar()
         initBinding()
         return binding.root
-
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -43,21 +42,13 @@ abstract class BaseFragment<VB : ViewDataBinding> : Fragment() {
             setStatusColor(getStatusBarColor()!!, isDarkText()!!)
         }
         super.onViewCreated(view, savedInstanceState)
-        setBackPressedDispatcher()
     }
 
     abstract fun getLayoutId(): Int
 
-    private fun setBackPressedDispatcher() {
-        callback = object : OnBackPressedCallback(true) {
-            override fun handleOnBackPressed() {
-                onBackPressed()
-            }
-        }
-        activityOwner.onBackPressedDispatcher.addCallback(viewLifecycleOwner, callback)
+    open fun onBackPressed(): Boolean {
+        return false
     }
-
-    open fun onBackPressed() {}
 
     private fun initToolbar() {
         val toolbar = this.getToolbar() ?: return

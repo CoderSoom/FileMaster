@@ -14,9 +14,10 @@ class FileInsightFragment : BaseFragment<FragmentFileInsightBinding>() {
         return R.layout.fragment_file_insight
     }
 
-    override fun onBackPressed() {
+    override fun onBackPressed(): Boolean {
         mainViewModel.showMenu()
         findNavController().popBackStack(R.id.homeFragment, false)
+        return true
     }
 
 }
