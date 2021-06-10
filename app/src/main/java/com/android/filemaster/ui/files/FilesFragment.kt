@@ -1,4 +1,4 @@
-package com.android.filemaster.ui.browser
+package com.android.filemaster.ui.files
 
 import com.android.filemaster.R
 import com.android.filemaster.base.BaseFragment

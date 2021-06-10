@@ -30,10 +30,13 @@
         <action
             android:id="@+id/action_homeFragment_to_premium"
             app:destination="@id/premium_fragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_browse_file"
+            app:destination="@id/browse_fragment" />
     </fragment>
     <fragment
         android:id="@+id/filesFragment"
-        android:name="com.android.filemaster.ui.browser.FilesFragment"
+        android:name="com.android.filemaster.ui.files.FilesFragment"
         android:label="FilesFragment" />
     <fragment
         android:id="@+id/menuFragment"
@@ -68,4 +71,9 @@
         android:id="@+id/premium_fragment"
         android:name="com.android.filemaster.ui.premium.PremiumFragment"
         android:label="PremiumFragment" />
+
+    <fragment
+        android:id="@+id/browse_fragment"
+        android:name="com.android.filemaster.ui.browser.BrowserFragment"
+        android:label="BrowseFragment" />
 </navigation>

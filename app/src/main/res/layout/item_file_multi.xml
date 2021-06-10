@@ -7,6 +7,8 @@
 
         <import type="com.android.filemaster.base.BaseMultiViewHolderAdapter.BaseModelType" />
 
+        <import type="android.view.View" />
+
         <variable
             name="item"
             type="BaseModelType" />
@@ -22,6 +24,10 @@
         <variable
             name="model"
             type="com.android.filemaster.data.model.FileCustom" />
+
+        <variable
+            name="viewModel"
+            type="com.android.filemaster.ui.recent.RecentViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -66,6 +72,7 @@
             android:id="@+id/tv_subtitle"
             style="@style/Item.Subtitle.Text"
             getDetailFileMulti="@{item}"
+            android:layout_marginStart="@dimen/px8"
             android:layout_marginBottom="8dp"
             android:textColor="@color/label_sec"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -80,7 +87,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/px12"
-            android:onClick="@{()-> itemListener.onSelectClick()}"
+            android:onClick="@{()-> itemListener.onSelectClick(item)}"
             android:src="@drawable/ic_more_options"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintRight_toRightOf="parent"

@@ -11,7 +11,6 @@ import com.android.filemaster.R
 import com.android.filemaster.base.BaseFragment
 import com.android.filemaster.data.adapter.FileAdapter
 import com.android.filemaster.data.model.FileDefault
-import com.android.filemaster.data.model.ListStorage
 import com.android.filemaster.data.viewmodel.MainViewModel
 import com.android.filemaster.databinding.FragmentHomeBinding
 import com.android.filemaster.module.getAppColor
@@ -100,6 +99,11 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), ToolbarActionListener 
             override fun onStorageClean() {
                 mainViewModel.hideMenu()
                 findNavController().navigate(R.id.action_homeFragment_to_cleaning)
+            }
+
+            override fun onGoStorage() {
+                mainViewModel.hideMenu()
+                findNavController().navigate(R.id.action_homeFragment_to_browse_file)
             }
         }
 

@@ -28,6 +28,10 @@ class RecentViewModel() : BaseViewModel() {
     private val listFileRecentFull = MutableLiveData<List<FileCustom>>()
     val listFileRecentCurrent = MutableLiveData<List<FileCustom>>()
 
+    val isSelect by lazy {
+        MutableLiveData(false)
+    }
+
     fun getListRecentFromStorage(context: Context): List<FileCustom> {
         val list = fileRepository.getListFileRecentMulti(context)
         listFileRecentFull.value = list

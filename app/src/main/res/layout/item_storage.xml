@@ -25,6 +25,7 @@
             android:layout_marginStart="@dimen/px12"
             android:layout_marginBottom="@dimen/px12"
             android:elevation="@dimen/px8"
+            android:onClick="@{()->itemListener.onGoStorage()}"
             app:cardCornerRadius="@dimen/px12"
             app:cardElevation="@dimen/px8"
             app:layout_constraintStart_toStartOf="parent"
