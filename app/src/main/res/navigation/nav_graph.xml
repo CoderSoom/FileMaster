@@ -19,6 +19,9 @@
         <action
             android:id="@+id/action_homeFragment_to_fileInsightFragment"
             app:destination="@id/fileInsightFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_gdrive"
+            app:destination="@id/gdrive_fragment" />
     </fragment>
     <fragment
         android:id="@+id/browserFragment"
@@ -44,4 +47,8 @@
         android:id="@+id/fileInsightFragment"
         android:name="com.android.filemaster.ui.fileinsight.FileInsightFragment"
         android:label="FileInsightFragment" />
+    <fragment
+        android:id="@+id/gdrive_fragment"
+        android:name="com.android.filemaster.ui.cloud.gdrive.GDriveFragment"
+        android:label="GoogleDriveFragment" />
 </navigation>
