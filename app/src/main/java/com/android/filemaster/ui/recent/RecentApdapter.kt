@@ -10,6 +10,6 @@ val resLayout = listOf(R.layout.item_date, R.layout.item_file_multi)
 class RecentApdapter :
     BaseMultiViewHolderAdapter<BaseMultiViewHolderAdapter.BaseModelType>(resLayout) {
     interface IRecent : BaseListener {
-        fun onClickItem(position: Int, item: FileCustom)
+        fun onClickItem(position: Int, item: BaseMultiViewHolderAdapter.BaseModelType)
     }
 }

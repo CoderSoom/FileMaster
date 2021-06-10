@@ -11,9 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.android.filemaster.R
 import com.android.filemaster.base.BaseFragment
 import com.android.filemaster.data.adapter.FileAdapter
-import com.android.filemaster.data.adapter.FileAdapterMulti
 import com.android.filemaster.data.model.FileDefault
-import com.android.filemaster.data.viewmodel.FileViewModel
 import com.android.filemaster.data.viewmodel.MainViewModel
 import com.android.filemaster.databinding.FragmentHomeBinding
 import com.android.filemaster.module.getAppColor
@@ -21,9 +19,8 @@ import com.android.filemaster.ui.customview.SpaceItemDecoation
 import com.tapon.ds.view.toolbar.Toolbar
 
 class HomeFragment : BaseFragment<FragmentHomeBinding>(), ToolbarActionListener {
-    private val viewModel by viewModels<FileViewModel>()
+    private val viewModel by viewModels<HomeViewModel>()
     private val fileAdapter = FileAdapter()
-    private val fileAdapterRecent = FileAdapterMulti()
     private val storageAdapter = StorageAdapter()
     private val recentAdapter = RecentHomeAdapter()
     private val mainViewModel by activityViewModels<MainViewModel>()

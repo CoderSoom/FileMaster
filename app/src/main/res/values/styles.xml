@@ -8,6 +8,7 @@
         <item name="colorAccent">@color/brand_100</item>
         <item name="android:windowTranslucentStatus">true</item>
         <item name="android:windowTranslucentNavigation">true</item>
+        <item name="bottomSheetDialogTheme">@style/AppBottomSheetDialogTheme</item>
     </style>
 
     <style name="roundedCornersImageView" parent="Theme.AppCompat.Light.DarkActionBar">
@@ -42,6 +43,15 @@
         <item name="lineHeight">@dimen/px20</item>
         <item name="android:layout_marginTop">0dp</item>
         <item name="android:layout_marginBottom">@dimen/px8</item>
+    </style>
+
+    <style name="AppBottomSheetDialogTheme"
+        parent="Theme.Design.Light.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/AppModalStyle</item>
+    </style>
+    <style name="AppModalStyle"
+        parent="Widget.Design.BottomSheet.Modal">
+        <item name="android:background">@drawable/bg_border_bottom_sheet</item>
     </style>
 
 </resources>
