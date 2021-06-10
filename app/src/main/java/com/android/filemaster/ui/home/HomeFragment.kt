@@ -18,7 +18,9 @@ import com.android.filemaster.data.viewmodel.MainViewModel
 import com.android.filemaster.databinding.FragmentHomeBinding
 import com.android.filemaster.module.getAppColor
 import com.android.filemaster.ui.customview.SpaceItemDecoation
+import com.android.filemaster.utils.StartFileManager
 import com.tapon.ds.view.toolbar.Toolbar
+import java.io.File
 
 class HomeFragment : BaseFragment<FragmentHomeBinding>(), ToolbarActionListener {
     private val viewModel by viewModels<FileViewModel>()
@@ -95,8 +97,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), ToolbarActionListener 
                     mainViewModel.hideMenu()
                     findNavController().navigate(R.id.action_homeFragment_to_recentsFragment)
                 } else {
-//                    StartFileManager().openNomarlFile(requireContext(), item)
-                    Toast.makeText(activityOwner, "Update soon", Toast.LENGTH_LONG).show()
+                    StartFileManager().openNomarlFile(requireContext(), File(item.path))
                 }
             }
         }
