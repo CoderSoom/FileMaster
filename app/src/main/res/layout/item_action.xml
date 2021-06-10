@@ -26,7 +26,7 @@
             android:visibility="gone"
             android:id="@+id/view_line"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/px2"
+            android:layout_height="@dimen/px1"
             android:background="@color/divider"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
