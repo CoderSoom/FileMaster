@@ -68,12 +68,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), ToolbarActionListener 
             LinearLayoutManager(activityOwner, LinearLayoutManager.HORIZONTAL, false)
         binding.rvListRecents.isNestedScrollingEnabled = true
 
-        //        binding.progressStorage.setProgress(totalMemorySize, amountOfMemoryUsed)
-//        binding.tvUsedStorage.text= getFileSize(amountOfMemoryUsed) +" / " +getFileSize(totalMemorySize)
-//        binding.tvUsed.text = (getUsedStorage()+" USED")
-
-//        Toast.makeText(activityOwner, getUsedStorage(), Toast.LENGTH_SHORT).show()
-
         val itemSpace = SpaceItemDecoation(resources.getDimension(R.dimen.px12))
         binding.rvListStorage.addItemDecoration(itemSpace)
     }

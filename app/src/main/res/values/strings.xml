@@ -27,5 +27,7 @@
     <string name="no_access_file">You can access files quickly from here by \"Add To Quick Access\"</string>
     <string name="file_insight_fragment">File insight fragment</string>
     <string name="back_to_exit_app">Back again to exit</string>
-
+    <string name="google_drive">Google Drive</string>
+    <string name="sync">Sync</string>
+    <string name="not_sync">Not Sync</string>
 </resources>

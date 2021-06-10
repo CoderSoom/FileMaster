@@ -156,7 +156,7 @@
                         android:orientation="horizontal"
                         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                         app:layout_constraintTop_toTopOf="parent"
-                        tools:listitem="@layout/item_strorage" />
+                        tools:listitem="@layout/item_storage" />
 
                 </RelativeLayout>
 
