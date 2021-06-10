@@ -52,8 +52,10 @@ class RecentsFragment : BaseFragment<FragmentRecentsBinding>(), ToolbarActionLis
             override fun onLongClick(item: BaseMultiViewHolderAdapter.BaseModelType): Boolean {
                 if (item is FileCustom && super.onLongClick(item)) {
 
+                    Log.d(TAG, "onLongClick: ")
                     return super.onLongClick(item)
                 } else {
+                    viewModel.isSelect.postValue(false)
                     return false
                 }
             }
@@ -84,8 +86,6 @@ class RecentsFragment : BaseFragment<FragmentRecentsBinding>(), ToolbarActionLis
         }
     }
 
-    private fun filter(str: String) {
-    }
 
     private fun backToHome() {
         mainViewModel.showMenu()
