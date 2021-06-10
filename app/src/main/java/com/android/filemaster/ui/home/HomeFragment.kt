@@ -32,7 +32,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), ToolbarActionListener 
         return binding.toolbarHome
     }
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel.getListStorage(activityOwner)
@@ -40,12 +39,10 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), ToolbarActionListener 
         viewModel.getListRecent(activityOwner)
     }
 
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initData()
         observeViewModel()
-
     }
 
     private fun initData() {
@@ -55,6 +52,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), ToolbarActionListener 
                 R.color.transparent
             )
         )
+        binding.toolbarHome.toolbar()
+            .setTitleTextColor(ContextCompat.getColor(activityOwner, R.color.transparent))
         binding.toolbarHome.setOnToolbarActionListener(this)
 
         binding.viewModel = viewModel

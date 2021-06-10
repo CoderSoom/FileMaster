@@ -30,6 +30,7 @@ import com.android.filemaster.utils.FileManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.mikhaellopez.circularprogressbar.CircularProgressBar
+import com.tapon.ds.view.toolbar.Toolbar
 import java.io.File
 
 private var appInstance: Application? = null
@@ -145,6 +146,16 @@ fun ImageView.setVisibleImages(item: ListStorage) {
     if (item.nameStorage != "Storage") {
         this.visibility = View.VISIBLE
     }
+}
+
+@BindingAdapter("toolbarAction2")
+fun Toolbar.setToolbarAction2(isNewMessageComing: Boolean) {
+    this.setIconAction2(
+        ContextCompat.getDrawable(
+            this.context,
+            if (isNewMessageComing) R.drawable.ic_light_bulb else R.drawable.ic_light_bulb_no
+        )
+    )
 }
 @SuppressLint("SetTextI18n")
 @BindingAdapter("setSizeForDay")

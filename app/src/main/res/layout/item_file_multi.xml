@@ -51,7 +51,7 @@
             tv_set_text_by_multi_holder_file="@{item}"
             android:layout_width="@dimen/px228"
             android:layout_height="@dimen/px24"
-            android:layout_marginStart="@dimen/px12"
+            android:layout_marginStart="@dimen/px8"
             android:layout_marginTop="@dimen/px8"
             android:singleLine="true"
             android:textColor="@color/label_prim"

@@ -15,6 +15,10 @@ class HomeViewModel : BaseViewModel() {
         private const val TAG = "HomeViewModel"
     }
 
+    val isNewMessageComing by lazy {
+        MutableLiveData(false)
+    }
+
     private val fileRepository = FileRepository()
 
     val liveCurrentFile = MutableLiveData<List<FileDefault>>()
