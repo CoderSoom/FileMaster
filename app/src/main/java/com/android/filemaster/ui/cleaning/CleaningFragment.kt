@@ -1,22 +1,16 @@
-package com.android.filemaster.ui.cloud.gdrive
+package com.android.filemaster.ui.cleaning
 
-import android.os.Bundle
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.android.filemaster.R
 import com.android.filemaster.base.BaseFragment
 import com.android.filemaster.data.viewmodel.MainViewModel
-import com.android.filemaster.databinding.FragmentGdriveBinding
+import com.android.filemaster.databinding.FragmentCleaningBinding
 
-class GDriveFragment : BaseFragment<FragmentGdriveBinding>() {
+class CleaningFragment : BaseFragment<FragmentCleaningBinding>() {
     private val mainViewModel by activityViewModels<MainViewModel>()
-
     override fun getLayoutId(): Int {
-        return R.layout.fragment_gdrive
+        return R.layout.fragment_cleaning
     }
 
     override fun onBackPressed(): Boolean {

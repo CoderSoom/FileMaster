@@ -9,7 +9,7 @@
         android:id="@+id/homeFragment"
         android:name="com.android.filemaster.ui.home.HomeFragment"
         android:label="fragment_home"
-        tools:layout="@layout/fragment_home" >
+        tools:layout="@layout/fragment_home">
         <action
             android:id="@+id/action_homeFragment_to_recentsFragment"
             app:destination="@id/recentsFragment" />
@@ -22,11 +22,19 @@
         <action
             android:id="@+id/action_homeFragment_to_gdrive"
             app:destination="@id/gdrive_fragment" />
+
+        <action
+            android:id="@+id/action_homeFragment_to_cleaning"
+            app:destination="@id/cleaning_fragment" />
+
+        <action
+            android:id="@+id/action_homeFragment_to_premium"
+            app:destination="@id/premium_fragment" />
     </fragment>
     <fragment
-        android:id="@+id/browserFragment"
-        android:name="com.android.filemaster.ui.browser.BrowserFragment"
-        android:label="BrowserFragment" />
+        android:id="@+id/filesFragment"
+        android:name="com.android.filemaster.ui.browser.FilesFragment"
+        android:label="FilesFragment" />
     <fragment
         android:id="@+id/menuFragment"
         android:name="com.android.filemaster.ui.menu.MenuFragment"
@@ -36,7 +44,7 @@
         android:name="com.android.filemaster.ui.recent.RecentsFragment"
         android:label="RecentsFragment" />
     <fragment
-        android:id="@+id/cleanerFragment"
+        android:id="@+id/cleaner_fragment"
         android:name="com.android.filemaster.ui.cleaner.CleanerFragment"
         android:label="CleanerFragment" />
     <fragment
@@ -51,4 +59,13 @@
         android:id="@+id/gdrive_fragment"
         android:name="com.android.filemaster.ui.cloud.gdrive.GDriveFragment"
         android:label="GoogleDriveFragment" />
+    <fragment
+        android:id="@+id/cleaning_fragment"
+        android:name="com.android.filemaster.ui.cleaning.CleaningFragment"
+        android:label="CleaningFragment" />
+
+    <fragment
+        android:id="@+id/premium_fragment"
+        android:name="com.android.filemaster.ui.premium.PremiumFragment"
+        android:label="PremiumFragment" />
 </navigation>

@@ -97,8 +97,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), ToolbarActionListener 
                 findNavController().navigate(R.id.action_homeFragment_to_gdrive)
             }
 
-            override fun onItemClick(position: Int): ListStorage {
-                TODO("Not yet implemented")
+            override fun onStorageClean() {
+                mainViewModel.hideMenu()
+                findNavController().navigate(R.id.action_homeFragment_to_cleaning)
             }
         }
 
@@ -134,6 +135,11 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), ToolbarActionListener 
 
         binding.tvExpand.setOnClickListener {
             viewModel.expanded(!viewModel.isExpanded.value!!)
+        }
+
+        binding.btnPremium.setOnClickListener {
+            mainViewModel.hideMenu()
+            findNavController().navigate(R.id.action_homeFragment_to_premium)
         }
 
         viewModel.listStorage.observe(viewLifecycleOwner) {
