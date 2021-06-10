@@ -13,6 +13,9 @@
         <variable
             name="listener"
             type="com.android.filemaster.ui.recent.ActionAdapter" />
+        <variable
+            name="item"
+            type="com.android.filemaster.data.model.ItemAction" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -20,10 +23,11 @@
         android:layout_height="wrap_content">
 
         <View
+            android:visibility="gone"
             android:id="@+id/view_line"
             android:layout_width="match_parent"
             android:layout_height="@dimen/px2"
-            android:background="@color/label_prim"
+            android:background="@color/divider"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -43,8 +47,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/px16"
                 android:layout_marginTop="@dimen/px12"
+                setImageToResoure="@{item.image}"
                 android:layout_marginBottom="@dimen/px12"
-                android:src="@drawable/ic_move"
+                android:src="@drawable/ic_action_move"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -55,8 +60,8 @@
                 android:layout_marginStart="@dimen/px16"
                 android:layout_marginTop="@dimen/px12"
                 android:layout_marginBottom="@dimen/px12"
-                android:src="@drawable/ic_move"
-                android:text="@string/recents"
+                android:text="@{item.name}"
+
                 android:textColor="@color/label_prim"
                 android:textSize="@dimen/sp16"
                 app:layout_constraintBottom_toBottomOf="parent"

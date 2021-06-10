@@ -36,18 +36,18 @@ class MoreActionFragment : BottomSheetDialogFragment() {
 
     private fun init() {
         list = arrayListOf()
-        list.add(ItemAction("Move to", R.drawable.ic_more))
-        list.add(ItemAction("Move to", R.drawable.ic_more))
-        list.add(ItemAction("Move to", R.drawable.ic_more))
-        list.add(ItemAction("Move to", R.drawable.ic_more))
-        list.add(ItemAction("Move to", R.drawable.ic_more))
-        list.add(ItemAction("Move to", R.drawable.ic_more))
-        list.add(ItemAction("Move to", R.drawable.ic_more))
-        list.add(ItemAction("Move to", R.drawable.ic_more))
-        list.add(ItemAction("Move to", R.drawable.ic_more))
-        list.add(ItemAction("Move to", R.drawable.ic_more))
-        list.add(ItemAction("Move to", R.drawable.ic_more))
-        list.add(ItemAction("Move to", R.drawable.ic_more))
+        list.add(ItemAction(getString(R.string.move_to), R.drawable.ic_action_move))
+        list.add(ItemAction(getString(R.string.copy_to), R.drawable.ic_action_copy))
+        list.add(ItemAction(getString(R.string.share), R.drawable.ic_action_share))
+        list.add(ItemAction(getString(R.string.trash), R.drawable.ic_action_trash))
+        list.add(ItemAction(getString(R.string.open_with), R.drawable.ic_action_open_with))
+        list.add(ItemAction(getString(R.string.rename), R.drawable.ic_action_rename))
+        list.add(ItemAction(getString(R.string.compress), R.drawable.ic_action_compress))
+        list.add(ItemAction(getString(R.string.extract), R.drawable.ic_action_extract))
+        list.add(ItemAction(getString(R.string.move_to_safe), R.drawable.ic_action_safe))
+        list.add(ItemAction(getString(R.string.add_to_workspace), R.drawable.ic_action_work_space))
+        list.add(ItemAction(getString(R.string.add_to_quick_access), R.drawable.ic_action_quick_access))
+        list.add(ItemAction(getString(R.string.upload_to_cloud), R.drawable.ic_action_cloud_upload))
 
     }
 

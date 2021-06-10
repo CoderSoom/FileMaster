@@ -23,7 +23,6 @@ import com.tapon.ds.view.toolbar.Toolbar
 class HomeFragment : BaseFragment<FragmentHomeBinding>(), ToolbarActionListener {
     private val viewModel by viewModels<FileViewModel>()
     private val fileAdapter = FileAdapter()
-    private val fileAdapterRecent = FileAdapterMulti()
     private val storageAdapter = StorageAdapter()
     private val recentAdapter = RecentHomeAdapter()
     private val mainViewModel by activityViewModels<MainViewModel>()

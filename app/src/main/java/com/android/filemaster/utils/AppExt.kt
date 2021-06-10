@@ -6,7 +6,9 @@ import android.content.Context
 import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.net.Uri
+import android.util.Log
 import android.view.View
+import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.ColorRes
@@ -17,10 +19,13 @@ import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.RecyclerView
 import com.android.filemaster.R
 import com.android.filemaster.base.BaseMultiViewHolderAdapter
+import com.android.filemaster.data.adapter.FileAdapter
+import com.android.filemaster.data.adapter.FileAdapterMulti
 import com.android.filemaster.data.model.FileCustom
 import com.android.filemaster.data.model.FileDefault
 import com.android.filemaster.data.model.ItemDate
 import com.android.filemaster.data.model.ListStorage
+import com.android.filemaster.ui.recent.RecentApdapter
 import com.android.filemaster.utils.FileManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
@@ -104,14 +109,6 @@ fun ImageView.setImageMulti(item: BaseMultiViewHolderAdapter.BaseModelType) {
 }
 
 
-@BindingAdapter("setImgResource")
-fun setImgResource(img: ImageView, path: Int?) {
-    if (path != null) {
-        img.setImageResource(path)
-    }
-
-}
-
 @BindingAdapter("setProgressBar")
 fun setProgressBar(circularProcessbar: CircularProgressBar, process: Float?) {
     if (process != null) {
@@ -148,4 +145,15 @@ fun ImageView.setVisibleImages(item: ListStorage) {
     if (item.nameStorage != "Storage") {
         this.visibility = View.VISIBLE
     }
+}
+@SuppressLint("SetTextI18n")
+@BindingAdapter("setSizeForDay")
+fun TextView.setSizeForDay(item: BaseMultiViewHolderAdapter.BaseModelType){
+    if (item is ItemDate){
+        this.text = "(" + item.size+ " Files)"
+    }
+}
+@BindingAdapter("setImageToResoure")
+fun ImageView.setImageToResoure(iv:Int){
+    this.setImageResource(iv)
 }

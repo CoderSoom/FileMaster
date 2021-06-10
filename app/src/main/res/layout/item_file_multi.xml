@@ -17,25 +17,25 @@
 
         <variable
             name="itemListener"
-            type="com.android.filemaster.data.adapter.FileAdapterMulti.FileListener" />
+            type="com.android.filemaster.data.adapter.FileAdapterMulti.FileMultiListener" />
 
-        <variable
-            name="model"
-            type="com.android.filemaster.data.model.FileCustom" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/itemFile"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/px60"
-        android:background="@color/fixed_white">
+        android:layout_height="wrap_content"
+        android:background="@color/fixed_white"
+        android:onClick="@{()-> itemListener.onItemClick(item)}"
+        android:onLongClick="@{() -> itemListener.onLongClick(item)}"
+        >
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/imgIcon"
             setImageMulti="@{item}"
             android:layout_width="@dimen/px40"
             android:layout_height="@dimen/px40"
-            android:layout_marginStart="@dimen/px18"
+            android:layout_marginStart="@dimen/px16"
             android:layout_marginTop="@dimen/px10"
             android:layout_marginBottom="@dimen/px10"
             android:scaleType="centerCrop"
@@ -64,6 +64,7 @@
             android:id="@+id/tv_subtitle"
             style="@style/Item.Subtitle.Text"
             getDetailFileMulti="@{item}"
+            android:layout_marginStart="@dimen/px12"
             android:layout_marginBottom="8dp"
             android:textColor="@color/label_sec"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -75,10 +76,10 @@
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/iv_more_option"
+            android:onClick="@{() -> itemListener.onSelectClick()}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/px12"
-            android:onClick="@{()-> itemListener.onItemClick(position,model)}"
             android:src="@drawable/ic_more_options"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintRight_toRightOf="parent"
@@ -89,7 +90,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/px12"
-            android:src="@drawable/check_selector"
+            android:src="@drawable/ic_not_checked"
             android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintRight_toRightOf="parent"
@@ -103,5 +104,6 @@
             app:layout_constraintBottom_toBottomOf="parent      "
             app:layout_constraintRight_toLeftOf="@id/iv_more_option"
             app:layout_constraintTop_toTopOf="parent" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

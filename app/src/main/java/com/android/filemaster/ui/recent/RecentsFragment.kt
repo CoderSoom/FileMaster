@@ -18,6 +18,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.android.filemaster.R
 import com.android.filemaster.base.BaseFragment
+import com.android.filemaster.base.BaseMultiViewHolderAdapter
 import com.android.filemaster.data.adapter.FileAdapterMulti
 import com.android.filemaster.data.model.FileCustom
 import com.android.filemaster.data.viewmodel.FileViewModel
@@ -30,6 +31,9 @@ class RecentsFragment : BaseFragment<FragmentRecentsBinding>(), ToolbarActionLis
     private val viewModel by viewModels<FileViewModel>()
     private val mainViewModel by activityViewModels<MainViewModel>()
     private val recentAdapter = RecentApdapter()
+    private val fileApdapter = FileAdapterMulti()
+    private val TAG = "hhh"
+
 
     override fun getLayoutId(): Int {
         return R.layout.fragment_recents
@@ -47,19 +51,34 @@ class RecentsFragment : BaseFragment<FragmentRecentsBinding>(), ToolbarActionLis
 
     private fun initData() {
         binding.toolbarRecent.setOnToolbarActionListener(this)
+        recentAdapter.listener = object : FileAdapterMulti.FileMultiListener {
+            override fun onItemClick(
+                item: BaseMultiViewHolderAdapter.BaseModelType
+            ) {
+                if (item is FileCustom) {
+                    Log.d(TAG, "onItemClick: ${item.name}")
+                }
+            }
+
+            override fun onLongClick(item: BaseMultiViewHolderAdapter.BaseModelType): Boolean {
+                if (item is FileCustom && super.onLongClick(item)) {
+                    
+                    return super.onLongClick(item)
+                } else {
+                    return false
+                }
+            }
+
+            override fun onSelectClick() {
+                val bottomSheet = MoreActionFragment()
+                bottomSheet.show(childFragmentManager,bottomSheet.tag)
+            }
+        }
         binding.adapter = recentAdapter
         binding.rcListRecents.layoutManager = LinearLayoutManager(
             this.context,
             LinearLayoutManager.VERTICAL, false
         )
-        val fileApdapter = FileAdapterMulti()
-        fileApdapter.listener = object : FileAdapterMulti.FileListener {
-            override fun onItemClick(position: Int, item: FileCustom) {
-                val bottomSheet = MoreActionFragment()
-                bottomSheet.show(childFragmentManager, tag)
-            }
-
-        }
 
         binding.edtSearch.doAfterTextChanged {
             filter(it.toString())
