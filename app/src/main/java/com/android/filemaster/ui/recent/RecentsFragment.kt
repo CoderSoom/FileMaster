@@ -13,17 +13,18 @@ import com.android.filemaster.base.BaseFragment
 import com.android.filemaster.base.BaseMultiViewHolderAdapter
 import com.android.filemaster.data.adapter.FileAdapterMulti
 import com.android.filemaster.data.model.FileCustom
+import com.android.filemaster.data.model.ItemAction
 import com.android.filemaster.data.viewmodel.MainViewModel
 import com.android.filemaster.databinding.FragmentRecentsBinding
 import com.android.filemaster.ui.home.ToolbarActionListener
 import com.tapon.ds.view.toolbar.Toolbar
 
 class RecentsFragment : BaseFragment<FragmentRecentsBinding>(), ToolbarActionListener {
+    private val TAG = "RecentsFragment"
     private val viewModel by viewModels<RecentViewModel>()
     private val mainViewModel by activityViewModels<MainViewModel>()
     private val recentAdapter = RecentApdapter()
-    private val TAG = "hhh"
-
+    private val actionAdapter = ActionSelectAdapter()
     override fun getLayoutId(): Int {
         return R.layout.fragment_recents
     }
@@ -51,8 +52,8 @@ class RecentsFragment : BaseFragment<FragmentRecentsBinding>(), ToolbarActionLis
 
             override fun onLongClick(item: BaseMultiViewHolderAdapter.BaseModelType): Boolean {
                 if (item is FileCustom && super.onLongClick(item)) {
-
-                    Log.d(TAG, "onLongClick: ")
+                    binding.clRcBottom.visibility = View.VISIBLE
+                    viewModel.isSelect.postValue(true)
                     return super.onLongClick(item)
                 } else {
                     viewModel.isSelect.postValue(false)
@@ -60,17 +61,52 @@ class RecentsFragment : BaseFragment<FragmentRecentsBinding>(), ToolbarActionLis
                 }
             }
 
-            override fun onSelectClick() {
-                val bottomSheet = MoreActionFragment()
-                bottomSheet.show(childFragmentManager, bottomSheet.tag)
+            override fun onSelectClick(item: BaseMultiViewHolderAdapter.BaseModelType) {
+                if (item is FileCustom) {
+                    Log.d(TAG, "onSelectClick: ${item.name}")
+                    val bottomSheet = MoreActionFragment().newInstance(item)
+                    bottomSheet.show(childFragmentManager, bottomSheet.tag)
+                }
+
             }
+
         }
         binding.adapter = recentAdapter
         binding.rcListRecents.layoutManager = LinearLayoutManager(
             this.context,
             LinearLayoutManager.VERTICAL, false
         )
+        binding.rcActionSelect.adapter = actionAdapter
+        binding.rcActionSelect.layoutManager = LinearLayoutManager(
+            this.context,
+            LinearLayoutManager.HORIZONTAL, false
+        )
+        val list = arrayListOf<ItemAction>()
+        list.add(ItemAction(getString(R.string.move_to), R.drawable.ic_action_move_to))
+        list.add(ItemAction(getString(R.string.copy_to), R.drawable.ic_action_copy))
+        list.add(ItemAction(getString(R.string.share), R.drawable.ic_action_share))
+        list.add(ItemAction(getString(R.string.trash), R.drawable.ic_action_trash))
+        list.add(ItemAction(getString(R.string.more), R.drawable.ic_action_more))
+        actionAdapter.list = list
+        actionAdapter.listener = object : ActionSelectAdapter.IAction {
+            override fun onItemClick(itemAction: ItemAction) {
+                when (itemAction.name) {
+                    getString(R.string.move_to) -> {
 
+                    }
+                    getString(R.string.copy_to) -> {
+                    }
+                    getString(R.string.share) -> {
+                    }
+                    getString(R.string.share) -> {
+                    }
+                    getString(R.string.more) -> {
+
+                    }
+                }
+            }
+
+        }
     }
 
     override fun onBackPressed(): Boolean {
