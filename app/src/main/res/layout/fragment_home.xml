@@ -7,11 +7,15 @@
 
         <import type="android.view.View" />
 
-        <import type="com.android.filemaster.data.viewmodel.FileViewModel" />
+        <import type="com.android.filemaster.ui.home.HomeViewModel" />
 
         <variable
             name="viewModel"
-            type="FileViewModel" />
+            type="HomeViewModel" />
+
+        <variable
+            name="homeModel"
+            type="com.android.filemaster.ui.home.HomeViewModel" />
 
         <variable
             name="fileAdapter"
@@ -46,7 +50,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 app:toolbarAction1="@drawable/ic_search_home"
-                app:toolbarAction2="@drawable/ic_light_bulb_no"
+                app:toolbarAction2="@{homeModel.isNewMessageComing()}"
                 app:toolbarHideDivider="true"
                 app:toolbarLogo="@drawable/ic_logo"
                 app:toolbarViewStyle="logo" />
@@ -156,7 +160,7 @@
                         android:orientation="horizontal"
                         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                         app:layout_constraintTop_toTopOf="parent"
-                        tools:listitem="@layout/item_strorage" />
+                        tools:listitem="@layout/item_storage" />
 
                 </RelativeLayout>
 
@@ -164,9 +168,8 @@
                     android:id="@+id/ad_container"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/px80"
-                    android:background="@color/sys_yellow_tints"
+                    android:background="@drawable/bg_native"
                     android:gravity="center"
-                    android:text="ADS"
                     android:textColor="@color/fixed_white"
                     android:textSize="@dimen/px30"
                     app:layout_constraintTop_toBottomOf="@id/storage_premium" />

@@ -11,9 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.android.filemaster.R
 import com.android.filemaster.base.BaseFragment
 import com.android.filemaster.data.adapter.FileAdapter
-import com.android.filemaster.data.adapter.FileAdapterMulti
 import com.android.filemaster.data.model.FileDefault
-import com.android.filemaster.data.viewmodel.FileViewModel
 import com.android.filemaster.data.viewmodel.MainViewModel
 import com.android.filemaster.databinding.FragmentHomeBinding
 import com.android.filemaster.module.getAppColor
@@ -23,9 +21,8 @@ import com.tapon.ds.view.toolbar.Toolbar
 import java.io.File
 
 class HomeFragment : BaseFragment<FragmentHomeBinding>(), ToolbarActionListener {
-    private val viewModel by viewModels<FileViewModel>()
+    private val viewModel by viewModels<HomeViewModel>()
     private val fileAdapter = FileAdapter()
-    private val fileAdapterRecent = FileAdapterMulti()
     private val storageAdapter = StorageAdapter()
     private val recentAdapter = RecentHomeAdapter()
     private val mainViewModel by activityViewModels<MainViewModel>()
@@ -37,7 +34,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), ToolbarActionListener 
         return binding.toolbarHome
     }
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel.getListStorage(activityOwner)
@@ -45,12 +41,10 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), ToolbarActionListener 
         viewModel.getListRecent(activityOwner)
     }
 
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initData()
         observeViewModel()
-
     }
 
     private fun initData() {
@@ -60,6 +54,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), ToolbarActionListener 
                 R.color.transparent
             )
         )
+        binding.toolbarHome.toolbar()
+            .setTitleTextColor(ContextCompat.getColor(activityOwner, R.color.transparent))
         binding.toolbarHome.setOnToolbarActionListener(this)
 
         binding.viewModel = viewModel
@@ -69,12 +65,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), ToolbarActionListener 
         binding.rvListRecents.layoutManager =
             LinearLayoutManager(activityOwner, LinearLayoutManager.HORIZONTAL, false)
         binding.rvListRecents.isNestedScrollingEnabled = true
-
-        //        binding.progressStorage.setProgress(totalMemorySize, amountOfMemoryUsed)
-//        binding.tvUsedStorage.text= getFileSize(amountOfMemoryUsed) +" / " +getFileSize(totalMemorySize)
-//        binding.tvUsed.text = (getUsedStorage()+" USED")
-
-//        Toast.makeText(activityOwner, getUsedStorage(), Toast.LENGTH_SHORT).show()
 
         val itemSpace = SpaceItemDecoation(resources.getDimension(R.dimen.px12))
         binding.rvListStorage.addItemDecoration(itemSpace)

@@ -5,11 +5,11 @@
 
     <data>
 
-        <import type="com.android.filemaster.data.viewmodel.FileViewModel" />
+        <import type="com.android.filemaster.ui.recent.RecentViewModel" />
 
         <variable
             name="viewModel"
-            type="FileViewModel" />
+            type="RecentViewModel" />
 
         <variable
             name="adapter"

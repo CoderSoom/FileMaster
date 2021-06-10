@@ -68,19 +68,6 @@ object FileManager {
                 R.drawable.ic_clear_pressed
             )
         )
-        listStorage.add(
-            ListStorage(
-                R.drawable.ic_drive,
-                "Account",
-                null,
-                null,
-                null,
-                "SYNCED",
-                "account@gmail.com",
-                R.drawable.ic_home_cloud_cta,
-                R.drawable.ic_home_cloud_cta_pressed
-            )
-        )
         return listStorage
     }
 
