@@ -7,11 +7,11 @@
 
         <import type="android.view.View" />
 
-        <import type="com.android.filemaster.data.viewmodel.FileViewModel" />
+        <import type="com.android.filemaster.ui.home.HomeViewModel" />
 
         <variable
             name="viewModel"
-            type="FileViewModel" />
+            type="HomeViewModel" />
 
         <variable
             name="fileAdapter"

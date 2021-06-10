@@ -11,9 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.android.filemaster.R
 import com.android.filemaster.base.BaseFragment
 import com.android.filemaster.data.adapter.FileAdapter
-import com.android.filemaster.data.adapter.FileAdapterMulti
 import com.android.filemaster.data.model.FileDefault
-import com.android.filemaster.data.viewmodel.FileViewModel
 import com.android.filemaster.data.viewmodel.MainViewModel
 import com.android.filemaster.databinding.FragmentHomeBinding
 import com.android.filemaster.module.getAppColor
@@ -21,7 +19,7 @@ import com.android.filemaster.ui.customview.SpaceItemDecoation
 import com.tapon.ds.view.toolbar.Toolbar
 
 class HomeFragment : BaseFragment<FragmentHomeBinding>(), ToolbarActionListener {
-    private val viewModel by viewModels<FileViewModel>()
+    private val viewModel by viewModels<HomeViewModel>()
     private val fileAdapter = FileAdapter()
     private val storageAdapter = StorageAdapter()
     private val recentAdapter = RecentHomeAdapter()
@@ -66,12 +64,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), ToolbarActionListener 
         binding.rvListRecents.layoutManager =
             LinearLayoutManager(activityOwner, LinearLayoutManager.HORIZONTAL, false)
         binding.rvListRecents.isNestedScrollingEnabled = true
-
-        //        binding.progressStorage.setProgress(totalMemorySize, amountOfMemoryUsed)
-//        binding.tvUsedStorage.text= getFileSize(amountOfMemoryUsed) +" / " +getFileSize(totalMemorySize)
-//        binding.tvUsed.text = (getUsedStorage()+" USED")
-
-//        Toast.makeText(activityOwner, getUsedStorage(), Toast.LENGTH_SHORT).show()
 
         val itemSpace = SpaceItemDecoation(resources.getDimension(R.dimen.px12))
         binding.rvListStorage.addItemDecoration(itemSpace)
