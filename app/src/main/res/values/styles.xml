@@ -81,4 +81,11 @@
         <item name="textAllCaps">true</item>
     </style>
 
+    <style name="Text.Navigation.Bottom" parent="Caption">
+        <item name="android:singleLine">true</item>
+        <item name="android:ellipsize">marquee</item>
+        <item name="android:marqueeRepeatLimit">marquee_forever</item>
+        <item name="android:state_selected">true</item>
+        <item name="android:textSize">12sp</item>
+    </style>
 </resources>

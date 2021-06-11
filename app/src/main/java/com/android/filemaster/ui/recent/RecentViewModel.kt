@@ -37,6 +37,7 @@ class RecentViewModel() : BaseViewModel() {
     fun getListRecentFromStorage(context: Context): List<FileCustom> {
         val list = fileRepository.getListFileRecentMulti(context)
         listFileRecentFull.value = list
+        list.sortByDescending  { it.date }
         return list
     }
 

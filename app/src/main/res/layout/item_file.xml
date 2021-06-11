@@ -43,7 +43,7 @@
                 android:layout_height="@dimen/px40"
 
                 android:scaleType="centerCrop"
-                android:src="@drawable/ic_doc" />
+                android:src="@drawable/ic_file_doc" />
         </androidx.cardview.widget.CardView>
 
 

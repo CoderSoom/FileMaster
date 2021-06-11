@@ -63,7 +63,7 @@ fun setImage(img: ImageView, path: String) {
         Glide.with(img)
             .load(Uri.fromFile(File(path)))
             .apply(RequestOptions().override(100, 100))
-            .error(R.drawable.ic_image)
+            .error(R.drawable.ic_file_image)
             .into(img)
     } else {
         img.setImageResource(FileManager.setImageFile(path))
@@ -99,7 +99,7 @@ fun ImageView.setImageMulti(item: BaseMultiViewHolderAdapter.BaseModelType) {
             Glide.with(this)
                 .load(Uri.fromFile(File(item.path.toString())))
                 .apply(RequestOptions().override(100, 100))
-                .error(R.drawable.ic_image)
+                .error(R.drawable.ic_file_image)
                 .into(this)
         } else {
             this.setImageResource(FileManager.setImageFile(item.path.toString()))

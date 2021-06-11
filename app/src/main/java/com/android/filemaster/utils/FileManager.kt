@@ -16,7 +16,6 @@ import android.provider.MediaStore
 import android.text.TextUtils
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import androidx.documentfile.provider.DocumentFile
 import com.android.filemaster.BuildConfig
@@ -179,19 +178,19 @@ object FileManager {
 
     fun setImageFile(path: String): Int {
         val parts = path.split(".").toTypedArray()
-        val tail = parts.get(parts.size - 1)
-        when (tail) {
+        val ext = parts[parts.size - 1]
+        if (Constant.TF_HTML.contains(ext)) {
+            return R.drawable.ic_file_html
+        }
+        if (Constant.TF_DOC.contains(ext)) {
+            return R.drawable.ic_file_doc
+        }
+        if(Constant.TF_MP4.contains(ext)){
+            return R.drawable.ic_file_video
+        }
+        when (ext) {
             Constant.TF_MP3 -> {
-                return R.drawable.ic_audio
-            }
-            Constant.TF_DOC, Constant.TF_DOCX, Constant.TF_TXT, Constant.TF_RTF, Constant.TF_RTX -> {
-                return R.drawable.ic_doc
-            }
-            Constant.TF_MOV, Constant.TF_MP4, Constant.TF_MPEG4 -> {
-                return R.drawable.ic_video
-            }
-            Constant.TF_HTML -> {
-                return R.drawable.ic_html
+                return R.drawable.ic_file_audio
             }
             Constant.TF_PDF -> {
                 return R.drawable.ic_file_pdf
