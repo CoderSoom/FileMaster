@@ -48,22 +48,77 @@
             android:id="@+id/cl_rc_bottom"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:visibility="visible"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent">
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rc_action_select"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@color/label_prim_w"
-                android:nestedScrollingEnabled="false"
-                android:overScrollMode="never"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+            <com.sothree.slidinguppanel.SlidingUpPanelLayout xmlns:sothree="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/sliding_layout"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/px400"
+                android:gravity="bottom"
+                sothree:layout_constraintStart_toStartOf="parent"
+                sothree:layout_constraintEnd_toEndOf="parent"
+                sothree:layout_constraintBottom_toBottomOf="parent"
+                sothree:umanoPanelHeight="@dimen/px56"
+                sothree:umanoShadowHeight="@dimen/px4">
+
+               <androidx.constraintlayout.widget.ConstraintLayout
+                   android:visibility="gone"
+                   android:layout_width="match_parent"
+                   android:layout_height="wrap_content">
+                   <androidx.appcompat.widget.AppCompatImageView
+                       sothree:layout_constraintTop_toTopOf="parent"
+                       sothree:layout_constraintStart_toStartOf="parent"
+                       android:layout_marginTop="@dimen/px12"
+                       android:layout_marginBottom="@dimen/px12"
+                       android:layout_marginStart="@dimen/px16"
+                       android:src="@drawable/ic_close"
+                       android:layout_width="wrap_content"
+                       android:layout_height="wrap_content"/>
+                   <androidx.appcompat.widget.AppCompatTextView
+                       android:id="@+id/tv_more"
+                       android:layout_marginStart="@dimen/px40"
+                       android:layout_marginEnd="@dimen/px40"
+                       android:layout_marginTop="@dimen/px12"
+                       sothree:layout_constraintTop_toTopOf="parent"
+                       sothree:layout_constraintStart_toStartOf="parent"
+                       sothree:layout_constraintEnd_toEndOf="parent"
+                       android:text="@string/more"
+                       style="@style/Subheading"
+                       android:layout_width="wrap_content"
+                       android:layout_height="wrap_content"/>
+                   <View
+                       android:id="@+id/view_line"
+                       sothree:layout_constraintTop_toBottomOf="@id/tv_more"
+                       android:layout_width="match_parent"
+                       android:layout_height="@dimen/px1"/>
+                   <androidx.recyclerview.widget.RecyclerView
+                       sothree:layout_constraintTop_toBottomOf="@id/view_line"
+                       sothree:layout_constraintStart_toStartOf="parent"
+                       sothree:layout_constraintEnd_toEndOf="parent"
+                       android:layout_marginTop="@dimen/px8"
+                       android:id="@+id/rc_ac"
+                       android:layout_width="wrap_content"
+                       android:layout_height="wrap_content"
+                       android:background="@color/label_prim_w"
+                       android:gravity="center"
+                       android:nestedScrollingEnabled="false"
+                       android:overScrollMode="never" />
+               </androidx.constraintlayout.widget.ConstraintLayout>
+                <androidx.recyclerview.widget.RecyclerView
+                    android:gravity ="bottom"
+                    android:id="@+id/rc_action_select"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@color/label_prim_w"
+                    android:nestedScrollingEnabled="false"
+                    android:overScrollMode="never"/>
+
+            </com.sothree.slidinguppanel.SlidingUpPanelLayout>
+
+
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

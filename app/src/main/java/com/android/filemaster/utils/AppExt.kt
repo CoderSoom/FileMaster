@@ -3,12 +3,9 @@ package com.android.filemaster.module
 import android.annotation.SuppressLint
 import android.app.Application
 import android.content.Context
-import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.net.Uri
-import android.util.Log
 import android.view.View
-import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.ColorRes
@@ -19,13 +16,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.RecyclerView
 import com.android.filemaster.R
 import com.android.filemaster.base.BaseMultiViewHolderAdapter
-import com.android.filemaster.data.adapter.FileAdapter
-import com.android.filemaster.data.adapter.FileAdapterMulti
-import com.android.filemaster.data.model.FileCustom
-import com.android.filemaster.data.model.FileDefault
-import com.android.filemaster.data.model.ItemDate
-import com.android.filemaster.data.model.ListStorage
-import com.android.filemaster.ui.recent.RecentApdapter
+import com.android.filemaster.data.model.*
 import com.android.filemaster.utils.FileManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
@@ -72,7 +63,7 @@ fun setImage(img: ImageView, path: String) {
         Glide.with(img)
             .load(Uri.fromFile(File(path)))
             .apply(RequestOptions().override(100, 100))
-            .error(R.drawable.ic_image)
+            .error(R.drawable.ic_file_image)
             .into(img)
     } else {
         img.setImageResource(FileManager.setImageFile(path))
@@ -94,6 +85,13 @@ fun TextView.tvSetTextByMultiHolderFile(item: BaseMultiViewHolderAdapter.BaseMod
     }
 }
 
+@BindingAdapter("tv_no_result")
+fun TextView.tvNoResultByMultiHolder(item: BaseMultiViewHolderAdapter.BaseModelType) {
+    if (item is ItemNoResult) {
+        text = item.str
+    }
+}
+
 @BindingAdapter("setImageMulti")
 fun ImageView.setImageMulti(item: BaseMultiViewHolderAdapter.BaseModelType) {
     if (item is FileCustom) {
@@ -101,7 +99,7 @@ fun ImageView.setImageMulti(item: BaseMultiViewHolderAdapter.BaseModelType) {
             Glide.with(this)
                 .load(Uri.fromFile(File(item.path.toString())))
                 .apply(RequestOptions().override(100, 100))
-                .error(R.drawable.ic_image)
+                .error(R.drawable.ic_file_image)
                 .into(this)
         } else {
             this.setImageResource(FileManager.setImageFile(item.path.toString()))
@@ -157,14 +155,21 @@ fun Toolbar.setToolbarAction2(isNewMessageComing: Boolean) {
         )
     )
 }
+
 @SuppressLint("SetTextI18n")
 @BindingAdapter("setSizeForDay")
-fun TextView.setSizeForDay(item: BaseMultiViewHolderAdapter.BaseModelType){
-    if (item is ItemDate){
-        this.text = "(" + item.size+ " Files)"
+fun TextView.setSizeForDay(item: BaseMultiViewHolderAdapter.BaseModelType) {
+    if (item is ItemDate) {
+        this.text = "(" + item.size + " Files)"
     }
 }
+
 @BindingAdapter("setImageToResoure")
-fun ImageView.setImageToResoure(iv:Int){
+fun ImageView.setImageToResoure(iv: Int) {
     this.setImageResource(iv)
+}
+
+@BindingAdapter("isCheckSelect")
+fun View.isCheckSelect(listener: View.OnLongClickListener) {
+
 }

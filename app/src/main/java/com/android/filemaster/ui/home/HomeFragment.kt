@@ -2,11 +2,11 @@ package com.android.filemaster.ui.home
 
 import android.os.Bundle
 import android.view.View
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.android.filemaster.MyApp
 import com.android.filemaster.R
 import com.android.filemaster.base.BaseFragment
 import com.android.filemaster.data.adapter.FileAdapter
@@ -47,14 +47,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), ToolbarActionListener 
     }
 
     private fun initData() {
-        binding.toolbarHome.setBackgroundColor(
-            ContextCompat.getColor(
-                activityOwner,
-                R.color.transparent
-            )
-        )
+        binding.toolbarHome.setBackgroundColor(MyApp.resource().getColor(R.color.transparent))
         binding.toolbarHome.toolbar()
-            .setTitleTextColor(ContextCompat.getColor(activityOwner, R.color.transparent))
+            .setTitleTextColor(MyApp.resource().getColor(R.color.transparent))
         binding.toolbarHome.setOnToolbarActionListener(this)
 
         binding.viewModel = viewModel

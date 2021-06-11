@@ -9,6 +9,8 @@
 
         <import type="android.view.View" />
 
+        <import type="com.android.filemaster.ui.recent.IRecent" />
+
         <variable
             name="item"
             type="BaseModelType" />
@@ -18,16 +20,16 @@
             type="Integer" />
 
         <variable
-            name="itemListener"
-            type="com.android.filemaster.data.adapter.FileAdapterMulti.FileMultiListener" />
-
-        <variable
             name="model"
             type="com.android.filemaster.data.model.FileCustom" />
 
         <variable
             name="viewModel"
             type="com.android.filemaster.ui.recent.RecentViewModel" />
+
+        <variable
+            name="itemListener"
+            type="IRecent" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -35,59 +37,64 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/fixed_white"
-        android:onClick="@{()-> itemListener.onItemClick(item)}"
-        android:onLongClick="@{() -> itemListener.onLongClick(item)}">
+        android:onClick="@{()-> itemListener.onItemClick(itemPosition,item)}"
+        android:onLongClick="@{() -> itemListener.onLongClick(itemPosition,item)}">
 
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/imgIcon"
-            setImageMulti="@{item}"
+        <androidx.cardview.widget.CardView
+            android:id="@+id/icon_container"
             android:layout_width="@dimen/px40"
             android:layout_height="@dimen/px40"
             android:layout_marginStart="@dimen/px18"
             android:layout_marginTop="@dimen/px10"
             android:layout_marginBottom="@dimen/px10"
-            android:scaleType="centerCrop"
-            android:src="@drawable/ic_doc"
+            android:elevation="0dp"
+            app:cardCornerRadius="@dimen/px4"
+            app:cardElevation="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/imgIcon"
+                setImageMulti="@{item}"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                android:src="@drawable/ic_file_doc" />
+        </androidx.cardview.widget.CardView>
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tvFileName"
+            style="@style/Item.Title.Text"
             tv_set_text_by_multi_holder_file="@{item}"
-            android:layout_width="@dimen/px228"
-            android:layout_height="@dimen/px24"
-            android:layout_marginStart="@dimen/px8"
-            android:layout_marginTop="@dimen/px8"
-            android:singleLine="true"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
             android:textColor="@color/label_prim"
-            android:textSize="@dimen/sp16"
             app:layout_constraintBottom_toTopOf="@id/tv_subtitle"
-            app:layout_constraintLeft_toRightOf="@id/imgIcon"
+            app:layout_constraintEnd_toStartOf="@id/iv_favourite"
+            app:layout_constraintStart_toEndOf="@id/icon_container"
             app:layout_constraintTop_toTopOf="parent"
+            app:lineHeight="0dp"
             tools:text="@tools:sample/cities" />
-
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_subtitle"
             style="@style/Item.Subtitle.Text"
             getDetailFileMulti="@{item}"
-            android:layout_marginStart="@dimen/px8"
-            android:layout_marginBottom="8dp"
             android:textColor="@color/label_sec"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/iv_favourite"
             app:layout_constraintHorizontal_bias="0.23"
-            app:layout_constraintStart_toEndOf="@id/imgIcon"
+            app:layout_constraintStart_toEndOf="@id/icon_container"
             app:layout_constraintTop_toBottomOf="@id/tvFileName"
+            app:lineHeight="0dp"
             tools:text="@tools:sample/full_names" />
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/iv_more_option"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="@dimen/px24"
+            android:layout_height="@dimen/px24"
             android:layout_marginEnd="@dimen/px12"
-            android:onClick="@{()-> itemListener.onSelectClick(item)}"
             android:src="@drawable/ic_more_options"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintRight_toRightOf="parent"
@@ -95,11 +102,10 @@
 
         <androidx.appcompat.widget.AppCompatCheckBox
             android:id="@+id/cb_item_check"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="@dimen/px24"
+            android:layout_height="@dimen/px24"
             android:layout_marginEnd="@dimen/px12"
-            android:src="@drawable/ic_not_checked"
-            android:visibility="gone"
+            android:button="@drawable/checkbox_selector_blue"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent" />

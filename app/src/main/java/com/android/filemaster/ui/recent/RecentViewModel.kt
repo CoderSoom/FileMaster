@@ -2,10 +2,12 @@ package com.android.filemaster.ui.recent
 
 import android.content.Context
 import androidx.lifecycle.MutableLiveData
+import com.android.filemaster.R
 import com.android.filemaster.base.BaseMultiViewHolderAdapter
 import com.android.filemaster.base.BaseViewModel
 import com.android.filemaster.data.model.FileCustom
 import com.android.filemaster.data.model.ItemDate
+import com.android.filemaster.data.model.ItemNoResult
 import com.android.filemaster.data.repository.FileRepository
 import com.android.filemaster.module.asLiveData
 import java.util.*
@@ -35,6 +37,7 @@ class RecentViewModel() : BaseViewModel() {
     fun getListRecentFromStorage(context: Context): List<FileCustom> {
         val list = fileRepository.getListFileRecentMulti(context)
         listFileRecentFull.value = list
+        list.sortByDescending  { it.date }
         return list
     }
 
@@ -48,7 +51,7 @@ class RecentViewModel() : BaseViewModel() {
         return result
     }
 
-    fun mappingListRecentForDay(list: List<FileCustom>) {
+    fun mappingListRecentForDay(list: List<FileCustom>, context: Context) {
         val recents = mutableListOf<BaseMultiViewHolderAdapter.BaseModelType>()
         var countToday = 0
         var countThisWeek = 0
@@ -75,10 +78,16 @@ class RecentViewModel() : BaseViewModel() {
             }
         }
         if (countToday > 0) {
-            recents.add(0, ItemDate("Today", countToday.toString()))
+            recents.add(0, ItemDate(context.getString(R.string.today), countToday.toString()))
         }
         if (countThisWeek > 0) {
-            recents.add(indexOfThisWeek, ItemDate("The week", countThisWeek.toString()))
+            recents.add(
+                indexOfThisWeek,
+                ItemDate(context.getString(R.string.this_week), countThisWeek.toString())
+            )
+        }
+        if (countThisWeek == 0 && countToday == 0) {
+            recents.add(indexOfThisWeek, ItemNoResult(context.getString(R.string.no_result_found)))
         }
         recentMulti.value = recents
     }
