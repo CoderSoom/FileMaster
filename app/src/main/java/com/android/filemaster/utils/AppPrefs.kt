@@ -6,6 +6,7 @@ import androidx.core.content.edit
 import java.lang.ref.WeakReference
 
 class AppPrefs private constructor(context: Context) {
+    private val K_IS_INTEGRATED_CLOUD = "is_integrated_cloud"
     private val K_IS_DONT_SHOW_AGAIN = "is_dont_show_again"
     private val appPref: SharedPreferences =
         context.getSharedPreferences("file-master-prefs", Context.MODE_PRIVATE)
@@ -26,6 +27,13 @@ class AppPrefs private constructor(context: Context) {
         get() = this.appPref.getBoolean(K_IS_DONT_SHOW_AGAIN, false)
 
     fun applyDontShowAgain() {
-        appPref.edit { putBoolean(K_IS_DONT_SHOW_AGAIN, true) }
+        this.appPref.edit { putBoolean(K_IS_DONT_SHOW_AGAIN, true) }
+    }
+
+    val isIntegratedGDriveCloud: Boolean
+        get() = this.appPref.getBoolean(K_IS_INTEGRATED_CLOUD, false)
+
+    fun applyIntegratedGDriveCloud(flag: Boolean) {
+        this.appPref.edit { putBoolean(K_IS_INTEGRATED_CLOUD, flag) }
     }
 }
