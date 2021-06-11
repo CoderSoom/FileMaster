@@ -42,4 +42,8 @@
     <string name="google_drive">Google Drive</string>
     <string name="sync">Sync</string>
     <string name="not_sync">Not Sync</string>
+    <string name="today">Today</string>
+    <string name="this_week">This week</string>
+    <string name="no_result_found">No result found</string>
+
 </resources>

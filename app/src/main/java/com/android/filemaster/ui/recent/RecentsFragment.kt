@@ -6,19 +6,16 @@ import android.view.MenuItem
 import android.view.View
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.android.filemaster.R
 import com.android.filemaster.base.BaseFragment
 import com.android.filemaster.base.BaseMultiViewHolderAdapter
-import com.android.filemaster.base.BaseViewHolder
 import com.android.filemaster.data.model.FileCustom
 import com.android.filemaster.data.model.ItemAction
 import com.android.filemaster.data.viewmodel.MainViewModel
 import com.android.filemaster.databinding.FragmentRecentsBinding
 import com.android.filemaster.ui.home.ToolbarActionListener
-import com.sothree.slidinguppanel.SlidingUpPanelLayout
 import com.tapon.ds.view.toolbar.Toolbar
 
 class RecentsFragment : BaseFragment<FragmentRecentsBinding>(), ToolbarActionListener {
@@ -124,7 +121,7 @@ class RecentsFragment : BaseFragment<FragmentRecentsBinding>(), ToolbarActionLis
                 position: Int,
                 item: BaseMultiViewHolderAdapter.BaseModelType
             ) {
-
+                Log.d(TAG, "onItemClick: ")
             }
 
             override fun onSelectClick(
@@ -134,16 +131,16 @@ class RecentsFragment : BaseFragment<FragmentRecentsBinding>(), ToolbarActionLis
 
             }
 
-            override fun isCheckClick(view: View){
+            override fun isCheckClick(view: View) {
             }
 
             override fun onLongClick(
                 position: Int,
                 item: BaseMultiViewHolderAdapter.BaseModelType
             ): Boolean {
-                if (item is FileCustom){
+                if (item is FileCustom) {
                     Log.d(TAG, "onLongClick: $position ${item.path}")
-                            viewModel.isSelect.value = false
+                    viewModel.isSelect.value = false
                 }
                 return super.onLongClick(position, item)
             }
@@ -160,7 +157,7 @@ class RecentsFragment : BaseFragment<FragmentRecentsBinding>(), ToolbarActionLis
 
     private fun observeViewModel() {
         val list = viewModel.getListRecentFromStorage(activityOwner)
-        viewModel.mappingListRecentForDay(list)
+        viewModel.mappingListRecentForDay(list, activityOwner)
         viewModel.recentMulti.observe(viewLifecycleOwner) {
             recentAdapter.list = it
         }
@@ -193,7 +190,7 @@ class RecentsFragment : BaseFragment<FragmentRecentsBinding>(), ToolbarActionLis
 
     override fun onTextChanged(text: String) {
         val list = viewModel.search(text)
-        viewModel.mappingListRecentForDay(list)
+        viewModel.mappingListRecentForDay(list, activityOwner)
     }
 
     override fun onTextInputCleared() {

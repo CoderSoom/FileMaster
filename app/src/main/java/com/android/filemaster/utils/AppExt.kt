@@ -15,12 +15,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.RecyclerView
 import com.android.filemaster.R
-import com.android.filemaster.base.BaseListener
 import com.android.filemaster.base.BaseMultiViewHolderAdapter
-import com.android.filemaster.data.model.FileCustom
-import com.android.filemaster.data.model.FileDefault
-import com.android.filemaster.data.model.ItemDate
-import com.android.filemaster.data.model.ListStorage
+import com.android.filemaster.data.model.*
 import com.android.filemaster.utils.FileManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
@@ -89,6 +85,13 @@ fun TextView.tvSetTextByMultiHolderFile(item: BaseMultiViewHolderAdapter.BaseMod
     }
 }
 
+@BindingAdapter("tv_no_result")
+fun TextView.tvNoResultByMultiHolder(item: BaseMultiViewHolderAdapter.BaseModelType) {
+    if (item is ItemNoResult) {
+        text = item.str
+    }
+}
+
 @BindingAdapter("setImageMulti")
 fun ImageView.setImageMulti(item: BaseMultiViewHolderAdapter.BaseModelType) {
     if (item is FileCustom) {
@@ -152,18 +155,21 @@ fun Toolbar.setToolbarAction2(isNewMessageComing: Boolean) {
         )
     )
 }
+
 @SuppressLint("SetTextI18n")
 @BindingAdapter("setSizeForDay")
-fun TextView.setSizeForDay(item: BaseMultiViewHolderAdapter.BaseModelType){
-    if (item is ItemDate){
-        this.text = "(" + item.size+ " Files)"
+fun TextView.setSizeForDay(item: BaseMultiViewHolderAdapter.BaseModelType) {
+    if (item is ItemDate) {
+        this.text = "(" + item.size + " Files)"
     }
 }
+
 @BindingAdapter("setImageToResoure")
-fun ImageView.setImageToResoure(iv:Int){
+fun ImageView.setImageToResoure(iv: Int) {
     this.setImageResource(iv)
 }
+
 @BindingAdapter("isCheckSelect")
-fun View.isCheckSelect(listener:View.OnLongClickListener) {
+fun View.isCheckSelect(listener: View.OnLongClickListener) {
 
 }
