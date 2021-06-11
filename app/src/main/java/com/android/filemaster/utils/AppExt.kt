@@ -3,12 +3,9 @@ package com.android.filemaster.module
 import android.annotation.SuppressLint
 import android.app.Application
 import android.content.Context
-import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.net.Uri
-import android.util.Log
 import android.view.View
-import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.ColorRes
@@ -18,14 +15,12 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.RecyclerView
 import com.android.filemaster.R
+import com.android.filemaster.base.BaseListener
 import com.android.filemaster.base.BaseMultiViewHolderAdapter
-import com.android.filemaster.data.adapter.FileAdapter
-import com.android.filemaster.data.adapter.FileAdapterMulti
 import com.android.filemaster.data.model.FileCustom
 import com.android.filemaster.data.model.FileDefault
 import com.android.filemaster.data.model.ItemDate
 import com.android.filemaster.data.model.ListStorage
-import com.android.filemaster.ui.recent.RecentApdapter
 import com.android.filemaster.utils.FileManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
@@ -167,4 +162,8 @@ fun TextView.setSizeForDay(item: BaseMultiViewHolderAdapter.BaseModelType){
 @BindingAdapter("setImageToResoure")
 fun ImageView.setImageToResoure(iv:Int){
     this.setImageResource(iv)
+}
+@BindingAdapter("isCheckSelect")
+fun View.isCheckSelect(listener:View.OnLongClickListener) {
+
 }

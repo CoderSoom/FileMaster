@@ -14,9 +14,7 @@
             name="position"
             type="Integer" />
 
-        <variable
-            name="listener"
-            type="com.android.filemaster.ui.recent.RecentApdapter.IRecent" />
+
     </data>
 
 
@@ -69,7 +67,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/px12"
-            android:onClick="@{() -> listener.onSelectAllItem(item)}"
             android:src="@drawable/ic_rectangle"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintRight_toRightOf="parent"
