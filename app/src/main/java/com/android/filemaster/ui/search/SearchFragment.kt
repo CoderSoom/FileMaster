@@ -8,14 +8,13 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.android.filemaster.R
 import com.android.filemaster.base.BaseFragment
-import com.android.filemaster.data.viewmodel.FileViewModel
 import com.android.filemaster.data.viewmodel.MainViewModel
 import com.android.filemaster.databinding.FragmentSearchBinding
 import com.android.filemaster.ui.home.ToolbarActionListener
 import com.tapon.ds.view.toolbar.Toolbar
 
 class SearchFragment : BaseFragment<FragmentSearchBinding>(), ToolbarActionListener {
-    private val viewModel by viewModels<FileViewModel>()
+
     private val mainViewModel by activityViewModels<MainViewModel>()
     var searchAdapter = SearchAdapter()
 
@@ -29,7 +28,7 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(), ToolbarActionListe
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel.getListSearch(activityOwner)
+
 
     }
 
@@ -81,6 +80,7 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(), ToolbarActionListe
     }
 
     override fun onTextChanged(text: String) {
+
     }
 
     override fun onTextInputCleared() {
