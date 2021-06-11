@@ -1,17 +1,107 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools">
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <data>
+
+        <import type="com.android.filemaster.ui.browser.BrowserViewModel" />
+
+        <variable
+            name="viewModel"
+            type="BrowserViewModel" />
+
+        <variable
+            name="adapter"
+            type="androidx.recyclerview.widget.RecyclerView.Adapter" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ui.fragment.BeowserFragment">
+        android:background="@color/sys_quarternary"
+        tools:context=".ui.browser.BrowserFragment">
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="Browser"
-            android:textSize="@dimen/sp50" />
+        <com.tapon.ds.view.toolbar.Toolbar
+            android:id="@+id/toolbar_browser"
+            android:layout_width="0dp"
+            android:layout_height="?android:attr/actionBarSize"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:toolbarAction1="@drawable/ic_search_black"
+            app:toolbarAction2="@drawable/ic_toolbar_more_action"
+            app:toolbarBackIcon="@drawable/ic_arrow_back"
+            app:toolbarHideDivider="true"
+            app:toolbarTitle="@string/storage"
+            app:toolbarViewStyle="backTitle2Icon" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="0dp"
+            android:layout_height="@dimen/px40"
+            android:background="@color/sys_sec"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/toolbar_browser">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/breadcrumb_container"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toStartOf="@id/fl_tree_file"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/iv_home"
+                    android:layout_width="@dimen/px24"
+                    android:layout_height="@dimen/px24"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="@dimen/px12"
+                    android:adjustViewBounds="true"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:padding="@dimen/px2"
+                    android:src="@drawable/ic_browse_breadcrumb_root"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_parent_path"
+                    rv_set_adapter="@{adapter}"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="@dimen/px4"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/iv_home"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_goneMarginStart="@dimen/px4"
+                    />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <FrameLayout
+                android:id="@+id/fl_tree_file"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                app:layout_constraintBottom_toBottomOf="@+id/breadcrumb_container"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/breadcrumb_container">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/iv_check_all"
+                    android:layout_width="@dimen/px24"
+                    android:layout_height="@dimen/px24"
+                    android:layout_gravity="end|center_vertical"
+                    android:layout_marginStart="@dimen/px4"
+                    android:layout_marginEnd="@dimen/px10"
+                    android:adjustViewBounds="true"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    app:srcCompat="@drawable/ic_browse_breadcrumb_more" />
+
+            </FrameLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

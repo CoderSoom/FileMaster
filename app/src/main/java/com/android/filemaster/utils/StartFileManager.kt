@@ -4,30 +4,25 @@ import android.app.LauncherActivity.ListItem
 import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
-import android.net.Uri
-import android.os.Build
 import android.text.TextUtils
+import android.util.Log
 import android.webkit.MimeTypeMap
 import android.widget.Toast
-import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import com.android.filemaster.BuildConfig
+import com.android.filemaster.data.model.FileDefault
 import java.io.File
 
 
 class StartFileManager {
-
     fun openNomarlFile(context: Context, item: File?) {
-        if (item == null) {
-            return
-        }
         val myMime = MimeTypeMap.getSingleton()
         val intent = Intent(Intent.ACTION_VIEW)
-        val mimeType = myMime.getMimeTypeFromExtension(getExtension(item.name))
+        val mimeType = myMime.getMimeTypeFromExtension(getExtension(item!!.name))
         if (TextUtils.isEmpty(mimeType)) {
             intent.setDataAndType(createUri(context, item.path), "/")
         } else {
-            intent.setDataAndType(createUri(context, item.path), mimeType)
+            intent.setDataAndType(FileManager.createUri(context, item.path), mimeType)
         }
         intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
         try {
@@ -47,6 +42,7 @@ class StartFileManager {
             Uri.Builder().build()
         }
     }
+
     fun getExtension(filename: String?): String? {
         val ext: String?
         val index = indexOfExtension(filename)
@@ -61,6 +57,7 @@ class StartFileManager {
             ext!!.toLowerCase()
         } else ""
     }
+
     fun indexOfExtension(filename: String?): Int {
         if (filename == null) {
             return -1
@@ -69,6 +66,7 @@ class StartFileManager {
         val lastSeparator = indexOfLastSeparator(filename)
         return if (lastSeparator > extensionPos) -1 else extensionPos
     }
+
     fun indexOfLastSeparator(filename: String?): Int {
         if (filename == null) {
             return -1
@@ -77,8 +75,6 @@ class StartFileManager {
         val lastWindowsPos = filename.lastIndexOf("\\")
         return Math.max(lastUnixPos, lastWindowsPos)
     }
-
-
 
 
 }

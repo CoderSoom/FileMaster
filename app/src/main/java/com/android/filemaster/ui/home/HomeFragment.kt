@@ -2,7 +2,6 @@ package com.android.filemaster.ui.home
 
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
@@ -83,14 +82,31 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), ToolbarActionListener 
         }
         recentAdapter.listener = object : RecentHomeAdapter.RecentListener {
             override fun onClickItem(position: Int, item: FileDefault) {
-                if (item.name.equals(getString(R.string.more)) && item.path.equals(".more")) {
+                if (item.name.equals(getString(R.string.more)) && item.path == ".more") {
                     mainViewModel.hideMenu()
                     findNavController().navigate(R.id.action_homeFragment_to_recentsFragment)
                 } else {
-                    StartFileManager().openNomarlFile(requireContext(), File(item.path))
+                    StartFileManager().openNomarlFile(activityOwner, File(item.path))
                 }
             }
         }
+        storageAdapter.listener = object : StorageAdapter.StorageListener {
+            override fun onGDriveSync() {
+                mainViewModel.hideMenu()
+                findNavController().navigate(R.id.action_homeFragment_to_gdrive)
+            }
+
+            override fun onStorageClean() {
+                mainViewModel.hideMenu()
+                findNavController().navigate(R.id.action_homeFragment_to_cleaning)
+            }
+
+            override fun onGoStorage() {
+                mainViewModel.hideMenu()
+                findNavController().navigate(R.id.action_homeFragment_to_browse_file)
+            }
+        }
+
 
         viewModel.listFileRecentSingle.observe(viewLifecycleOwner) {
 
@@ -123,6 +139,11 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), ToolbarActionListener 
 
         binding.tvExpand.setOnClickListener {
             viewModel.expanded(!viewModel.isExpanded.value!!)
+        }
+
+        binding.btnPremium.setOnClickListener {
+            mainViewModel.hideMenu()
+            findNavController().navigate(R.id.action_homeFragment_to_premium)
         }
 
         viewModel.listStorage.observe(viewLifecycleOwner) {

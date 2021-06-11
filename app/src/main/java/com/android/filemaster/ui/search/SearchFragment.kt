@@ -40,6 +40,7 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(), ToolbarActionListe
 
     private fun initData() {
         binding.toolbarSearch.setOnToolbarActionListener(this)
+        binding.toolbarSearch.activeInputType()
         binding.searchAdapter = searchAdapter
     }
 
@@ -68,15 +69,6 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(), ToolbarActionListe
     override fun onBackPressed(): Boolean {
         backToHome()
         return true
-    }
-
-    override fun onAction2Click() {
-        binding.toolbarSearch.activeInputType()
-        binding.toolbarSearch.toolbar().setNavigationOnClickListener {
-            binding.toolbarSearch.deactiveInputType()
-            binding.toolbarSearch.toolbar()
-                .setNavigationOnClickListener { backToHome() }
-        }
     }
 
     override fun onTextChanged(text: String) {

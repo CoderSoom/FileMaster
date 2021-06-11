@@ -7,7 +7,9 @@ import com.android.filemaster.data.model.ListStorage
 
 class StorageAdapter : BaseAdapter<ListStorage>(R.layout.item_storage) {
 
-    interface StorageLister : BaseListener {
-        fun onItemClick(position: Int): ListStorage
+    interface StorageListener : BaseListener {
+        fun onGoStorage()
+        fun onStorageClean()
+        fun onGDriveSync()
     }
 }

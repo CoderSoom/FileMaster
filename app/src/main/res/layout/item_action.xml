@@ -12,58 +12,59 @@
 
         <variable
             name="listener"
-            type="com.android.filemaster.ui.recent.ActionAdapter" />
+            type="com.android.filemaster.ui.recent.ActionAdapter.IAction" />
+
         <variable
             name="item"
             type="com.android.filemaster.data.model.ItemAction" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:onClick="@{() -> listener.onItemClickAction()}">
 
         <View
-            android:visibility="gone"
             android:id="@+id/view_line"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/px2"
+            android:layout_height="@dimen/px1"
+            android:layout_marginTop="@dimen/px2"
             android:background="@color/divider"
+            android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/cl"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/px4"
+            android:background="?android:attr/selectableItemBackground"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/view_line">
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/iv"
+                setImageToResoure="@{item.image}"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/px16"
                 android:layout_marginTop="@dimen/px12"
-                setImageToResoure="@{item.image}"
                 android:layout_marginBottom="@dimen/px12"
-                android:src="@drawable/ic_action_move"
+                android:src="@drawable/ic_action_move_to"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <androidx.appcompat.widget.AppCompatTextView
+                style="@style/Paragraph"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/px16"
-                android:layout_marginTop="@dimen/px12"
-                android:layout_marginBottom="@dimen/px12"
+                android:layout_marginStart="@dimen/px24"
                 android:text="@{item.name}"
-
                 android:textColor="@color/label_prim"
-                android:textSize="@dimen/sp16"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@id/iv"
                 app:layout_constraintTop_toTopOf="parent" />

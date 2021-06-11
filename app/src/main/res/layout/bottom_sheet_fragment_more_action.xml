@@ -4,6 +4,10 @@
 
     <data>
 
+        <variable
+            name="adapter"
+            type="com.android.filemaster.ui.recent.ActionAdapter" />
+
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -34,13 +38,13 @@
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rc_action"
+            rv_set_adapter="@{adapter}"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/px4"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/cl_header" />
-
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
