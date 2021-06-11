@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <data>
+
+        <import type="com.android.filemaster.data.model.BreadcrumbItem" />
+
+        <variable
+            name="model"
+            type="BreadcrumbItem" />
+
+        <variable
+            name="itemPosition"
+            type="Integer" />
+
+        <variable
+            name="itemListener"
+            type="com.android.filemaster.ui.browser.BrowserAdapter.BreadcrumbListener" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tool="http://schemas.android.com/tools"
+        android:id="@+id/cl_background"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:onClick="@{()->itemListener.onItemBreadcrumbClicked(model.pathName, itemPosition)}">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/iv_icon_path"
+            android:layout_width="@dimen/px16"
+            android:layout_height="@dimen/px16"
+            android:adjustViewBounds="true"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_browse_breadcrumb_nav" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_path_item"
+            style="@style/Caption"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="?attr/selectableItemBackground"
+            android:ellipsize="middle"
+            android:gravity="center"
+            android:maxWidth="@dimen/px100"
+            android:singleLine="true"
+            android:text="@{model.pathName}"
+            android:textColor="@color/label_sec"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/iv_icon_path"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_goneMarginStart="@dimen/px4"
+            tool:text="@tools:sample/cities" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

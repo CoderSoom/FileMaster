@@ -45,13 +45,27 @@
         <item name="android:layout_marginBottom">@dimen/px8</item>
     </style>
 
-    <style name="AppBottomSheetDialogTheme"
-        parent="Theme.Design.Light.BottomSheetDialog">
+    <style name="AppBottomSheetDialogTheme" parent="Theme.Design.Light.BottomSheetDialog">
         <item name="bottomSheetStyle">@style/AppModalStyle</item>
     </style>
-    <style name="AppModalStyle"
-        parent="Widget.Design.BottomSheet.Modal">
+
+    <style name="AppModalStyle" parent="Widget.Design.BottomSheet.Modal">
         <item name="android:background">@drawable/bg_border_bottom_sheet</item>
+    </style>
+
+    <style name="Button.GDrive" parent="Button2">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="drawableStartCompat">@drawable/ic_drive_small</item>
+        <item name="lineHeight">0dp</item>
+        <item name="android:paddingStart">@dimen/px12</item>
+        <item name="android:paddingEnd">@dimen/px12</item>
+        <item name="android:paddingTop">@dimen/px4</item>
+        <item name="android:paddingBottom">@dimen/px4</item>
+        <item name="android:drawablePadding">@dimen/px4</item>
+        <item name="android:layout_marginTop">@dimen/px4</item>
+        <item name="android:background">@drawable/selector_button_gdrive</item>
     </style>
 
 </resources>

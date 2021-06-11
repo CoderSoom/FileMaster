@@ -7,8 +7,6 @@ data class ListStorage(
     var amountOfMemoryUsed: Long?,
     var percentUsage: Float?,
     var usedStorage: String?,
-    var sizeName: String?,
-    var imgIcon: Int,
-    var imgIconClick: Int
+    var sizeName: String?
 ) {
 }

@@ -16,6 +16,7 @@ import android.provider.MediaStore
 import android.text.TextUtils
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import androidx.documentfile.provider.DocumentFile
 import com.android.filemaster.BuildConfig
@@ -63,9 +64,7 @@ object FileManager {
                 amountOfMemoryUsed,
                 getPercentUsageStorage(),
                 getUsedStorageInString(),
-                getFileSize(amountOfMemoryUsed) + " / " + getFileSize(totalMemorySize),
-                R.drawable.ic_clear,
-                R.drawable.ic_clear_pressed
+                getFileSize(amountOfMemoryUsed) + " / " + getFileSize(totalMemorySize)
             )
         )
         return listStorage

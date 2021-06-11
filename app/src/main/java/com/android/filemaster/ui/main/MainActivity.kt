@@ -164,12 +164,12 @@ class MainActivity : AppCompatActivity(),
             }
             R.id.navigation_browser -> {
                 Navigation.findNavController(this, R.id.nav_host_fragment)
-                    .navigate(R.id.browserFragment)
+                    .navigate(R.id.filesFragment)
                 return true
             }
             R.id.navigation_cleaner -> {
                 Navigation.findNavController(this, R.id.nav_host_fragment)
-                    .navigate(R.id.cleanerFragment)
+                    .navigate(R.id.cleaner_fragment)
                 return true
             }
             R.id.navigation_menu -> {
@@ -202,14 +202,6 @@ class MainActivity : AppCompatActivity(),
             ex.printStackTrace()
             doubleBackToExit()
         }
-//        val navController = Navigation.findNavController(this, R.id.nav_host_fragment)
-//        when (navController.currentDestination!!.id) {
-//            R.id.recentsFragment,
-//            R.id.searchFragment -> {
-//                return
-//            }
-//        }
-//        doubleBackToExit()
     }
 
     private fun doubleBackToExit() {
