@@ -9,17 +9,15 @@
 
         <import type="android.view.View" />
 
+        <import type="com.android.filemaster.ui.recent.IRecent" />
+
         <variable
             name="item"
             type="BaseModelType" />
 
         <variable
-            name="position"
+            name="itemPosition"
             type="Integer" />
-
-        <variable
-            name="itemListener"
-            type="com.android.filemaster.data.adapter.FileAdapterMulti.FileMultiListener" />
 
         <variable
             name="model"
@@ -28,6 +26,10 @@
         <variable
             name="viewModel"
             type="com.android.filemaster.ui.recent.RecentViewModel" />
+
+        <variable
+            name="itemListener"
+            type="IRecent" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -35,8 +37,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/fixed_white"
-        android:onClick="@{()-> itemListener.onItemClick(item)}"
-        android:onLongClick="@{() -> itemListener.onLongClick(item)}">
+        android:onClick="@{()-> itemListener.onItemClick(itemPosition,item)}"
+        android:onLongClick="@{() -> itemListener.onLongClick(itemPosition,item)}">
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/imgIcon"
@@ -87,7 +89,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/px12"
-            android:onClick="@{()-> itemListener.onSelectClick(item)}"
             android:src="@drawable/ic_more_options"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintRight_toRightOf="parent"
@@ -99,7 +100,7 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/px12"
             android:src="@drawable/ic_not_checked"
-            android:visibility="gone"
+            android:visibility="@{viewModel.isSelect() ==false ? View.GONE:View.VISIBLE}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent" />

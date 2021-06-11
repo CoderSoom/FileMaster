@@ -11,7 +11,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.android.filemaster.R
 import com.android.filemaster.base.BaseFragment
 import com.android.filemaster.base.BaseMultiViewHolderAdapter
-import com.android.filemaster.data.adapter.FileAdapterMulti
 import com.android.filemaster.data.model.FileCustom
 import com.android.filemaster.data.model.ItemAction
 import com.android.filemaster.data.viewmodel.MainViewModel
@@ -41,36 +40,37 @@ class RecentsFragment : BaseFragment<FragmentRecentsBinding>(), ToolbarActionLis
 
     private fun initData() {
         binding.toolbarRecent.setOnToolbarActionListener(this)
-        recentAdapter.listener = object : FileAdapterMulti.FileMultiListener {
-            override fun onItemClick(
-                item: BaseMultiViewHolderAdapter.BaseModelType
-            ) {
-                if (item is FileCustom) {
-                    Log.d(TAG, "onItemClick: ${item.name}")
-                }
-            }
+        /*  recentAdapter.listener = object : FileAdapterMulti.FileMultiListener {
+              override fun onItemClick(
+                  item: BaseMultiViewHolderAdapter.BaseModelType
+              ) {
+                  if (item is FileCustom) {
+                      Log.d(TAG, "onItemClick: ${item.name}")
+                  }
+              }
 
-            override fun onLongClick(item: BaseMultiViewHolderAdapter.BaseModelType): Boolean {
-                if (item is FileCustom && super.onLongClick(item)) {
-                    binding.clRcBottom.visibility = View.VISIBLE
-                    viewModel.isSelect.postValue(true)
-                    return super.onLongClick(item)
-                } else {
-                    viewModel.isSelect.postValue(false)
-                    return false
-                }
-            }
+              override fun onLongClick(item: BaseMultiViewHolderAdapter.BaseModelType): Boolean {
+                  if (item is FileCustom && super.onLongClick(item)) {
+                      binding.clRcBottom.visibility = View.VISIBLE
+                      viewModel.isSelect.postValue(true)
+                      return super.onLongClick(item)
+                  } else {
+                      viewModel.isSelect.postValue(false)
+                      return false
+                  }
+              }
 
-            override fun onSelectClick(item: BaseMultiViewHolderAdapter.BaseModelType) {
-                if (item is FileCustom) {
-                    Log.d(TAG, "onSelectClick: ${item.name}")
-                    val bottomSheet = MoreActionFragment().newInstance(item)
-                    bottomSheet.show(childFragmentManager, bottomSheet.tag)
-                }
+              override fun onSelectClick(item: BaseMultiViewHolderAdapter.BaseModelType) {
+                  if (item is FileCustom) {
+                      Log.d(TAG, "onSelectClick: ${item.name}")
+                      val bottomSheet = MoreActionFragment().newInstance(item)
+                      bottomSheet.show(childFragmentManager, bottomSheet.tag)
+                  }
 
-            }
+              }
 
-        }
+          }*/
+
         binding.adapter = recentAdapter
         binding.rcListRecents.layoutManager = LinearLayoutManager(
             this.context,
@@ -92,7 +92,7 @@ class RecentsFragment : BaseFragment<FragmentRecentsBinding>(), ToolbarActionLis
             override fun onItemClick(itemAction: ItemAction) {
                 when (itemAction.name) {
                     getString(R.string.move_to) -> {
-
+                        Log.d(TAG, "onItemClick: hhhhh")
                     }
                     getString(R.string.copy_to) -> {
                     }
@@ -102,11 +102,52 @@ class RecentsFragment : BaseFragment<FragmentRecentsBinding>(), ToolbarActionLis
                     }
                     getString(R.string.more) -> {
 
+
                     }
                 }
             }
 
         }
+//        val ac = ActionAdapter()
+//        binding.rcAc.adapter = ac
+//        binding.rcAc.layoutManager = LinearLayoutManager(
+//            this.context,
+//            LinearLayoutManager.VERTICAL, false
+//        )
+//        ac.list = list
+
+        recentAdapter.listener = object : IRecent {
+            override fun onItemClick(
+                position: Int,
+                item: BaseMultiViewHolderAdapter.BaseModelType
+            ) {
+                Log.d(TAG, "onItemClick: ")
+            }
+
+            override fun onSelectClick(
+                position: Int,
+                item: BaseMultiViewHolderAdapter.BaseModelType
+            ) {
+
+            }
+
+            override fun isCheckClick(view: View) {
+            }
+
+            override fun onLongClick(
+                position: Int,
+                item: BaseMultiViewHolderAdapter.BaseModelType
+            ): Boolean {
+                if (item is FileCustom) {
+                    Log.d(TAG, "onLongClick: $position ${item.path}")
+                    viewModel.isSelect.value = false
+                }
+                return super.onLongClick(position, item)
+            }
+
+        }
+
+
     }
 
     override fun onBackPressed(): Boolean {
@@ -116,7 +157,7 @@ class RecentsFragment : BaseFragment<FragmentRecentsBinding>(), ToolbarActionLis
 
     private fun observeViewModel() {
         val list = viewModel.getListRecentFromStorage(activityOwner)
-        viewModel.mappingListRecentForDay(list)
+        viewModel.mappingListRecentForDay(list, activityOwner)
         viewModel.recentMulti.observe(viewLifecycleOwner) {
             recentAdapter.list = it
         }
@@ -149,7 +190,7 @@ class RecentsFragment : BaseFragment<FragmentRecentsBinding>(), ToolbarActionLis
 
     override fun onTextChanged(text: String) {
         val list = viewModel.search(text)
-        viewModel.mappingListRecentForDay(list)
+        viewModel.mappingListRecentForDay(list, activityOwner)
     }
 
     override fun onTextInputCleared() {

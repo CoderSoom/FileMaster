@@ -29,4 +29,5 @@ object Constant {
     //Viewtype for multiviewholder
     const val VIEW_TYPE_DATE = 0
     const val VIEW_TYPE_ITEM = 1
+    const val VIEW_TYPE_NULL = 2
 }
