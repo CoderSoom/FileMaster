@@ -4,6 +4,8 @@ import android.app.LauncherActivity.ListItem
 import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
+import android.os.Build
 import android.text.TextUtils
 import android.util.Log
 import android.webkit.MimeTypeMap

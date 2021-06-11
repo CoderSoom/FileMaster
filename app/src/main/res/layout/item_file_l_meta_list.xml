@@ -2,6 +2,11 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <variable
+            name="item"
+            type="com.android.filemaster.data.model.ItemMore" />
+    </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -10,6 +15,7 @@
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/iv_item_icon"
             android:layout_width="@dimen/px32"
+            setImageDrawable="@{item.image}"
             android:layout_height="@dimen/px32"
             android:layout_marginStart="@dimen/px16"
             android:src="@mipmap/ic_launcher"
@@ -21,10 +27,12 @@
             android:id="@+id/tv_item_title"
             style="@style/Paragraph"
             android:layout_height="wrap_content"
+            android:layout_width="0dp"
             android:layout_marginStart="@dimen/px16"
             android:layout_marginEnd="@dimen/px4"
             android:ellipsize="end"
             android:maxLines="1"
+            android:text="@{item.name}"
             android:textColor="@color/label_prim"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/tv_item_label_meta"
@@ -39,6 +47,7 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/px12"
             android:textColor="@color/label_sec"
+            android:text="@{item.censored}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/tv_item_title"

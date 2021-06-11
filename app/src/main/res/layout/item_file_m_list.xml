@@ -2,9 +2,21 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <variable
+            name="item"
+            type="com.android.filemaster.data.model.ItemAction" />
+        <variable
+            name="itemListener"
+            type="com.android.filemaster.ui.menu.ActionShareAdapter.IShare" />
+        <variable
+            name="itemPosition"
+            type="Integer" />
+    </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
+        android:onClick="@{() ->itemListener.onItemClick(itemPosition, item)}"
         android:layout_height="@dimen/px48">
 
         <androidx.appcompat.widget.AppCompatImageView
@@ -12,6 +24,7 @@
             android:layout_width="@dimen/px24"
             android:layout_height="@dimen/px24"
             android:layout_marginStart="@dimen/px16"
+            setImageDrawable="@{item.image}"
             android:src="@mipmap/ic_launcher"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -25,6 +38,7 @@
             android:layout_marginStart="@dimen/px24"
             android:layout_marginEnd="@dimen/px12"
             android:maxLines="1"
+            android:text="@{item.name}"
             android:textColor="@color/label_prim"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

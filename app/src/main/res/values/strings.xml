@@ -42,4 +42,37 @@
     <string name="google_drive">Google Drive</string>
     <string name="sync">Sync</string>
     <string name="not_sync">Not Sync</string>
+    <string name="about">About</string>
+    <string name="check_for_update">Check for update</string>
+    <string name="privacy_policy">Privacy Policy</string>
+    <string name="acknowled">Acknowledgements</string>
+    <string name="license">License</string>
+    <string name="version">v1.0.0</string>
+    <string name="setting">Settings</string>
+    <string name="show_hiden_files">Show hidden files</string>
+    <string name="language">Language</string>
+    <string name="language_en">English (US)</string>
+    <string name="customize">Customize my files home</string>
+    <string name="built_app">Built-in app</string>
+    <string name="show_recent_files">Show recent files</string>
+    <string name="use_quick_access">Use quick access</string>
+    <string name="browser_manager">Browser manager</string>
+    <string name="images_viewer">Image viewer</string>
+    <string name="video_player">Video player</string>
+    <string name="music_player">Music player</string>
+    <string name="text_editor">Text editor</string>
+    <string name="user_name">Chu Pi</string>
+    <string name="share_file_to_mobile">Share file to mobile</string>
+    <string name="file_transfer_pc">File transfer to PC</string>
+    <string name="app_manager">App Manager</string>
+    <string name="this_is_paragraph">This is paragraph</string>
+    <string name="censored">Censored</string>
+    <string name="rate_us">Rate us</string>
+    <string name="feed_back">Feedback</string>
+    <string name="more_by_insoft">More by innosoft</string>
+    <string name="choose_language">Choose language</string>
+    <string name="ok">ok</string>
+    <string name="vi" translatable="false">Tiếng Việt</string>
+    <string name="en">English (US)</string>
+    <string name="indo">Indochina</string>
 </resources>
