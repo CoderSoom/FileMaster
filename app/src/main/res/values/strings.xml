@@ -42,8 +42,10 @@
     <string name="google_drive">Google Drive</string>
     <string name="sync">Sync</string>
     <string name="not_sync">Not Sync</string>
+    <string name="cloud">Cloud</string>
+    <string name="empty_drive_desc">Not sync any drive cloud. Add an account for the best experience</string>
+    <string name="add_drive">Add more drive cloud</string>
     <string name="today">Today</string>
     <string name="this_week">This week</string>
     <string name="no_result_found">No result found</string>
-
 </resources>

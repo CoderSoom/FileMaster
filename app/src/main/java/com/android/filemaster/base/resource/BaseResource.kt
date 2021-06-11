@@ -4,18 +4,15 @@ import android.content.Context
 import android.graphics.drawable.Drawable
 import androidx.core.content.ContextCompat
 
-class BaseResource {
+class BaseResource(ctx: Context) {
 
-    private var context: Context
-    constructor(ctx: Context) {
-        this.context = ctx
-    }
+    private var context: Context = ctx
 
     fun getString(resId: Int): String {
         return context.getString(resId)
     }
 
-    fun getImageResouce(resId: Int): Drawable? {
+    fun getDrawable(resId: Int): Drawable? {
         return ContextCompat.getDrawable(context, resId)
     }
 
