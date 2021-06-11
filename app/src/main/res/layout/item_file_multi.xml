@@ -105,8 +105,7 @@
             android:layout_width="@dimen/px24"
             android:layout_height="@dimen/px24"
             android:layout_marginEnd="@dimen/px12"
-            android:src="@drawable/ic_not_checked"
-            android:visibility="@{viewModel.isSelect() ==false ? View.GONE:View.VISIBLE}"
+            android:button="@drawable/checkbox_selector_blue"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
